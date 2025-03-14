@@ -1,0 +1,8 @@
+These image files need to be replaced with actual images:
+
+nebula-bg.jpg - A high-resolution image of a colorful nebula for the About section
+mars-colony-bg.jpg - An artist's impression of a Mars colony for the Preview section
+space-station-bg.jpg - A futuristic space station design for the Featured Projects section
+lunar-landscape-bg.jpg - A lunar landscape for the Statistics section
+
+Please upload these images to complete the website's theming.

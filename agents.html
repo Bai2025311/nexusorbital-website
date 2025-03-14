@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmicWeave - 智能体系统</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/agents.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="space-theme">
+    <div class="stars-background"></div>
+    
+    <header class="main-header">
+        <nav class="main-nav">
+            <div class="logo">
+                <a href="index.html">CosmicWeave</a>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" data-lang-key="nav.home">首页</a></li>
+                <li><a href="mars-base.html" data-lang-key="nav.marsBase">火星基地</a></li>
+                <li><a href="agents.html" class="active" data-lang-key="nav.agents">智能体系统</a></li>
+                <li><a href="stardust.html" data-lang-key="nav.stardust">星尘积分</a></li>
+                <li><a href="community.html" data-lang-key="nav.community">社区</a></li>
+                <li><a href="about.html" data-lang-key="nav.about">关于我们</a></li>
+                <li class="lang-switcher">
+                    <button id="langToggle">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">中文</span>
+                    </button>
+                    <div class="lang-dropdown">
+                        <a href="#" data-lang="zh-CN">中文</a>
+                        <a href="#" data-lang="en-US">English</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="user-actions">
+                <a href="login.html" class="btn btn-outline" data-lang-key="nav.login">登录</a>
+                <a href="register.html" class="btn btn-primary" data-lang-key="nav.register">注册</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="container">
+                <h1 class="hero-title" data-lang-key="agents.heroTitle">太空智能体系统</h1>
+                <p class="hero-subtitle" data-lang-key="agents.heroSubtitle">与专业AI智能体合作，共同创建未来太空社区</p>
+            </div>
+        </section>
+
+        <section class="agents-introduction">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-lang-key="agents.introTitle">智能体团队</h2>
+                    <p class="section-subtitle" data-lang-key="agents.introSubtitle">我们的专业智能体团队将协助您完成太空探索与居住的各个方面任务</p>
+                </div>
+
+                <div class="intro-content">
+                    <div class="intro-text">
+                        <p data-lang-key="agents.introParagraph1">在太空人居的未来，人工智能将成为人类最重要的合作伙伴。我们的智能体系统由八位专业AI组成，每一位都专注于太空殖民的不同领域。</p>
+                        <p data-lang-key="agents.introParagraph2">您可以激活任何智能体，分配具体任务，甚至让多个智能体协作完成复杂项目。无论是设计生命支持系统、规划基地扩建，还是研究太空农业，我们的智能体都能提供专业指导。</p>
+                        <div class="intro-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">8</div>
+                                <div class="stat-text" data-lang-key="agents.statSpecialists">专业领域</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">1000+</div>
+                                <div class="stat-text" data-lang-key="agents.statTasks">可执行任务</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-text" data-lang-key="agents.statAvailability">全天候服务</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="intro-image">
+                        <img src="images/agents-team.jpg" alt="AI智能体团队">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="agents-dashboard">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-lang-key="agents.dashboardTitle">智能体控制中心</h2>
+                    <p class="section-subtitle" data-lang-key="agents.dashboardSubtitle">激活、分配任务并与您的智能体团队协作</p>
+                </div>
+
+                <div class="dashboard-filters">
+                    <div class="filter-group">
+                        <label data-lang-key="agents.filterView">视图：</label>
+                        <div class="filter-options">
+                            <button class="filter-option active" data-view="grid" data-lang-key="agents.filterGrid">网格</button>
+                            <button class="filter-option" data-view="list" data-lang-key="agents.filterList">列表</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label data-lang-key="agents.filterStatus">状态：</label>
+                        <div class="filter-options">
+                            <button class="filter-option active" data-status="all" data-lang-key="agents.filterAll">全部</button>
+                            <button class="filter-option" data-status="active" data-lang-key="agents.filterActive">已激活</button>
+                            <button class="filter-option" data-status="inactive" data-lang-key="agents.filterInactive">未激活</button>
+                        </div>
+                    </div>
+                    <div class="search-filter">
+                        <input type="text" placeholder="搜索智能体..." data-lang-key="agents.searchPlaceholder" data-lang-attr="placeholder">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+
+                <div class="agents-grid" id="agentsContainer">
+                    <!-- 探索者智能体 -->
+                    <div class="agent-card" data-agent-id="explorer">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.explorerName">探索者</h3>
+                            <p class="agent-role" data-lang-key="agents.explorerRole">太空探索专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.explorerTag1">地形分析</span>
+                            <span class="expertise-tag" data-lang-key="agents.explorerTag2">资源勘探</span>
+                            <span class="expertise-tag" data-lang-key="agents.explorerTag3">路线规划</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+
+                    <!-- 建筑师智能体 -->
+                    <div class="agent-card" data-agent-id="architect">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-drafting-compass"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.architectName">建筑师</h3>
+                            <p class="agent-role" data-lang-key="agents.architectRole">居住设计专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.architectTag1">栖息设计</span>
+                            <span class="expertise-tag" data-lang-key="agents.architectTag2">结构工程</span>
+                            <span class="expertise-tag" data-lang-key="agents.architectTag3">空间优化</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+
+                    <!-- 科学家智能体 -->
+                    <div class="agent-card" data-agent-id="scientist">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.scientistName">科学家</h3>
+                            <p class="agent-role" data-lang-key="agents.scientistRole">研究与实验专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.scientistTag1">材料研究</span>
+                            <span class="expertise-tag" data-lang-key="agents.scientistTag2">环境分析</span>
+                            <span class="expertise-tag" data-lang-key="agents.scientistTag3">实验设计</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+
+                    <!-- 工程师智能体 -->
+                    <div class="agent-card" data-agent-id="engineer">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.engineerName">工程师</h3>
+                            <p class="agent-role" data-lang-key="agents.engineerRole">系统构建专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.engineerTag1">能源系统</span>
+                            <span class="expertise-tag" data-lang-key="agents.engineerTag2">维护修理</span>
+                            <span class="expertise-tag" data-lang-key="agents.engineerTag3">设备优化</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+
+                    <!-- 医疗专家智能体 -->
+                    <div class="agent-card" data-agent-id="medic">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.medicName">医疗专家</h3>
+                            <p class="agent-role" data-lang-key="agents.medicRole">健康与医疗专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.medicTag1">太空医学</span>
+                            <span class="expertise-tag" data-lang-key="agents.medicTag2">健康监测</span>
+                            <span class="expertise-tag" data-lang-key="agents.medicTag3">紧急救援</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+
+                    <!-- 植物学家智能体 -->
+                    <div class="agent-card" data-agent-id="botanist">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.botanistName">植物学家</h3>
+                            <p class="agent-role" data-lang-key="agents.botanistRole">太空农业专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.botanistTag1">作物栽培</span>
+                            <span class="expertise-tag" data-lang-key="agents.botanistTag2">生态系统</span>
+                            <span class="expertise-tag" data-lang-key="agents.botanistTag3">资源循环</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+
+                    <!-- 后勤专家智能体 -->
+                    <div class="agent-card" data-agent-id="logistics">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-truck-loading"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.logisticsName">后勤专家</h3>
+                            <p class="agent-role" data-lang-key="agents.logisticsRole">资源与供应专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.logisticsTag1">库存管理</span>
+                            <span class="expertise-tag" data-lang-key="agents.logisticsTag2">资源分配</span>
+                            <span class="expertise-tag" data-lang-key="agents.logisticsTag3">供应链</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+
+                    <!-- 社区协调者智能体 -->
+                    <div class="agent-card" data-agent-id="community">
+                        <div class="agent-status inactive"></div>
+                        <div class="agent-avatar">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name" data-lang-key="agents.communityName">社区协调者</h3>
+                            <p class="agent-role" data-lang-key="agents.communityRole">社交与文化专家</p>
+                        </div>
+                        <div class="agent-expertise">
+                            <span class="expertise-tag" data-lang-key="agents.communityTag1">文化规划</span>
+                            <span class="expertise-tag" data-lang-key="agents.communityTag2">团队协作</span>
+                            <span class="expertise-tag" data-lang-key="agents.communityTag3">心理健康</span>
+                        </div>
+                        <div class="agent-actions">
+                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="collaboration-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-lang-key="agents.collaborationTitle">智能体协作中心</h2>
+                    <p class="section-subtitle" data-lang-key="agents.collaborationSubtitle">管理您已激活的智能体并分配任务</p>
+                </div>
+
+                <div class="active-agents-container">
+                    <h3 class="subsection-title" data-lang-key="agents.activeAgentsTitle">已激活的智能体</h3>
+                    <div class="no-active-agents" id="noActiveAgents">
+                        <i class="fas fa-robot"></i>
+                        <p data-lang-key="agents.noActiveAgents">您尚未激活任何智能体</p>
+                        <p data-lang-key="agents.activatePrompt">请在上方控制中心激活智能体开始协作</p>
+                    </div>
+                    <div class="active-agents-list" id="activeAgentsList">
+                        <!-- 激活的智能体将通过JavaScript动态添加到这里 -->
+                    </div>
+                </div>
+
+                <div class="task-assignment">
+                    <h3 class="subsection-title" data-lang-key="agents.taskAssignmentTitle">任务分配</h3>
+                    <div class="task-form">
+                        <div class="form-group">
+                            <label for="taskTitle" data-lang-key="agents.taskTitleLabel">任务标题</label>
+                            <input type="text" id="taskTitle" placeholder="输入任务标题" data-lang-key="agents.taskTitlePlaceholder" data-lang-attr="placeholder">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDescription" data-lang-key="agents.taskDescriptionLabel">任务描述</label>
+                            <textarea id="taskDescription" rows="4" placeholder="详细描述您需要智能体完成的任务" data-lang-key="agents.taskDescriptionPlaceholder" data-lang-attr="placeholder"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskPriority" data-lang-key="agents.taskPriorityLabel">优先级</label>
+                            <select id="taskPriority">
+                                <option value="low" data-lang-key="agents.priorityLow">低</option>
+                                <option value="medium" data-lang-key="agents.priorityMedium" selected>中</option>
+                                <option value="high" data-lang-key="agents.priorityHigh">高</option>
+                                <option value="urgent" data-lang-key="agents.priorityUrgent">紧急</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDeadline" data-lang-key="agents.taskDeadlineLabel">截止日期（可选）</label>
+                            <input type="date" id="taskDeadline">
+                        </div>
+                        <div class="form-group">
+                            <label data-lang-key="agents.assignToLabel">分配给</label>
+                            <div class="assign-agents-container" id="assignAgentsContainer">
+                                <p class="no-agents-message" data-lang-key="agents.noAgentsToAssign">请先激活智能体</p>
+                                <!-- 可分配的智能体将通过JavaScript动态添加到这里 -->
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-outline" id="resetTaskForm" data-lang-key="agents.btnReset">重置</button>
+                            <button class="btn btn-primary" id="assignTask" data-lang-key="agents.btnAssignTask">分配任务</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tasks-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-lang-key="agents.tasksTitle">任务管理中心</h2>
+                    <p class="section-subtitle" data-lang-key="agents.tasksSubtitle">查看和管理您已分配的所有任务</p>
+                </div>
+
+                <div class="tasks-filters">
+                    <div class="filter-group">
+                        <label data-lang-key="agents.filterTaskStatus">状态：</label>
+                        <div class="filter-options">
+                            <button class="filter-option active" data-task-status="all" data-lang-key="agents.filterAll">全部</button>
+                            <button class="filter-option" data-task-status="pending" data-lang-key="agents.filterPending">进行中</button>
+                            <button class="filter-option" data-task-status="completed" data-lang-key="agents.filterCompleted">已完成</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label data-lang-key="agents.filterTaskPriority">优先级：</label>
+                        <div class="filter-options">
+                            <button class="filter-option active" data-task-priority="all" data-lang-key="agents.filterAll">全部</button>
+                            <button class="filter-option" data-task-priority="urgent" data-lang-key="agents.filterUrgent">紧急</button>
+                            <button class="filter-option" data-task-priority="high" data-lang-key="agents.filterHigh">高</button>
+                            <button class="filter-option" data-task-priority="medium" data-lang-key="agents.filterMedium">中</button>
+                            <button class="filter-option" data-task-priority="low" data-lang-key="agents.filterLow">低</button>
+                        </div>
+                    </div>
+                    <div class="search-filter">
+                        <input type="text" placeholder="搜索任务..." data-lang-key="agents.searchTasksPlaceholder" data-lang-attr="placeholder">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+
+                <div class="tasks-list" id="tasksList">
+                    <div class="no-tasks" id="noTasks">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p data-lang-key="agents.noTasks">您尚未分配任何任务</p>
+                        <p data-lang-key="agents.assignTaskPrompt">请在上方协作中心分配任务</p>
+                    </div>
+                    <!-- 任务列表将通过JavaScript动态添加到这里 -->
+                </div>
+
+                <div class="tasks-pagination" id="tasksPagination">
+                    <button class="pagination-btn" id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
+                    <span class="page-info" id="pageInfo">第 <span id="currentPage">1</span> 页，共 <span id="totalPages">1</span> 页</span>
+                    <button class="pagination-btn" id="nextPage" disabled><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-lang-key="agents.benefitsTitle">智能体优势</h2>
+                    <p class="section-subtitle" data-lang-key="agents.benefitsSubtitle">与我们的智能体协作将为您带来的价值</p>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="benefit-title" data-lang-key="agents.benefit1Title">专业知识</h3>
+                        <p class="benefit-description" data-lang-key="agents.benefit1Desc">获取各领域专家级AI的深度专业知识，解决复杂问题</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="benefit-title" data-lang-key="agents.benefit2Title">高效协作</h3>
+                        <p class="benefit-description" data-lang-key="agents.benefit2Desc">多个智能体协同合作，大幅提高复杂任务的执行效率</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="benefit-title" data-lang-key="agents.benefit3Title">持续学习</h3>
+                        <p class="benefit-description" data-lang-key="agents.benefit3Desc">智能体不断学习和适应，随着使用逐渐提升表现</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="benefit-title" data-lang-key="agents.benefit4Title">创新思维</h3>
+                        <p class="benefit-description" data-lang-key="agents.benefit4Desc">获取全新视角和突破性解决方案，激发创新思考</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="benefit-title" data-lang-key="agents.benefit5Title">全天候支持</h3>
+                        <p class="benefit-description" data-lang-key="agents.benefit5Desc">24/7不间断支持，随时随地解决您的问题</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="benefit-title" data-lang-key="agents.benefit6Title">数据安全</h3>
+                        <p class="benefit-description" data-lang-key="agents.benefit6Desc">严格保护您的隐私和数据安全，符合最高标准</p>
+                    </div>
+                </div>
+
+                <div class="benefits-cta">
+                    <h3 data-lang-key="agents.ctaTitle">准备好体验智能体系统了吗？</h3>
+                    <p data-lang-key="agents.ctaDescription">激活您的第一个智能体，开始探索未来太空殖民的无限可能</p>
+                    <button class="btn btn-primary btn-lg" id="scrollToAgents" data-lang-key="agents.ctaButton">开始使用智能体</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo-section">
+                    <div class="footer-logo">CosmicWeave</div>
+                    <p class="footer-slogan" data-lang-key="footer.slogan">编织太空人类未来</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h3 data-lang-key="footer.about">关于我们</h3>
+                        <ul>
+                            <li><a href="#" data-lang-key="footer.mission">使命与愿景</a></li>
+                            <li><a href="#" data-lang-key="footer.team">团队成员</a></li>
+                            <li><a href="#" data-lang-key="footer.partners">合作伙伴</a></li>
+                            <li><a href="#" data-lang-key="footer.careers">加入我们</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links-column">
+                        <h3 data-lang-key="footer.research">研究项目</h3>
+                        <ul>
+                            <li><a href="#" data-lang-key="footer.marsBase">火星基地</a></li>
+                            <li><a href="#" data-lang-key="footer.lunarStation">月球站</a></li>
+                            <li><a href="#" data-lang-key="footer.spaceAgriculture">太空农业</a></li>
+                            <li><a href="#" data-lang-key="footer.habitatDesign">居住舱设计</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links-column">
+                        <h3 data-lang-key="footer.community">社区</h3>
+                        <ul>
+                            <li><a href="#" data-lang-key="footer.forum">讨论论坛</a></li>
+                            <li><a href="#" data-lang-key="footer.events">线上活动</a></li>
+                            <li><a href="#" data-lang-key="footer.blog">博客文章</a></li>
+                            <li><a href="#" data-lang-key="footer.newsletter">订阅简报</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links-column">
+                        <h3 data-lang-key="footer.support">支持</h3>
+                        <ul>
+                            <li><a href="#" data-lang-key="footer.faq">常见问题</a></li>
+                            <li><a href="#" data-lang-key="footer.contact">联系我们</a></li>
+                            <li><a href="#" data-lang-key="footer.terms">使用条款</a></li>
+                            <li><a href="#" data-lang-key="footer.privacy">隐私政策</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright" data-lang-key="footer.copyright">&copy; 2025 CosmicWeave. 保留所有权利。</p>
+                <div class="language-selector">
+                    <span data-lang-key="footer.language">语言：</span>
+                    <select id="footerLangSelect">
+                        <option value="zh-CN" selected>中文</option>
+                        <option value="en-US">English</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/agents.js"></script>
+</body>
+</html>

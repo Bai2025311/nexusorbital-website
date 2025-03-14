@@ -1,0 +1,7 @@
+These community-related image files need to be replaced with actual images:
+
+earth-habitat.jpg - Modular buildings or sustainable architecture for Earth habitats preview
+moon-base.jpg - A lunar habitat or moon base design for Space habitats preview
+tech-innovation.jpg - New materials or technology innovations for the Tech innovations preview
+
+Please upload these images to complete the community section previews.

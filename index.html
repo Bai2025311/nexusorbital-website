@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寰宇脉络 (NexusOrbital) - 探索星际人居的未来</title>
+    <link rel="canonical" href="https://nexusorbital.com/" />
+    <meta name="description" content="寰宇脉络(NexusOrbital)是探索星际人居未来的创新平台，连接现实需求、技术研发与空间实践，为人类创建第二演化系统。">
+    <meta property="og:title" content="寰宇脉络 (NexusOrbital) - 探索星际人居的未来">
+    <meta property="og:description" content="寰宇脉络是探索星际人居未来的创新平台，连接现实需求、技术研发与空间实践。">
+    <meta property="og:url" content="https://nexusorbital.com/">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <style>
+        :root {
+            --primary-color: #3a7bd5;
+            --primary-hover: #2b67c9;
+            --secondary-color: #00d2ff;
+            --dark-bg: #0e1b30;
+            --card-bg: #182a46;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.7);
+            --border-color: rgba(255,255,255,0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+        
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 170px 240px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 370px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 500px 500px;
+            animation: stars-move 200s linear infinite;
+        }
+        
+        @keyframes stars-move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 500px 500px;
+            }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: absolute;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+        
+        .logo span {
+            font-weight: 300;
+            margin-left: 8px;
+            opacity: 0.7;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 30px;
+        }
+        
+        .nav-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-left: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(58, 123, 213, 0.1);
+        }
+        
+        /* 页面转换动画 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        
+        .page-transition.active {
+            transform: translateY(0);
+        }
+        
+        /* 3D视频容器 */
+        .spline-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .spline-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 20, 40, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+        
+        .spline-overlay h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .spline-overlay p {
+            font-size: 22px;
+            max-width: 700px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        /* 三位一体架构导航 */
+        .trinity-nav {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            background: rgba(24, 42, 70, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 15px 20px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .trinity-nav a {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .trinity-nav a:hover, .trinity-nav a.active {
+            color: var(--text-primary);
+        }
+        
+        .trinity-nav a i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .trinity-nav .nav-indicator {
+            position: absolute;
+            height: 4px;
+            background: var(--secondary-color);
+            bottom: -4px;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        /* 部分内容概览 */
+        .section-preview {
+            padding: 80px 0;
+            background: linear-gradient(rgba(10, 20, 40, 0.8), rgba(10, 20, 40, 0.9)), url('images/mars-colony-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .preview-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .preview-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .preview-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .preview-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .preview-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .preview-card:hover .preview-img img {
+            transform: scale(1.1);
+        }
+        
+        .preview-content {
+            padding: 25px;
+        }
+        
+        .preview-content h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .preview-content p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        /* 关于我们部分 */
+        .section-about {
+            padding: 100px 0;
+            background: linear-gradient(rgba(10, 20, 40, 0.9), rgba(10, 20, 40, 0.9)), url('images/nebula-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(58, 123, 213, 0.2) 0%, rgba(10, 20, 40, 0.1) 60%);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-header h2 {
+            font-size: 36px;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+        
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .about-text {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .about-text p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .mission-statement {
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 30px 0;
+            line-height: 1.6;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .spline-overlay h1 {
+                font-size: 42px;
+            }
+            
+            .spline-overlay p {
+                font-size: 18px;
+            }
+            
+            .trinity-nav {
+                width: 90%;
+                justify-content: space-between;
+                padding: 12px 15px;
+            }
+            
+            .trinity-nav a {
+                margin: 0 8px;
+                font-size: 14px;
+            }
+            
+            .trinity-nav a span {
+                display: none;
+            }
+            
+            .trinity-nav a i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面切换动画 -->
+    <div class="page-transition"></div>
+    <div class="stars-bg"></div>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="index.html">
+                        <h1>寰宇脉络<span>NexusOrbital</span></h1>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="community.html">共创社区</a></li>
+                    <li><a href="design-studio.html">AI设计工坊</a></li>
+                    <li><a href="marketplace.html">众筹商城</a></li>
+                    <li><a href="agents.html">智能体系统</a></li>
+                    <li><a href="login.html" class="btn-primary">登录 / 注册</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Spline 3D体验区 -->
+        <div class="spline-container">
+            <!-- 这里将嵌入Spline的3D内容 -->
+            <iframe id="spline-viewer" frameborder="0" width="100%" height="100%" src="https://my.spline.design/untitled-b962d0b9cc99a3d4ebeb0f4372e8dcf7/" allowfullscreen></iframe>
+            
+            <div class="spline-overlay">
+                <h1>探索星际人居的未来</h1>
+                <p>虚实结合，共同创建太空居住解决方案</p>
+                <div class="action-buttons">
+                    <a href="community.html" class="btn-primary">加入共创社区</a>
+                    <a href="design-studio.html" class="btn-secondary">进入AI设计工坊</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 三位一体架构导航 -->
+        <div class="trinity-nav">
+            <a href="index.html" class="active"><i class="fas fa-home"></i> <span>未来愿景</span></a>
+            <a href="community.html"><i class="fas fa-users"></i> <span>共创社区</span></a>
+            <a href="design-studio.html"><i class="fas fa-pencil-ruler"></i> <span>AI设计工坊</span></a>
+            <a href="marketplace.html"><i class="fas fa-store"></i> <span>众筹商城</span></a>
+        </div>
+        
+        <!-- 关于我们部分 -->
+        <section id="about" class="section-about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="section-header">
+                        <h2>「地球与太空人居的神经中枢」</h2>
+                    </div>
+                    <div class="about-text">
+                        <p>通过AI连接「现实需求-技术研发-空间实践」的完整闭环，既解决当下城市居住痛点，又为星际移民储备技术生态，成为人类居住文明的「第二演化系统」。</p>
+                        <p class="mission-statement">我们的使命：让人类在任何经纬度（无论是北纬30度还是火星乌托邦平原）都能诗意的栖居。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 内容预览区 -->
+        <section class="section-preview">
+            <div class="container">
+                <div class="preview-cards">
+                    <!-- 共创社区预览 -->
+                    <div class="preview-card">
+                        <div class="preview-img">
+                            <img src="images/earth-habitat.jpg" alt="地球人居">
+                        </div>
+                        <div class="preview-content">
+                            <h3>共创社区</h3>
+                            <p>分区：地球人居（模块化建筑）、太空人居（月球基地）、黑科技（新材料）。用户发帖可@AI助手生成设计草图。</p>
+                            <a href="community.html" class="btn-secondary">进入社区</a>
+                        </div>
+                    </div>
+                    
+                    <!-- AI设计工坊预览 -->
+                    <div class="preview-card">
+                        <div class="preview-img">
+                            <img src="images/ai-design.jpg" alt="AI设计">
+                        </div>
+                        <div class="preview-content">
+                            <h3>AI设计工坊</h3>
+                            <p>上传草图→AI优化成施工图→一键发起众筹。自动化流程由Zapier连接，将您的创意转化为现实。</p>
+                            <a href="design-studio.html" class="btn-secondary">开始设计</a>
+                        </div>
+                    </div>
+                    
+                    <!-- 众筹商城预览 -->
+                    <div class="preview-card">
+                        <div class="preview-img">
+                            <img src="images/crowdfunding.jpg" alt="众筹商城">
+                        </div>
+                        <div class="preview-content">
+                            <h3>众筹商城</h3>
+                            <p>用户设计可直接标价出售，平台抽成10%。发现优质设计方案，参与未来建筑众筹，或出售您的创意。</p>
+                            <a href="marketplace.html" class="btn-secondary">浏览项目</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>寰宇脉络<span>NexusOrbital</span></h2>
+                    <p>连接虚拟与现实，共建星际人居未来</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>导航</h3>
+                        <ul>
+                            <li><a href="index.html">首页</a></li>
+                            <li><a href="community.html">共创社区</a></li>
+                            <li><a href="design-studio.html">AI设计工坊</a></li>
+                            <li><a href="marketplace.html">众筹商城</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>法律</h3>
+                        <ul>
+                            <li><a href="#">服务条款</a></li>
+                            <li><a href="#">隐私政策</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>联系我们</h3>
+                        <ul>
+                            <li><a href="mailto:contact@cosmicweave.io">contact@cosmicweave.io</a></li>
+                        </ul>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-discord"></i></a>
+                            <a href="#"><i class="fab fa-telegram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 寰宇脉络 (NexusOrbital). 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 页面转换动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const transition = document.querySelector('.page-transition');
+            
+            // 模拟页面加载
+            setTimeout(() => {
+                transition.classList.add('active');
+                setTimeout(() => {
+                    transition.style.transform = 'translateY(-100%)';
+                }, 500);
+            }, 300);
+            
+            // 导航链接点击
+            document.querySelectorAll('a[href^="http"], a[href^="/"], a[href^="./"], a[href^="../"]').forEach(link => {
+                link.addEventListener('click', e => {
+                    const href = link.getAttribute('href');
+                    
+                    // 排除页内锚点链接
+                    if (href.startsWith('#')) return;
+                    
+                    e.preventDefault();
+                    
+                    transition.style.transform = 'translateY(0)';
+                    
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 500);
+                });
+            });
+            
+            // 移动端菜单
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+        
+        // 倒计时功能已移除，替换为Spline体验
+    </script>
+</body>
+</html>
