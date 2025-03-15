@@ -1,4 +1,4 @@
-// Star Dust Points System for CosmicWeave Space Colonization Community
+// Star Dust Points System for NexusOrbital Space Colonization Community
 // Includes referral program with 100 Star Dust points per successful referral
 
 import languageSwitcher from '../lang/languageSwitcher.js';
@@ -82,7 +82,7 @@ class StarDustSystem {
     // In a real app, this would be a unique, hard-to-guess code stored in a database
     // For this demo, we'll use a simple derivation from the user ID
     const baseCode = this.userId.replace('user_', '');
-    this.referralCode = `CW${baseCode.substring(0, 6).toUpperCase()}`;
+    this.referralCode = `NO${baseCode.substring(0, 6).toUpperCase()}`;
     
     return this.referralCode;
   }
@@ -385,8 +385,8 @@ class StarDustSystem {
     const shareButtons = container.querySelectorAll('.share-btn');
     const referralLink = this.getReferralLink();
     const shareText = languageSwitcher.currentLanguage === 'zh' 
-      ? `加入寰宇脉络太空殖民社区，一起探索火星定居的未来！使用我的邀请链接，获得100星尘积分。`
-      : `Join the CosmicWeave Space Colonization Community and explore the future of Mars settlement! Use my referral link and get 100 Star Dust points.`;
+      ? `加入寰宇轨道太空殖民社区，一起探索火星定居的未来！使用我的邀请链接，获得100星尘积分。`
+      : `Join the NexusOrbital Space Colonization Community and explore the future of Mars settlement! Use my referral link and get 100 Star Dust points.`;
     
     shareButtons.forEach(button => {
       button.addEventListener('click', () => {

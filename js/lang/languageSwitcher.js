@@ -1,4 +1,4 @@
-// Language switcher utility for CosmicWeave Space Colonization Community
+// Language switcher utility for NexusOrbital Space Colonization Community
 import translations from './translations.js';
 
 class LanguageSwitcher {

@@ -1,4 +1,4 @@
-// Mars Base 3D Model System for CosmicWeave Space Colonization Community
+// Mars Base 3D Model System for NexusOrbital Space Colonization Community
 // Utilizes Three.js for 3D rendering and allows users to interact with and modify the base
 
 import { agentSystem } from '../agents/agentSystem.js';

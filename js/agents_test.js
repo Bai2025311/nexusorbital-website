@@ -1,5 +1,5 @@
 /**
- * CosmicWeave - 智能体系统JavaScript功能（测试版本）
+ * NexusOrbital - 智能体系统JavaScript功能（测试版本）
  * 该文件处理智能体的激活、任务分配和协作功能
  */
 

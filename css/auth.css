@@ -1,0 +1,238 @@
+/**
+ * 认证页面样式
+ * 包含登录和注册页面的样式
+ */
+
+.auth-page {
+    background-color: var(--color-background);
+    min-height: 100vh;
+}
+
+.auth-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 2rem auto;
+    min-height: calc(100vh - 250px);
+    box-shadow: 0 0 20px rgba(0, 0, 100, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--color-panel);
+}
+
+.auth-card {
+    flex: 1;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-panel);
+}
+
+.auth-info {
+    flex: 1;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #1a2a6c, #2a3a9c);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+}
+
+.auth-form {
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--color-secondary-text);
+    font-size: 0.8rem;
+}
+
+.forgot-password {
+    display: block;
+    text-align: right;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    color: var(--color-secondary);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group input {
+    width: auto;
+    margin-right: 10px;
+}
+
+.checkbox-group label {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.auth-divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.auth-divider:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+.auth-divider span {
+    position: relative;
+    background-color: var(--color-panel);
+    padding: 0 10px;
+    color: var(--color-secondary-text);
+}
+
+.social-login {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-social {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.btn-social i {
+    margin-right: 0.5rem;
+}
+
+.btn-social.weixin {
+    background-color: #07C160;
+    color: white;
+}
+
+.btn-social.weixin:hover {
+    background-color: #06a050;
+}
+
+.btn-social.weibo {
+    background-color: #E6162D;
+    color: white;
+}
+
+.btn-social.weibo:hover {
+    background-color: #c01326;
+}
+
+.auth-footer {
+    margin-top: auto;
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.auth-footer a {
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.auth-info h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.auth-info p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.auth-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.auth-info ul li {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.auth-info ul li i {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+    .auth-container {
+        flex-direction: column;
+        margin: 1rem;
+    }
+    
+    .auth-info {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .auth-card, .auth-info {
+        padding: 1.5rem;
+    }
+    
+    .social-login {
+        flex-direction: column;
+    }
+}

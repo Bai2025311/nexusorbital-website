@@ -1,4 +1,4 @@
-// Language translations for CosmicWeave Space Colonization Community
+// Language translations for NexusOrbital Space Colonization Community
 const translations = {
   en: {
     // Navigation

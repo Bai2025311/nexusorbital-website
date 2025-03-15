@@ -11,738 +11,102 @@
     <meta property="og:url" content="https://nexusorbital.com/community.html">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/community-new.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <!-- favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="favicon/site.webmanifest">
     <style>
-        :root {
-            --primary-color: #3a7bd5;
-            --primary-hover: #2b67c9;
-            --secondary-color: #00d2ff;
-            --dark-bg: #0e1b30;
-            --card-bg: #182a46;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255,255,255,0.7);
-            --border-color: rgba(255,255,255,0.1);
+        /* 导航栏样式覆盖 */
+        header {
+            background-color: transparent !important;
+            position: relative !important;
         }
         
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-            color: var(--text-primary);
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-attachment: fixed;
-        }
-        
-        .stars-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 170px 240px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 300px 370px, #ffffff, rgba(0,0,0,0));
-            background-repeat: repeat;
-            background-size: 500px 500px;
-            animation: stars-move 200s linear infinite;
-        }
-        
-        @keyframes stars-move {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: 500px 500px;
-            }
-        }
-        
-        .container {
-            max-width: 1400px;
+        header .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 30px;
+            padding: 0 15px;
         }
         
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            position: absolute;
-            width: 100%;
-            z-index: 100;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 10px 0 !important;
+            background-color: transparent !important;
+            position: static !important;
+        }
+        
+        .logo {
+            color: #fff !important;
+            text-decoration: none !important;
         }
         
         .logo h1 {
-            font-size: 24px;
-            color: var(--text-primary);
-        }
-        
-        .logo span {
-            font-weight: 300;
-            margin-left: 8px;
-            opacity: 0.7;
+            font-size: 1.5rem !important;
+            font-weight: bold !important;
+            margin: 0 !important;
         }
         
         .nav-menu {
-            display: flex;
-            list-style: none;
+            display: flex !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            list-style: none !important;
         }
         
         .nav-menu li {
-            margin-left: 30px;
+            margin-left: 1.2rem !important;
         }
         
         .nav-menu a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            color: #fff !important;
+            text-decoration: none !important;
+            font-size: 0.95rem !important;
+            font-weight: normal !important;
         }
         
-        .nav-menu a:hover {
-            color: var(--secondary-color);
+        .nav-menu a.active {
+            color: #00d2ff !important;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
+        .nav-menu a.btn-primary {
+            display: inline-block !important;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff) !important;
+            color: #fff !important;
+            padding: 0.5rem 1.2rem !important;
+            border-radius: 50px !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .hamburger {
+            display: none !important;
         }
         
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(58, 123, 213, 0.1);
-        }
-        
-        /* 社区页面标题 */
-        .community-header {
-            padding: 150px 0 80px;
-            text-align: center;
-            background: linear-gradient(rgba(10, 20, 40, 0.7), rgba(10, 20, 40, 0.9)), url('images/community-bg.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .community-header h1 {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        
-        .community-header p {
-            font-size: 20px;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-        }
-        
-        .community-stats {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-        }
-        
-        .stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
-        
-        /* 社区分区导航 */
-        .community-nav {
-            background-color: rgba(24, 42, 70, 0.8);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            backdrop-filter: blur(10px);
-        }
-        
-        .community-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .tab-btn:hover {
-            color: var(--text-primary);
-        }
-        
-        .tab-btn.active {
-            background: rgba(58, 123, 213, 0.2);
-            color: var(--text-primary);
-        }
-        
-        .community-search {
-            display: flex;
-            position: relative;
-        }
-        
-        .community-search input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 8px 40px 8px 15px;
-            color: var(--text-primary);
-            width: 250px;
-        }
-        
-        .community-search button {
-            background: transparent;
-            border: none;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-        
-        .new-post-btn {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .new-post-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* 社区内容展示 */
-        .community-content {
-            padding: 80px 0;
-            background: linear-gradient(rgba(10, 20, 40, 0.8), rgba(10, 20, 40, 0.9)), url('images/nebula-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        
-        .post-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .post-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        .post-image {
-            height: 180px;
-            overflow: hidden;
-        }
-        
-        .post-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .post-card:hover .post-image img {
-            transform: scale(1.05);
-        }
-        
-        .post-content {
-            padding: 20px;
-        }
-        
-        .post-category {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-        
-        .post-category.earth {
-            background-color: rgba(76, 175, 80, 0.2);
-            color: var(--earth-color);
-        }
-        
-        .post-category.moon {
-            background-color: rgba(156, 39, 176, 0.2);
-            color: var(--moon-color);
-        }
-        
-        .post-category.tech {
-            background-color: rgba(255, 152, 0, 0.2);
-            color: var(--tech-color);
-        }
-        
-        .post-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-        
-        .post-excerpt {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .post-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .user-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-        
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .interaction {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .interaction span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .ai-assistant {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .ai-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-        }
-        
-        .ai-response {
-            flex: 1;
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-        
-        .ai-tag {
-            display: inline-block;
-            background-color: rgba(0, 210, 255, 0.2);
-            color: var(--secondary-color);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-right: 8px;
-        }
-        
-        /* 特色内容区 */
-        .featured-section {
-            padding: 50px 0;
-            background: linear-gradient(rgba(10, 20, 40, 0.9), rgba(10, 20, 40, 0.9)), url('images/featured-bg.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .section-title {
-            font-size: 32px;
-            margin-bottom: 40px;
-            text-align: center;
-            position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: var(--secondary-color);
-        }
-        
-        .event-card {
-            background: rgba(24, 42, 70, 0.8);
-            border-radius: 10px;
-            overflow: hidden;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .event-date {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--secondary-color);
-            font-size: 14px;
-        }
-        
-        .event-title {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-        
-        .event-description {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 992px) {
-            .community-nav .container {
-                flex-wrap: wrap;
-            }
-            
-            .tabs {
-                order: 1;
-                width: 100%;
-                overflow-x: auto;
-                margin-bottom: 15px;
-                padding-bottom: 5px;
-            }
-            
-            .community-search, .new-post-btn {
-                order: 2;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .community-nav .container {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 15px;
-            }
-            
-            .community-search {
-                width: 100%;
-            }
-            
-            .community-search input {
-                width: 100%;
-            }
-            
-            .new-post-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .post-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* 模态窗口样式 */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 20, 40, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal-content {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 30px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        
-        .close-modal:hover {
-            color: var(--text-primary);
-        }
-        
-        .modal-content h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-        
-        .form-group input[type="text"],
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            color: var(--text-primary);
-            font-family: inherit;
-        }
-        
-        .form-group textarea {
-            resize: vertical;
-        }
-        
-        .form-group input[type="file"] {
-            background-color: transparent;
-            padding: 10px 0;
-        }
-        
-        .ai-helper-tip {
-            font-size: 14px;
-            color: var(--secondary-color);
-            margin-top: 8px;
-        }
-        
-        .success-message {
-            text-align: center;
-            padding: 40px 30px;
-        }
-        
-        .success-message h2 {
-            color: var(--primary-color);
-            margin-bottom: 15px;
-        }
-        
-        .success-message p {
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-        
-        /* 点赞动画 */
-        .heart-animation {
-            position: absolute;
-            color: red;
-            font-size: 20px;
-            animation: heart-fly 1s ease-out forwards;
-            pointer-events: none;
-        }
-        
-        @keyframes heart-fly {
-            0% {
-                transform: scale(0.5) translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1.5) translateY(-20px);
-                opacity: 0;
-            }
-        }
-        
-        /* 页面转换动画 */
-        .page-transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            z-index: 9999;
-            transform: translateY(0);
-            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-        
-        /* 社区页面特定样式 */
-        .community-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            background: linear-gradient(90deg, rgba(24, 42, 70, 0.8) 0%, rgba(58, 123, 213, 0.4) 50%, rgba(24, 42, 70, 0.8) 100%);
-            border-radius: 8px;
-            padding: 12px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-        
-        .community-events {
-            padding: 80px 0;
-            background: linear-gradient(rgba(10, 20, 40, 0.8), rgba(10, 20, 40, 0.95)), url('images/space-station-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        
-        .post-category-earth {
-            background: linear-gradient(rgba(10, 20, 40, 0.7), rgba(10, 20, 40, 0.7)), url('images/earth-habitat.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .post-category-moon {
-            background: linear-gradient(rgba(10, 20, 40, 0.7), rgba(10, 20, 40, 0.7)), url('images/moon-base.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .post-category-tech {
-            background: linear-gradient(rgba(10, 20, 40, 0.7), rgba(10, 20, 40, 0.7)), url('images/tech-innovation.jpg');
-            background-size: cover;
-            background-position: center;
+        /* 智能体指南区域调整 */
+        .agent-guide {
+            margin-top: 20px !important;
         }
     </style>
 </head>
 <body>
     <!-- 页面切换动画 -->
     <div class="page-transition"></div>
-    
-    <!-- 星空背景 -->
     <div class="stars-bg"></div>
     
+    <!-- 导航栏 -->
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">
-                    <a href="index.html">
-                        <h1>NexusOrbital</h1>
-                    </a>
-                </div>
+                <a href="index.html" class="logo">
+                    <h1>NexusOrbital</h1>
+                </a>
                 <ul class="nav-menu">
-                    <li><a href="index.html#about">关于我们</a></li>
+                    <li><a href="about.html">关于我们</a></li>
                     <li><a href="community.html" class="active">共创社区</a></li>
                     <li><a href="design-studio.html">AI设计工坊</a></li>
                     <li><a href="marketplace.html">众筹商城</a></li>
@@ -758,478 +122,251 @@
         </div>
     </header>
 
-    <main>
-        <!-- 社区页面标题 -->
-        <section class="community-header">
-            <div class="container">
-                <h1>共创社区</h1>
-                <p>汇聚创意，重塑人居未来</p>
-                <div class="community-stats">
-                    <div class="stat">
-                        <span class="stat-number">1,340</span>
-                        <span class="stat-label">社区成员</span>
+    <!-- 空白区域 -->
+    <section class="empty-section">
+        <div class="container">
+            <!-- 移除所有文字内容 -->
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <main class="community-main">
+        <div class="container main-container">
+            <!-- 左侧边栏 -->
+            <aside class="sidebar-left">
+                <div class="sidebar-menu">
+                    <div class="menu-section">
+                        <h3>发现内容</h3>
+                        <ul>
+                            <li class="active"><a href="#"><i class="fas fa-home"></i> 社区广场</a></li>
+                            <li><a href="#"><i class="fas fa-compass"></i> 热门内容</a></li>
+                            <li><a href="#"><i class="fas fa-fire"></i> 最新话题</a></li>
+                            <li><a href="#"><i class="fas fa-award"></i> 优质创意</a></li>
+                        </ul>
                     </div>
-                    <div class="stat">
-                        <span class="stat-number">528</span>
-                        <span class="stat-label">创意分享</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">96</span>
-                        <span class="stat-label">本周活跃</span>
+                    <div class="menu-section">
+                        <h3>分类浏览</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-globe-asia"></i> 地球人居</a></li>
+                            <li><a href="#"><i class="fas fa-rocket"></i> 太空人居</a></li>
+                            <li><a href="#"><i class="fas fa-microchip"></i> 黑科技</a></li>
+                            <li><a href="#"><i class="fas fa-lightbulb"></i> 创意分享</a></li>
+                            <li><a href="#"><i class="fas fa-question-circle"></i> 求助问答</a></li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <!-- 社区分区导航 -->
-        <section class="community-nav">
-            <div class="container">
-                <div class="community-tabs">
-                    <button class="tab-btn active" data-category="all">全部内容</button>
-                    <button class="tab-btn" data-category="earth">地球人居</button>
-                    <button class="tab-btn" data-category="moon">太空人居</button>
-                    <button class="tab-btn" data-category="tech">黑科技</button>
-                    <button class="tab-btn" data-category="showcase">优秀作品</button>
-                    <button class="tab-btn" data-category="events">社区活动</button>
+            </aside>
+
+            <!-- 中间内容区域 -->
+            <div class="main-content">
+                <div class="content-header">
+                    <div class="filter-buttons">
+                        <button class="active">全部</button>
+                        <button>推荐</button>
+                        <button>热门</button>
+                        <button>最新</button>
+                    </div>
+                    <button class="new-post-btn"><i class="fas fa-pen"></i> 发表帖子</button>
                 </div>
-                <div class="community-search">
-                    <input type="text" placeholder="搜索社区内容...">
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </div>
-                <button class="new-post-btn"><i class="fas fa-plus"></i> 发布新内容</button>
-            </div>
-        </section>
-        
-        <!-- 社区内容展示 -->
-        <section class="community-content">
-            <div class="container">
-                <div class="post-grid">
-                    <!-- 地球人居帖子 -->
-                    <div class="post-card post-category-earth" data-category="earth">
-                        <div class="post-image">
-                            <img src="images/earth-habitat-1.jpg" alt="模块化生态公寓设计">
+                <div class="posts-container">
+                    <!-- 帖子列表 -->
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="avatar">
+                                <img src="images/avatars/user1.jpg" alt="用户头像">
+                            </div>
+                            <div class="post-info">
+                                <div class="post-author">星际探险家</div>
+                                <div class="post-meta">2小时前 · 来自 太空人居</div>
+                            </div>
                         </div>
-                        <div class="post-content">
-                            <span class="post-category earth">地球人居</span>
-                            <h3 class="post-title">垂直森林模块化公寓设计：为城市带来绿洲</h3>
-                            <p class="post-excerpt">我设计了一套模块化公寓系统，每个单元包含独立植物净化系统，可垂直堆叠形成"森林塔"。这种设计如何与现有城市基础设施结合？@设计智能体</p>
-                            <div class="post-meta">
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img src="images/avatar-1.jpg" alt="用户头像">
-                                    </div>
-                                    <span>林峰</span>
-                                </div>
-                                <div class="interaction">
-                                    <span><i class="fas fa-comment"></i> 24</span>
-                                    <span><i class="fas fa-heart"></i> 76</span>
-                                </div>
+                        <h3 class="post-title">月球基地舱室设计：如何在有限空间创造舒适感？</h3>
+                        <div class="post-content">在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法。首先，多功能家具是关键，比如可以变形为工作台的床铺；其次，色彩心理学在太空环境中尤为重要，蓝色和绿色能缓解压力；最后，模块化设计允许宇航员根据个人喜好定制空间...</div>
+                        <div class="post-images">
+                            <div class="post-image">
+                                <img src="images/community/post1-1.jpg" alt="月球基地舱室设计图">
                             </div>
-                            <div class="ai-assistant">
-                                <div class="ai-avatar">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <div class="ai-response">
-                                    <span class="ai-tag">设计智能体</span>
-                                    您的垂直森林概念很有吸引力。建议考虑结构轻量化设计，整合雨水收集系统，并设计智能养护系统减轻维护负担。<a href="#">查看AI生成的设计草图</a>
-                                </div>
+                            <div class="post-image">
+                                <img src="images/community/post1-2.jpg" alt="多功能家具示意图">
                             </div>
+                            <div class="post-image">
+                                <img src="images/community/post1-3.jpg" alt="色彩心理学应用示例">
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action"><i class="far fa-heart"></i> 128</div>
+                            <div class="post-action"><i class="far fa-comment"></i> 36</div>
+                            <div class="post-action"><i class="far fa-bookmark"></i> 收藏</div>
+                            <div class="post-action"><i class="fas fa-share-alt"></i> 分享</div>
                         </div>
                     </div>
                     
-                    <!-- 太空人居帖子 -->
-                    <div class="post-card post-category-moon" data-category="moon">
-                        <div class="post-image">
-                            <img src="images/lunar-base-1.jpg" alt="月球基地设计">
-                        </div>
-                        <div class="post-content">
-                            <span class="post-category moon">太空人居</span>
-                            <h3 class="post-title">月球南极基地：利用永久阴影区与高照明区的边界设计</h3>
-                            <p class="post-excerpt">这是我设计的月球南极永久阴影区基地，利用边缘地带的温度梯度发电，同时保持部分区域阳光充足。@材料智能体 这种环境下最适合用什么材料？</p>
-                            <div class="post-meta">
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img src="images/avatar-2.jpg" alt="用户头像">
-                                    </div>
-                                    <span>赵航</span>
-                                </div>
-                                <div class="interaction">
-                                    <span><i class="fas fa-comment"></i> 18</span>
-                                    <span><i class="fas fa-heart"></i> 45</span>
-                                </div>
-                            </div>
-                            <div class="ai-assistant">
-                                <div class="ai-avatar">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <div class="ai-response">
-                                    <span class="ai-tag">材料智能体</span>
-                                    建议采用纳米增强复合陶瓷与月球土壤结合制造基地外壳，内部使用柔性气凝胶保温层。温差发电区可使用高效热电材料并添加辐射防护层。<a href="#">查看材料构成方案</a>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- 更多帖子 -->
+                </div>
+            </div>
+
+            <!-- 右侧边栏 -->
+            <aside class="sidebar-right">
+                <!-- 智能体推荐区 -->
+                <div class="sidebar-section">
+                    <div class="section-header">
+                        <h3>智能体推荐</h3>
+                        <a href="agents.html">查看全部</a>
                     </div>
-                    
-                    <!-- 黑科技帖子 -->
-                    <div class="post-card post-category-tech" data-category="tech">
-                        <div class="post-image">
-                            <img src="images/new-material.jpg" alt="自修复材料">
-                        </div>
-                        <div class="post-content">
-                            <span class="post-category tech">黑科技</span>
-                            <h3 class="post-title">自修复复合材料：建筑结构的"伤愈"能力</h3>
-                            <p class="post-excerpt">我正在研究一种含有微胶囊的建筑材料，可在检测到结构应力时自动释放修复剂。@工程智能体 这种材料如何应用于大型建筑？</p>
-                            <div class="post-meta">
-                                <div class="user-info">
-                                    <div class="user-avatar">
-                                        <img src="images/avatar-3.jpg" alt="用户头像">
-                                    </div>
-                                    <span>陈研</span>
+                    <div class="section-content">
+                        <div class="recommended-agents">
+                            <div class="recommended-agent">
+                                <div class="agent-icon">
+                                    <img src="images/agents/engineer.svg" alt="工程师">
                                 </div>
-                                <div class="interaction">
-                                    <span><i class="fas fa-comment"></i> 32</span>
-                                    <span><i class="fas fa-heart"></i> 89</span>
+                                <div class="agent-info">
+                                    <h4 class="agent-name">工程师</h4>
+                                    <p class="agent-role">系统构建专家</p>
+                                    <button class="activate-btn" data-agent="engineer">激活</button>
                                 </div>
                             </div>
-                            <div class="ai-assistant">
-                                <div class="ai-avatar">
-                                    <i class="fas fa-robot"></i>
+                            <div class="recommended-agent">
+                                <div class="agent-icon">
+                                    <img src="images/agents/scientist.svg" alt="科学家">
                                 </div>
-                                <div class="ai-response">
-                                    <span class="ai-tag">工程智能体</span>
-                                    建议将自修复材料集中用于关键结构连接点和高应力区域，并结合嵌入式传感器网络进行实时监控。可以先在非承重部件上测试，逐步扩展到主结构。<a href="#">查看工程实施方案</a>
+                                <div class="agent-info">
+                                    <h4 class="agent-name">科学家</h4>
+                                    <p class="agent-role">研究与实验专家</p>
+                                    <button class="activate-btn" data-agent="scientist">激活</button>
+                                </div>
+                            </div>
+                            <div class="recommended-agent">
+                                <div class="agent-icon">
+                                    <img src="images/agents/explorer.svg" alt="探索者">
+                                </div>
+                                <div class="agent-info">
+                                    <h4 class="agent-name">探索者</h4>
+                                    <p class="agent-role">太空探索专家</p>
+                                    <button class="activate-btn" data-agent="explorer">激活</button>
+                                </div>
+                            </div>
+                            <div class="recommended-agent">
+                                <div class="agent-icon">
+                                    <img src="images/agents/coordinator.svg" alt="统筹者">
+                                </div>
+                                <div class="agent-info">
+                                    <h4 class="agent-name">统筹者</h4>
+                                    <p class="agent-role">项目管理与协调</p>
+                                    <button class="activate-btn" data-agent="coordinator">激活</button>
+                                </div>
+                            </div>
+                            <div class="recommended-agent">
+                                <div class="agent-icon">
+                                    <img src="images/agents/architect.svg" alt="建筑师">
+                                </div>
+                                <div class="agent-info">
+                                    <h4 class="agent-name">建筑师</h4>
+                                    <p class="agent-role">居住设计专家</p>
+                                    <button class="activate-btn" data-agent="architect">激活</button>
+                                </div>
+                            </div>
+                            <div class="recommended-agent">
+                                <div class="agent-icon">
+                                    <img src="images/agents/botanist.svg" alt="植物学家">
+                                </div>
+                                <div class="agent-info">
+                                    <h4 class="agent-name">植物学家</h4>
+                                    <p class="agent-role">生物与生态专家</p>
+                                    <button class="activate-btn" data-agent="botanist">激活</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <!-- 社区活动区域 -->
-        <section class="community-events">
-            <div class="container">
-                <h2 class="section-title">近期社区活动</h2>
-                <div class="post-grid">
-                    <div class="event-card">
-                        <div class="event-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>2025年4月15日 19:00</span>
-                        </div>
-                        <h3 class="event-title">虚拟实境设计工作坊：模块化月球基地</h3>
-                        <p class="event-description">参与这场沉浸式工作坊，与专业设计师和工程师共同设计下一代月球基地。我们将在虚拟环境中测试不同材料和结构的表现。</p>
-                        <a href="#" class="btn-primary">立即报名</a>
+                
+                <!-- 热门话题区 -->
+                <div class="sidebar-section">
+                    <div class="section-header">
+                        <h3>热门话题</h3>
                     </div>
-                    
-                    <div class="event-card">
-                        <div class="event-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>2025年4月22日 20:00</span>
+                    <div class="section-content">
+                        <div class="hot-topic">
+                            <div class="topic-index top">1</div>
+                            <div class="topic-content">
+                                <h4 class="topic-title">太空电梯最新进展：碳纳米管材料突破</h4>
+                                <div class="topic-meta">浏览 3.2万 · 评论 422</div>
+                            </div>
                         </div>
-                        <h3 class="event-title">专家讲座：最新太空建筑材料研究进展</h3>
-                        <p class="event-description">聆听来自国际空间站材料实验室的首席科学家分享最新研究成果，了解如何应对太空极端环境对建筑材料的挑战。</p>
-                        <a href="#" class="btn-primary">预约提醒</a>
-                    </div>
-                    
-                    <div class="event-card">
-                        <div class="event-date">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>2025年5月5日-12日</span>
+                        <div class="hot-topic">
+                            <div class="topic-index top">2</div>
+                            <div class="topic-content">
+                                <h4 class="topic-title">月球永久基地设计大赛开始报名</h4>
+                                <div class="topic-meta">浏览 2.8万 · 评论 316</div>
+                            </div>
                         </div>
-                        <h3 class="event-title">设计挑战赛：可扩展地球生态住宅</h3>
-                        <p class="event-description">参与为期一周的设计马拉松，创造既节能又宜居的模块化住宅方案。优胜方案将获得实体原型制作机会和技术支持。</p>
-                        <a href="#" class="btn-primary">了解详情</a>
+                        <div class="hot-topic">
+                            <div class="topic-index top">3</div>
+                            <div class="topic-content">
+                                <h4 class="topic-title">火星农业舱研究：首批植物成功生长</h4>
+                                <div class="topic-meta">浏览 2.5万 · 评论 284</div>
+                            </div>
+                        </div>
+                        <div class="hot-topic">
+                            <div class="topic-index">4</div>
+                            <div class="topic-content">
+                                <h4 class="topic-title">太空垃圾清理机器人原型发布</h4>
+                                <div class="topic-meta">浏览 2.1万 · 评论 142</div>
+                            </div>
+                        </div>
+                        <div class="hot-topic">
+                            <div class="topic-index">5</div>
+                            <div class="topic-content">
+                                <h4 class="topic-title">国际空间站生活体验</h4>
+                                <div class="topic-meta">浏览 1.9万 · 评论 136</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </aside>
+        </div>
     </main>
 
-    <footer>
+    <!-- 新帖发布按钮 -->
+    <div class="fab-new-post">
+        <i class="fas fa-pen"></i>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="community-footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    <h2>NexusOrbital</h2>
-                    <p>连接虚拟与现实，共建星际人居未来</p>
+                <div class="footer-column">
+                    <h3>寰宇脉络</h3>
+                    <div class="footer-links">
+                        <a href="index.html">首页</a>
+                        <a href="agents.html">智能体系统</a>
+                        <a href="about.html">关于我们</a>
+                        <a href="contact.html">联系我们</a>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h3>导航</h3>
-                        <ul>
-                            <li><a href="index.html">首页</a></li>
-                            <li><a href="community.html">共创社区</a></li>
-                            <li><a href="design-studio.html">AI设计工坊</a></li>
-                            <li><a href="marketplace.html">众筹商城</a></li>
-                        </ul>
+                <div class="footer-column">
+                    <h3>导航</h3>
+                    <div class="footer-links">
+                        <a href="#">首页</a>
+                        <a href="#">官方公告</a>
+                        <a href="#">技术问答</a>
+                        <a href="#">智能体工坊</a>
                     </div>
-                    <div class="footer-column">
-                        <h3>法律</h3>
-                        <ul>
-                            <li><a href="#">服务条款</a></li>
-                            <li><a href="#">隐私政策</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>联系我们</h3>
-                        <ul>
-                            <li><a href="mailto:contact@nexusorbital.io">contact@nexusorbital.io</a></li>
-                        </ul>
-                        <div class="social-icons">
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-discord"></i></a>
-                            <a href="#"><i class="fab fa-telegram"></i></a>
-                        </div>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <div class="footer-links">
+                        <a href="mailto:info@nexusorbital.com">info@nexusorbital.com</a>
+                        <a href="#">北京市海淀区某某大厦</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 寰宇脉络 (NexusOrbital). 保留所有权利。</p>
+                <p> 2025 寰宇脉络科技有限公司. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // 页面转换动画
-        document.addEventListener('DOMContentLoaded', function() {
-            const transition = document.querySelector('.page-transition');
-            
-            // 模拟页面加载
-            setTimeout(() => {
-                transition.classList.add('active');
-                setTimeout(() => {
-                    transition.style.transform = 'translateY(-100%)';
-                }, 500);
-            }, 300);
-            
-            // 导航链接点击
-            document.querySelectorAll('a[href^="http"], a[href^="/"], a[href^="./"], a[href^="../"]').forEach(link => {
-                link.addEventListener('click', e => {
-                    const href = link.getAttribute('href');
-                    
-                    // 排除页内锚点链接
-                    if (href.startsWith('#')) return;
-                    
-                    e.preventDefault();
-                    
-                    transition.style.transform = 'translateY(0)';
-                    
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 500);
-                });
-            });
-            
-            // 移动端菜单
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('.nav-menu');
-            
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navMenu.classList.toggle('active');
-            });
-
-            // ===== 社区页面特定功能 =====
-            
-            // 内容分类标签切换功能
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const postCards = document.querySelectorAll('.post-card');
-            
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // 移除所有按钮的active类
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    
-                    // 为当前点击的按钮添加active类
-                    button.classList.add('active');
-                    
-                    const category = button.getAttribute('data-category');
-                    
-                    // 显示或隐藏相应分类的帖子
-                    postCards.forEach(card => {
-                        if (category === 'all' || card.getAttribute('data-category') === category) {
-                            card.style.display = 'block';
-                            
-                            // 添加渐入动画
-                            setTimeout(() => {
-                                card.style.opacity = '1';
-                                card.style.transform = 'translateY(0)';
-                            }, 50);
-                        } else {
-                            card.style.opacity = '0';
-                            card.style.transform = 'translateY(20px)';
-                            
-                            // 等待动画完成后隐藏
-                            setTimeout(() => {
-                                card.style.display = 'none';
-                            }, 300);
-                        }
-                    });
-                });
-            });
-            
-            // 搜索功能
-            const searchInput = document.querySelector('.community-search input');
-            
-            searchInput.addEventListener('input', () => {
-                const searchTerm = searchInput.value.toLowerCase();
-                
-                postCards.forEach(card => {
-                    const title = card.querySelector('.post-title').textContent.toLowerCase();
-                    const content = card.querySelector('.post-excerpt').textContent.toLowerCase();
-                    
-                    if (title.includes(searchTerm) || content.includes(searchTerm)) {
-                        card.style.display = 'block';
-                        setTimeout(() => {
-                            card.style.opacity = '1';
-                            card.style.transform = 'translateY(0)';
-                        }, 50);
-                    } else {
-                        card.style.opacity = '0';
-                        card.style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            card.style.display = 'none';
-                        }, 300);
-                    }
-                });
-            });
-            
-            // 发布新内容按钮 - 弹出模态窗口
-            const newPostBtn = document.querySelector('.new-post-btn');
-            
-            newPostBtn.addEventListener('click', () => {
-                // 创建模态窗口元素
-                const modal = document.createElement('div');
-                modal.className = 'modal';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <span class="close-modal">&times;</span>
-                        <h2>发布新内容</h2>
-                        <form id="new-post-form">
-                            <div class="form-group">
-                                <label for="post-title">标题</label>
-                                <input type="text" id="post-title" placeholder="输入标题..." required>
-                            </div>
-                            <div class="form-group">
-                                <label for="post-category">分类</label>
-                                <select id="post-category" required>
-                                    <option value="earth">地球人居</option>
-                                    <option value="moon">太空人居</option>
-                                    <option value="tech">黑科技</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="post-content">内容</label>
-                                <textarea id="post-content" placeholder="分享你的想法、设计或问题..." rows="6" required></textarea>
-                                <p class="ai-helper-tip">提示: 在内容中 @智能体名称 来获取AI专业反馈</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="post-image">上传图片</label>
-                                <input type="file" id="post-image" accept="image/*">
-                            </div>
-                            <button type="submit" class="btn-primary">发布</button>
-                        </form>
-                    </div>
-                `;
-                
-                // 添加模态窗口到页面
-                document.body.appendChild(modal);
-                
-                // 显示模态窗口
-                setTimeout(() => {
-                    modal.style.opacity = '1';
-                }, 10);
-                
-                // 关闭模态窗口
-                const closeModal = modal.querySelector('.close-modal');
-                closeModal.addEventListener('click', () => {
-                    modal.style.opacity = '0';
-                    setTimeout(() => {
-                        document.body.removeChild(modal);
-                    }, 300);
-                });
-                
-                // 点击模态窗口外部关闭
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.style.opacity = '0';
-                        setTimeout(() => {
-                            document.body.removeChild(modal);
-                        }, 300);
-                    }
-                });
-                
-                // 处理表单提交
-                const form = document.getElementById('new-post-form');
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    // 获取表单数据
-                    const title = document.getElementById('post-title').value;
-                    const category = document.getElementById('post-category').value;
-                    const content = document.getElementById('post-content').value;
-                    
-                    // 显示成功消息
-                    modal.innerHTML = `
-                        <div class="modal-content success-message">
-                            <h2>发布成功!</h2>
-                            <p>您的内容已提交，正在等待审核。</p>
-                            <p>如果您在内容中@了智能体，智能体将很快对您的内容提供专业反馈。</p>
-                            <button class="btn-primary close-success">完成</button>
-                        </div>
-                    `;
-                    
-                    // 关闭成功消息
-                    const closeSuccess = modal.querySelector('.close-success');
-                    closeSuccess.addEventListener('click', () => {
-                        modal.style.opacity = '0';
-                        setTimeout(() => {
-                            document.body.removeChild(modal);
-                        }, 300);
-                    });
-                });
-            });
-            
-            // 初始化交互按钮事件
-            const interactionButtons = document.querySelectorAll('.interaction span');
-            
-            interactionButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const icon = this.querySelector('i');
-                    const countElement = this.querySelector('span') || document.createTextNode(' ' + '1');
-                    
-                    if (!this.querySelector('span')) {
-                        this.appendChild(countElement);
-                    }
-                    
-                    // 切换点赞/评论状态
-                    if (icon.classList.contains('fa-heart')) {
-                        if (icon.classList.contains('fas')) {
-                            icon.classList.remove('fas');
-                            icon.classList.add('far');
-                            // 减少计数
-                            const count = parseInt(this.textContent.match(/\d+/)[0]) - 1;
-                            this.lastChild.textContent = ' ' + count;
-                        } else {
-                            icon.classList.remove('far');
-                            icon.classList.add('fas');
-                            // 增加计数
-                            const count = parseInt(this.textContent.match(/\d+/)[0]) + 1;
-                            this.lastChild.textContent = ' ' + count;
-                            
-                            // 添加点赞动画
-                            const heart = document.createElement('div');
-                            heart.className = 'heart-animation';
-                            heart.innerHTML = '<i class="fas fa-heart"></i>';
-                            this.appendChild(heart);
-                            
-                            setTimeout(() => {
-                                this.removeChild(heart);
-                            }, 1000);
-                        }
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="js/community.js"></script>
 </body>
 </html>

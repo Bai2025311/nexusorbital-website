@@ -1,4 +1,4 @@
-// Payment System for CosmicWeave Space Colonization Community
+// Payment System for NexusOrbital Space Colonization Community
 // Supports both Alipay and Stripe for international compliance
 
 import languageSwitcher from '../lang/languageSwitcher.js';

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - NexusOrbital</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="icon" type="image/png" href="favicon/favicon-32x32.png">
+    <!-- 字体和图标 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/3b5ee8c66b.js" crossorigin="anonymous"></script>
+</head>
+<body class="auth-page register-page">
+    <!-- 导航栏 -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo.svg" alt="NexusOrbital Logo">
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="missions.html">太空任务</a></li>
+                    <li><a href="technology.html">技术</a></li>
+                    <li><a href="agents.html">智能体</a></li>
+                    <li><a href="community.html">社区</a></li>
+                    <li><a href="about.html">关于我们</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main>
+        <section class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>创建账户</h1>
+                    <p>开始您的太空探索之旅</p>
+                </div>
+                
+                <form class="auth-form">
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">邮箱</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" name="password" required>
+                        <small>密码至少8位，包含字母和数字</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">确认密码</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">我已阅读并同意<a href="#">用户协议</a>和<a href="#">隐私政策</a></label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn-primary full-width">注册</button>
+                    </div>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>或</span>
+                </div>
+                
+                <div class="social-login">
+                    <button class="btn-social weixin">
+                        <i class="fab fa-weixin"></i> 微信注册
+                    </button>
+                    <button class="btn-social weibo">
+                        <i class="fab fa-weibo"></i> 微博注册
+                    </button>
+                </div>
+                
+                <div class="auth-footer">
+                    <p>已有账户? <a href="login.html">立即登录</a></p>
+                </div>
+            </div>
+            
+            <div class="auth-info">
+                <h2>为什么加入NexusOrbital?</h2>
+                <p>注册成为NexusOrbital会员，您将获得：</p>
+                <ul>
+                    <li><i class="fas fa-robot"></i> 与专业智能体的全方位互动</li>
+                    <li><i class="fas fa-tools"></i> AI设计工坊的高级功能</li>
+                    <li><i class="fas fa-users"></i> 参与全球太空爱好者社区</li>
+                    <li><i class="fas fa-rocket"></i> 虚拟太空任务的参与权</li>
+                    <li><i class="fas fa-graduation-cap"></i> 个性化学习路径</li>
+                    <li><i class="fas fa-cloud-upload-alt"></i> 云端项目存储</li>
+                    <li><i class="fas fa-certificate"></i> 获取数字徽章和认证</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-footer.svg" alt="NexusOrbital Logo">
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>导航</h3>
+                        <ul>
+                            <li><a href="index.html">首页</a></li>
+                            <li><a href="missions.html">太空任务</a></li>
+                            <li><a href="technology.html">技术</a></li>
+                            <li><a href="agents.html">智能体</a></li>
+                            <li><a href="community.html">社区</a></li>
+                            <li><a href="about.html">关于我们</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>资源</h3>
+                        <ul>
+                            <li><a href="#">知识库</a></li>
+                            <li><a href="#">API文档</a></li>
+                            <li><a href="#">开发者中心</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>法律</h3>
+                        <ul>
+                            <li><a href="#">隐私政策</a></li>
+                            <li><a href="#">使用条款</a></li>
+                            <li><a href="#">Cookie政策</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>关注我们</h3>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-weibo"></i></a>
+                            <a href="#"><i class="fab fa-weixin"></i></a>
+                            <a href="#"><i class="fab fa-bilibili"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexusOrbital 太空探索平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script>
+        // 仅用于演示，实际生产环境需要后端处理
+        document.querySelector('.auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('注册功能正在开发中，敬请期待');
+        });
+    </script>
+</body>
+</html>

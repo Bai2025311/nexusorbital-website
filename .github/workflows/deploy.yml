@@ -1,0 +1,61 @@
+name: Deploy NexusOrbital Website
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      message:
+        description: '部署说明'
+        required: false
+        default: '手动触发部署'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Dependencies (if needed)
+        run: |
+          if [ -f "package.json" ]; then
+            npm ci
+          fi
+
+      - name: Build (if needed)
+        run: |
+          if [ -f "package.json" ] && grep -q "build" "package.json"; then
+            npm run build
+          fi
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: . # 部署整个仓库内容
+          clean: true # 清理旧文件
+
+      - name: Verify Deployment
+        run: |
+          echo "🚀 部署完成！网站将在几分钟内更新。"
+          echo "📝 部署信息: ${{ github.event.inputs.message || github.event.head_commit.message }}"
+          echo "👤 部署者: ${{ github.actor }}"
+          echo "🕒 部署时间: $(date)"
+          echo "🔗 网站地址: https://nexusorbital.com"

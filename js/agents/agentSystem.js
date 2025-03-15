@@ -1,4 +1,4 @@
-// Agent System for CosmicWeave Space Colonization Community
+// Agent System for NexusOrbital Space Colonization Community
 // This coordinates the 8 specialized AI agents that work together
 
 import languageSwitcher from '../lang/languageSwitcher.js';

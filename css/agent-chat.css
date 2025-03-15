@@ -1,0 +1,391 @@
+/* 智能体聊天界面样式 */
+
+.agent-chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background-color: #121a2f;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.agent-chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #4d76cf;
+}
+
+.agent-chat-info {
+    margin-left: 10px;
+    flex: 1;
+}
+
+.agent-chat-info h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.agent-chat-info p {
+    margin: 0;
+    font-size: 12px;
+    color: #b3c7ff;
+}
+
+.close-chat-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.close-chat-btn:hover {
+    opacity: 1;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #121a2f;
+}
+
+.chat-message {
+    max-width: 80%;
+    padding: 0;
+    margin-bottom: 8px;
+    animation: messageAppear 0.3s forwards;
+}
+
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-message {
+    align-self: flex-end;
+}
+
+.agent-message {
+    align-self: flex-start;
+}
+
+.message-content {
+    border-radius: 18px;
+    padding: 12px 15px;
+    position: relative;
+}
+
+.user-message .message-content {
+    background-color: #2a5298;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.agent-message .message-content {
+    background-color: #2d3646;
+    color: #e6e9f0;
+    border-bottom-left-radius: 4px;
+}
+
+.message-content p {
+    margin: 0 0 5px 0;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.message-time {
+    font-size: 10px;
+    opacity: 0.7;
+    display: block;
+    text-align: right;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    background-color: #1a2438;
+    border-top: 1px solid #2d3646;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #2d3646;
+    color: white;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+.chat-input input:focus {
+    background-color: #34405a;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 8px 15px;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.chat-input button:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #1c5c8e 100%);
+    transform: translateY(-2px);
+}
+
+/* 智能体个人资料模态框 */
+.agent-profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.agent-profile-content {
+    width: 500px;
+    max-width: 90%;
+    background-color: #121a2f;
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-profile-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.close-profile-btn:hover {
+    opacity: 1;
+}
+
+.agent-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.agent-profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4d76cf;
+}
+
+.agent-profile-header div {
+    margin-left: 20px;
+}
+
+.agent-profile-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 24px;
+}
+
+.agent-title {
+    color: #b3c7ff;
+    margin: 5px 0 0;
+}
+
+.agent-expertise, .agent-personality, .agent-description {
+    margin-bottom: 25px;
+}
+
+.agent-expertise h3, .agent-personality h3 {
+    color: white;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #2d3646;
+    padding-bottom: 8px;
+}
+
+.expertise-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.expertise-tag {
+    background-color: #2a5298;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    color: white;
+}
+
+.personality-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.personality-bar {
+    display: flex;
+    align-items: center;
+}
+
+.personality-bar span {
+    width: 80px;
+    color: #b3c7ff;
+    font-size: 14px;
+}
+
+.bar-container {
+    flex: 1;
+    height: 8px;
+    background-color: #2d3646;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 4px;
+}
+
+.agent-description p {
+    color: #e6e9f0;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.activate-agent-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+    margin-top: 15px;
+}
+
+.activate-agent-btn:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #1c5c8e 100%);
+    transform: translateY(-2px);
+}
+
+/* 打字指示器 */
+.typing-indicator {
+    padding: 10px 15px;
+    background-color: #2d3646;
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.typing-indicator span {
+    height: 8px;
+    width: 8px;
+    background-color: #b3c7ff;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: typing 1.5s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+    margin-right: 0;
+}
+
+@keyframes typing {
+    0% {
+        transform: translateY(0px);
+        background-color: #b3c7ff;
+    }
+    28% {
+        transform: translateY(-5px);
+        background-color: #4d76cf;
+    }
+    44% {
+        transform: translateY(0px);
+        background-color: #b3c7ff;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+    .agent-chat-container {
+        width: 90%;
+        height: 80vh;
+        bottom: 5%;
+        right: 5%;
+    }
+}

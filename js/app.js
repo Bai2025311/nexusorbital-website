@@ -8,7 +8,7 @@ import starDustSystem from './stardust/pointsSystem.js';
 import paymentSystem from '../payment/paymentSystem.js';
 
 // 应用程序主类
-class CosmicWeaveApp {
+class NexusOrbitalApp {
   constructor() {
     this.initialized = false;
     this.components = {
@@ -47,10 +47,10 @@ class CosmicWeaveApp {
       this.setupEventListeners();
       
       this.initialized = true;
-      console.log('寰宇脉络应用初始化完成!');
+      console.log('NexusOrbital应用初始化完成!');
       
       // 触发应用程序就绪事件
-      const readyEvent = new CustomEvent('cosmicweave:ready');
+      const readyEvent = new CustomEvent('nexusorbital:ready');
       document.dispatchEvent(readyEvent);
       
       return true;
@@ -189,8 +189,8 @@ class CosmicWeaveApp {
   updateUIForLanguage(language) {
     // 更新页面标题
     document.title = language === 'zh' ? 
-      '寰宇脉络 - 太空人居社区' : 
-      'CosmicWeave - Space Colonization Community';
+      'NexusOrbital - 太空人居社区' : 
+      'NexusOrbital - Space Colonization Community';
       
     // 其他需要更新的UI元素...
   }
@@ -398,7 +398,7 @@ class CosmicWeaveApp {
 }
 
 // 创建应用实例
-const app = new CosmicWeaveApp();
+const app = new NexusOrbitalApp();
 
 // 当DOM加载完成后初始化应用
 document.addEventListener('DOMContentLoaded', () => {
@@ -406,6 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 导出应用实例以便在控制台中访问（用于调试）
-window.cosmicWeaveApp = app;
+window.nexusOrbitalApp = app;
 
 export default app;

@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CosmicWeave - 智能体系统</title>
+    <title>NexusOrbital - 智能体系统</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/agents.css">
+    <link rel="stylesheet" href="css/agent-chat.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body class="space-theme">
@@ -117,23 +118,24 @@
 
                 <div class="agents-grid" id="agentsContainer">
                     <!-- 探索者智能体 -->
-                    <div class="agent-card" data-agent-id="explorer">
-                        <div class="agent-status inactive"></div>
+                    <div class="agent-card" data-agent-id="explorer" data-agent="explorer">
+                        <div class="agent-status interactive"></div>
                         <div class="agent-avatar">
-                            <i class="fas fa-rocket"></i>
+                            <img src="images/agents/explorer-avatar.svg" alt="探索者" class="agent-image">
+                            <i class="fas fa-rocket agent-icon"></i>
                         </div>
                         <div class="agent-info">
                             <h3 class="agent-name" data-lang-key="agents.explorerName">探索者</h3>
                             <p class="agent-role" data-lang-key="agents.explorerRole">太空探索专家</p>
                         </div>
                         <div class="agent-expertise">
-                            <span class="expertise-tag" data-lang-key="agents.explorerTag1">地形分析</span>
-                            <span class="expertise-tag" data-lang-key="agents.explorerTag2">资源勘探</span>
-                            <span class="expertise-tag" data-lang-key="agents.explorerTag3">路线规划</span>
+                            <span class="expertise-tag" data-lang-key="agents.explorerTag1">行星科学</span>
+                            <span class="expertise-tag" data-lang-key="agents.explorerTag2">航天器</span>
+                            <span class="expertise-tag" data-lang-key="agents.explorerTag3">天文学</span>
                         </div>
                         <div class="agent-actions">
-                            <button class="btn btn-primary activate-agent" data-lang-key="agents.btnActivate">激活智能体</button>
-                            <button class="btn btn-outline view-agent" data-lang-key="agents.btnDetails">查看详情</button>
+                            <button class="btn btn-primary activate-agent-btn" data-agent="explorer" data-lang-key="agents.btnActivate" onclick="if(window.explorer) window.explorer.activate(); return false;">激活智能体</button>
+                            <button class="btn btn-outline view-agent" data-agent="explorer" data-lang-key="agents.btnDetails" onclick="if(window.explorer) window.explorer.showProfile(); return false;">查看详情</button>
                         </div>
                     </div>
 
@@ -465,7 +467,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo-section">
-                    <div class="footer-logo">CosmicWeave</div>
+                    <div class="footer-logo">NexusOrbital</div>
                     <p class="footer-slogan" data-lang-key="footer.slogan">编织太空人类未来</p>
                     <div class="social-links">
                         <a href="#" class="social-link"><i class="fab fa-weibo"></i></a>
@@ -520,7 +522,7 @@
             </div>
             
             <div class="footer-bottom">
-                <p class="copyright" data-lang-key="footer.copyright">&copy; 2025 CosmicWeave. 保留所有权利。</p>
+                <p class="copyright" data-lang-key="footer.copyright">&copy; 2025 NexusOrbital. 保留所有权利。</p>
                 <div class="language-selector">
                     <span data-lang-key="footer.language">语言：</span>
                     <select id="footerLangSelect">
@@ -532,8 +534,125 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
     <script src="js/main.js"></script>
-    <script src="js/agents.js"></script>
+    <script src="js/agents-data.js"></script>
+    <script src="js/explorer-agent.js"></script>
+    <script>
+        // 立即检查是否加载了explorer智能体
+        console.log("智能体加载状态:", {
+            "agentsData": typeof window.agentsData !== 'undefined',
+            "explorer": typeof window.explorer !== 'undefined'
+        });
+        
+        // 直接为卡片添加点击事件
+        const explorerCard = document.querySelector('.agent-card[data-agent="explorer"]');
+        if (explorerCard) {
+            const activateBtn = explorerCard.querySelector('.activate-agent-btn');
+            if (activateBtn) {
+                console.log("找到激活按钮:", activateBtn);
+                activateBtn.onclick = function(event) {
+                    event.preventDefault();
+                    console.log("探索者激活按钮被点击");
+                    
+                    // 多种激活方式尝试，确保至少一种能成功
+                    if (typeof window.activateExplorer === 'function') {
+                        console.log("通过全局activateExplorer方法激活");
+                        window.activateExplorer();
+                    } else if (window.explorer && typeof window.explorer.activate === 'function') {
+                        console.log("通过explorer对象直接激活");
+                        window.explorer.activate();
+                    } else {
+                        console.error("无法找到explorer智能体或激活方法");
+                        // 尝试重载智能体
+                        console.log("尝试重新加载智能体...");
+                        
+                        // 检查是否已经加载智能体数据
+                        if (!window.agentsData) {
+                            console.error("智能体数据未加载！");
+                            alert("探索者智能体数据未加载，请刷新页面重试");
+                            return;
+                        }
+                        
+                        // 自动重新加载智能体脚本
+                        const script = document.createElement('script');
+                        script.src = 'js/explorer-agent.js';
+                        script.onload = function() {
+                            console.log("已重新加载智能体脚本");
+                            setTimeout(function() {
+                                if (window.explorer) {
+                                    window.explorer.activate();
+                                } else if (window.activateExplorer) {
+                                    window.activateExplorer();
+                                } else {
+                                    alert("探索者智能体无法激活，请刷新页面重试");
+                                }
+                            }, 500);
+                        };
+                        document.head.appendChild(script);
+                    }
+                    return false;
+                };
+                
+                // 直接添加内联事件属性作为备份
+                activateBtn.setAttribute('onclick', `
+                    console.log('通过内联onclick激活探索者');
+                    if (window.activateExplorer) {
+                        window.activateExplorer();
+                    } else if (window.explorer) {
+                        window.explorer.activate();
+                    } else {
+                        alert('探索者智能体未能正确加载，请刷新页面重试');
+                    }
+                    return false;
+                `);
+            } else {
+                console.error("未找到激活按钮");
+            }
+            
+            const viewButton = explorerCard.querySelector('.view-agent');
+            if (viewButton) {
+                viewButton.onclick = function() {
+                    console.log("查看详情按钮被点击");
+                    if (window.explorer) {
+                        window.explorer.showProfile();
+                    } else {
+                        alert("探索者智能体未能正确加载，请刷新页面重试");
+                    }
+                };
+            }
+        } else {
+            console.error("未找到探索者智能体卡片");
+        }
+        
+        // 页面加载完成后的初始化逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM完全加载，智能体系统初始化");
+            
+            // 再次尝试绑定事件（以防之前的尝试未成功）
+            const activateButtons = document.querySelectorAll('.activate-agent-btn');
+            activateButtons.forEach(button => {
+                const agentType = button.getAttribute('data-agent');
+                console.log(`为${agentType}智能体设置激活事件`);
+                button.addEventListener('click', function() {
+                    console.log(`正在激活 ${agentType} 智能体...`);
+                    if (agentType === 'explorer' && window.explorer) {
+                        window.explorer.activate();
+                    }
+                });
+            });
+            
+            // 查看详情按钮
+            const viewButtons = document.querySelectorAll('.view-agent');
+            viewButtons.forEach(button => {
+                const agentType = button.getAttribute('data-agent');
+                button.addEventListener('click', function() {
+                    console.log(`正在查看 ${agentType} 智能体详情...`);
+                    if (agentType === 'explorer' && window.explorer) {
+                        window.explorer.showProfile();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

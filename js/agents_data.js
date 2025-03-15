@@ -1,5 +1,5 @@
 /**
- * CosmicWeave - 智能体系统数据
+ * NexusOrbital - 智能体系统数据
  * 基于8大智能体职责详解
  */
 
