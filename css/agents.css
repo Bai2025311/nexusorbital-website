@@ -130,22 +130,33 @@
   align-items: center;
 }
 
-.agent-icon {
-  width: 50px;
-  height: 50px;
+.agent-avatar {
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   background-color: rgba(52, 152, 219, 0.1);
-  color: var(--secondary-color);
-  font-size: 1.5rem;
-  margin-right: var(--spacing-md);
+  border-radius: 50%;
+  margin: 1.2rem auto;
   transition: all var(--transition-normal);
 }
 
-.agent-card.active .agent-icon {
+.agent-avatar i {
+  font-size: 1.8rem;
+  color: var(--secondary-color);
+}
+
+.agent-card:hover .agent-avatar {
+  transform: scale(1.05);
+  background-color: rgba(52, 152, 219, 0.2);
+}
+
+.agent-card.active .agent-avatar {
   background-color: rgba(46, 204, 113, 0.2);
+}
+
+.agent-card.active .agent-avatar i {
   color: var(--success-color);
 }
 
@@ -186,6 +197,17 @@
 .agent-expertise-list {
   list-style: none;
   padding-left: var(--spacing-sm);
+}
+
+.expertise-tag {
+  display: inline-block;
+  background-color: rgba(52, 152, 219, 0.1);
+  color: var(--secondary-color);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--border-radius-sm);
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .agent-expertise-list li {
@@ -284,7 +306,7 @@
 
 .agent-footer {
   padding: var(--spacing-md);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -477,13 +499,14 @@
 }
 
 .expertise-tag {
+  display: inline-block;
   background-color: rgba(52, 152, 219, 0.1);
   color: var(--secondary-color);
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--border-radius-md);
-  font-size: 0.85rem;
-  margin-right: var(--spacing-xs);
-  margin-bottom: var(--spacing-xs);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--border-radius-sm);
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .agent-stats {
