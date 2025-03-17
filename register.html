@@ -42,73 +42,74 @@
         }
         
         /* 导航栏样式 */
-        .main-header {
-            background-color: transparent;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            padding: 1rem 0;
+        header {
+            background-color: transparent !important;
+            position: relative !important;
         }
         
-        .container {
+        header .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
+        .navbar {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 10px 0 !important;
+            background-color: transparent !important;
+            position: static !important;
+        }
+        
         .logo {
-            flex: 0 0 auto;
+            color: #fff !important;
+            text-decoration: none !important;
         }
         
-        .logo img {
-            height: 40px;
+        .logo h1 {
+            font-size: 1.5rem !important;
+            font-weight: bold !important;
+            margin: 0 !important;
         }
         
-        .main-nav {
-            margin-left: 2rem;
+        .nav-menu {
+            display: flex !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            list-style: none !important;
         }
         
-        .main-nav ul {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            gap: 1.5rem;
+        .nav-menu li {
+            margin-left: 1.2rem !important;
         }
         
-        .main-nav a {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-size: 0.95rem;
-            padding: 0.5rem 0;
-            transition: color 0.3s ease;
-            position: relative;
+        .nav-menu a {
+            color: #fff !important;
+            text-decoration: none !important;
+            font-size: 0.95rem !important;
+            font-weight: normal !important;
         }
         
-        .main-nav a:hover,
-        .main-nav a.active {
-            color: #ffffff;
+        .nav-menu a.active {
+            color: #00d2ff !important;
         }
         
-        .main-nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: #3a7bd5;
-            transition: width 0.3s ease;
+        .nav-menu a.btn-primary {
+            display: inline-block !important;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff) !important;
+            color: #fff !important;
+            padding: 0.5rem 1.2rem !important;
+            border-radius: 50px !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
         }
         
-        .main-nav a:hover::after,
-        .main-nav a.active::after {
-            width: 100%;
+        .hamburger {
+            display: none !important;
         }
         
         /* 身份验证容器 */
@@ -412,17 +413,17 @@
     <!-- 导航栏 -->
     <header class="main-header">
         <div class="container">
-            <a href="index.html?nocache=1643723400" class="logo">
-                <img src="images/logo-light.png" alt="NexusOrbital Logo">
+            <a href="index.html" class="logo">
+                <h1>NexusOrbital</h1>
             </a>
             
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html?nocache=1643723400">首页</a></li>
-                    <li><a href="community.html?nocache=1643723400">社区</a></li>
-                    <li><a href="agents.html?nocache=1643723400">AI助手</a></li>
-                    <li><a href="design-studio.html?nocache=1643723400">设计工作室</a></li>
-                    <li><a href="about.html?nocache=1643723400">关于我们</a></li>
+            <nav class="navbar">
+                <ul class="nav-menu">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="community.html">社区</a></li>
+                    <li><a href="agents.html">AI助手</a></li>
+                    <li><a href="design-studio.html">设计工作室</a></li>
+                    <li><a href="about.html">关于我们</a></li>
                 </ul>
             </nav>
         </div>
@@ -495,7 +496,7 @@
             </form>
             
             <div class="auth-footer">
-                已有账户? <a href="login.html?nocache=1643723400">立即登录</a>
+                已有账户? <a href="login.html">立即登录</a>
             </div>
         </div>
         
