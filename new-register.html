@@ -708,6 +708,7 @@
         </div>
     </div>
     
+    <script src="js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 添加cache-busting参数到所有链接
@@ -757,6 +758,28 @@
                     });
                 });
             }
+            
+            // 绑定社交媒体按钮的点击事件
+            const socialButtons = document.querySelectorAll('.btn-social');
+            socialButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有活动状态
+                    socialButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // 添加活动状态到当前按钮
+                    this.classList.add('active');
+                    
+                    const socialType = this.classList.contains('weixin') ? 'weixin' : 
+                                       this.classList.contains('weibo') ? 'weibo' : 
+                                       this.classList.contains('xiaohongshu') ? 'xiaohongshu' : '';
+                    
+                    if (socialType) {
+                        registerWithSocial(socialType);
+                    }
+                });
+            });
         });
     </script>
 </body>

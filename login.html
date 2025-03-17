@@ -644,9 +644,10 @@
         </div>
     </div>
     
+    <script src="js/auth.js"></script>
     <script>
-        // 添加cache-busting参数到所有链接
         document.addEventListener('DOMContentLoaded', function() {
+            // 添加cache-busting参数到所有链接
             const timestamp = new Date().getTime();
             const links = document.querySelectorAll('a[href]');
             
@@ -691,6 +692,65 @@
                         hamburger.classList.remove("active");
                         navMenu.classList.remove("active");
                     });
+                });
+            }
+            
+            // 绑定社交媒体按钮的点击事件
+            const socialButtons = document.querySelectorAll('.btn-social');
+            socialButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const socialType = this.classList.contains('weixin') ? 'weixin' : 
+                                       this.classList.contains('weibo') ? 'weibo' : 
+                                       this.classList.contains('xiaohongshu') ? 'xiaohongshu' : '';
+                    
+                    if (socialType) {
+                        loginWithSocial(socialType);
+                    }
+                });
+            });
+            
+            // 绑定获取验证码按钮点击事件
+            const btnVerificationCode = document.querySelector('.btn-verification-code');
+            if (btnVerificationCode) {
+                btnVerificationCode.addEventListener('click', function() {
+                    const phoneInput = document.getElementById('phone');
+                    if (phoneInput && phoneInput.value) {
+                        // 默认中国区号+86
+                        sendVerificationCode('+86', phoneInput.value);
+                    } else {
+                        alert('请输入有效的手机号码');
+                    }
+                });
+            }
+            
+            // 绑定登录按钮点击事件
+            const loginButton = document.querySelector('.btn-primary');
+            if (loginButton) {
+                loginButton.addEventListener('click', function() {
+                    // 判断当前激活的标签页
+                    const activeTab = document.querySelector('.tab-content.active');
+                    
+                    if (activeTab.id === 'tab-email') {
+                        // 邮箱登录
+                        const email = document.getElementById('email').value;
+                        const password = document.getElementById('password').value;
+                        
+                        if (email && password) {
+                            loginWithEmail(email, password);
+                        } else {
+                            alert('请填写邮箱和密码');
+                        }
+                    } else if (activeTab.id === 'tab-phone') {
+                        // 手机号登录
+                        const phone = document.getElementById('phone').value;
+                        const code = document.getElementById('verification').value;
+                        
+                        if (phone && code) {
+                            loginWithPhone('+86', phone, code);
+                        } else {
+                            alert('请填写手机号和验证码');
+                        }
+                    }
                 });
             }
         });

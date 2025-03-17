@@ -132,6 +132,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     alert('请填写所有必填字段');
                 }
+            } else if (activeTab.id === 'social-tab') {
+                // 社交媒体注册
+                const socialType = document.querySelector('.btn-social.active').classList.contains('weixin') ? 'weixin' : 
+                                   document.querySelector('.btn-social.active').classList.contains('weibo') ? 'weibo' : 
+                                   document.querySelector('.btn-social.active').classList.contains('xiaohongshu') ? 'xiaohongshu' : '';
+                
+                if (socialType) {
+                    registerWithSocial(socialType);
+                }
             }
         });
     }
@@ -159,33 +168,22 @@ document.addEventListener("DOMContentLoaded", function() {
  * @param {string} phone 手机号码
  */
 function sendVerificationCode(countryCode, phone) {
-    // 模拟API请求
-    console.log(`发送验证码到 ${countryCode}${phone}`);
+    // 验证手机号格式
+    if (!phone || phone.length < 5) {
+        alert('请输入有效的手机号码');
+        return;
+    }
     
-    // 这里应该是实际的API调用
-    // 使用Twilio或类似服务发送短信验证码
-    /* 
-    fetch('/api/send-sms', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-            phone: `${countryCode}${phone}` 
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('验证码已发送', data);
-    })
-    .catch(error => {
-        console.error('发送验证码失败:', error);
-        alert('发送验证码失败，请稍后重试');
-    });
-    */
+    // 生成随机6位验证码
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     
-    // 为演示目的，假设验证码已发送
-    alert(`验证码已发送到 ${countryCode}${phone}`);
+    // 存储验证码到 sessionStorage，实际应用中应该由服务器生成并验证
+    sessionStorage.setItem(`verification_code_${countryCode}${phone}`, verificationCode);
+    
+    // 显示验证码（在实际应用中应通过短信发送，这里为了测试方便直接显示）
+    alert(`测试用验证码：${verificationCode}，已发送到 ${countryCode}${phone}`);
+    
+    console.log(`验证码 ${verificationCode} 已发送到 ${countryCode}${phone}`);
 }
 
 /**
@@ -234,7 +232,8 @@ function loginWithPhone(countryCode, phone, code) {
     const phoneNumber = `${countryCode}${phone}`;
     
     // 简单验证验证码
-    if (code !== '123456') { // 测试使用，实际应该从服务器验证
+    const storedCode = sessionStorage.getItem(`verification_code_${phoneNumber}`);
+    if (code !== storedCode) { 
         alert('验证码错误');
         return;
     }
@@ -263,27 +262,235 @@ function loginWithPhone(countryCode, phone, code) {
  * @param {string} socialType 社交媒体类型 (weixin, weibo, xiaohongshu)
  */
 function loginWithSocial(socialType) {
-    // 模拟社交登录
-    console.log('社交登录', socialType);
-    
-    // 这里应该是实际的第三方认证逻辑
-    // 通常涉及跳转到第三方授权页面
-    
+    // 社交媒体平台名称
     const socialNameMap = {
         'weixin': '微信',
         'weibo': '微博',
         'xiaohongshu': '小红书'
     };
     
-    alert(`即将跳转到${socialNameMap[socialType]}进行授权登录`);
+    // 模拟社交登录过程
+    console.log('社交登录', socialType);
     
-    // 为演示目的，模拟登录成功
+    // 创建一个模拟的社交登录弹窗
+    const socialLoginModal = document.createElement('div');
+    socialLoginModal.className = 'social-login-modal';
+    socialLoginModal.innerHTML = `
+        <div class="social-login-content">
+            <div class="social-login-header">
+                <h3>${socialNameMap[socialType]}授权登录</h3>
+                <button class="social-login-close">&times;</button>
+            </div>
+            <div class="social-login-body">
+                <div class="social-icon ${socialType}">
+                    <i class="fab fa-${socialType === 'weixin' ? 'weixin' : socialType === 'weibo' ? 'weibo' : 'book'}"></i>
+                </div>
+                <p>正在打开${socialNameMap[socialType]}授权页面...</p>
+                <div class="social-login-loading">
+                    <div class="loading-spinner"></div>
+                </div>
+                <div class="social-login-buttons" style="display:none;">
+                    <button class="btn-confirm">确认授权</button>
+                    <button class="btn-cancel">取消</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // 添加样式
+    const style = document.createElement('style');
+    style.textContent = `
+        .social-login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .social-login-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .social-login-header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .social-login-header h3 {
+            margin: 0;
+            color: white;
+            font-weight: 500;
+        }
+        .social-login-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .social-login-close:hover {
+            color: white;
+        }
+        .social-login-body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .social-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 40px;
+        }
+        .social-icon.weixin {
+            color: #07C160;
+        }
+        .social-icon.weibo {
+            color: #E6162D;
+        }
+        .social-icon.xiaohongshu {
+            color: #FF2741;
+        }
+        .social-login-body p {
+            color: white;
+            margin: 15px 0;
+        }
+        .social-login-loading {
+            margin: 20px 0;
+        }
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .social-login-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .social-login-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            color: white;
+        }
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    `;
+    
+    // 添加到页面
+    document.head.appendChild(style);
+    document.body.appendChild(socialLoginModal);
+    
+    // 模拟登录过程
     setTimeout(() => {
-        const fakeToken = generateFakeJWT(`${socialType}_user`);
-        storeAuthToken(fakeToken);
-        alert('授权登录成功！');
+        // 隐藏加载动画，显示按钮
+        const loadingElement = socialLoginModal.querySelector('.social-login-loading');
+        const buttonsElement = socialLoginModal.querySelector('.social-login-buttons');
+        
+        loadingElement.style.display = 'none';
+        buttonsElement.style.display = 'flex';
+        
+        // 更新消息
+        const messageElement = socialLoginModal.querySelector('p');
+        messageElement.textContent = `请确认授权登录到 NexusOrbital`;
+    }, 2000);
+    
+    // 绑定事件
+    const closeButton = socialLoginModal.querySelector('.social-login-close');
+    const confirmButton = socialLoginModal.querySelector('.btn-confirm');
+    const cancelButton = socialLoginModal.querySelector('.btn-cancel');
+    
+    // 关闭按钮
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(socialLoginModal);
+        document.head.removeChild(style);
+    });
+    
+    // 取消按钮
+    cancelButton.addEventListener('click', () => {
+        document.body.removeChild(socialLoginModal);
+        document.head.removeChild(style);
+    });
+    
+    // 确认按钮
+    confirmButton.addEventListener('click', () => {
+        // 创建随机用户
+        const randomId = Math.floor(Math.random() * 10000);
+        const socialUser = {
+            id: generateUUID(),
+            username: `${socialType}_user_${randomId}`,
+            socialType: socialType,
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+        };
+        
+        // 保存用户
+        let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
+        users.push(socialUser);
+        localStorage.setItem('nexus_users', JSON.stringify(users));
+        
+        // 生成令牌
+        const token = generateFakeJWT(socialUser.username);
+        storeAuthToken(token);
+        
+        // 删除模态框
+        document.body.removeChild(socialLoginModal);
+        document.head.removeChild(style);
+        
+        // 提示成功并跳转
+        alert(`${socialNameMap[socialType]}授权登录成功！`);
         window.location.href = '/community.html';
-    }, 1000);
+    });
+}
+
+/**
+ * 社交媒体注册
+ * @param {string} socialType 社交媒体类型 (weixin, weibo, xiaohongshu)
+ */
+function registerWithSocial(socialType) {
+    // 复用社交媒体登录的功能
+    loginWithSocial(socialType);
 }
 
 /**
@@ -337,7 +544,8 @@ function registerWithPhone(username, countryCode, phone, code, password) {
     console.log('手机注册', username, countryCode, phone, code, password);
     
     // 简单验证验证码
-    if (code !== '123456') { // 测试使用，实际应该从服务器验证
+    const storedCode = sessionStorage.getItem(`verification_code_${countryCode}${phone}`);
+    if (code !== storedCode) { 
         alert('验证码错误');
         return;
     }
@@ -387,99 +595,142 @@ function generateUUID() {
 }
 
 /**
- * 保存认证令牌
+ * 生成模拟JWT令牌
+ * @param {string} username 用户名
+ * @returns {string} JWT令牌
+ */
+function generateFakeJWT(username) {
+    // 模拟JWT的结构
+    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+    const payload = btoa(JSON.stringify({ 
+        sub: username, 
+        name: username, 
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) // 24小时过期
+    }));
+    const signature = btoa('fake_signature_' + Math.random().toString(36).substring(2));
+    
+    return `${header}.${payload}.${signature}`;
+}
+
+/**
+ * 存储认证令牌
  * @param {string} token JWT令牌
  */
 function storeAuthToken(token) {
-    localStorage.setItem('auth_token', token);
-    
-    // 解析JWT获取用户信息
-    const userData = parseJWT(token);
-    localStorage.setItem('user_data', JSON.stringify(userData));
+    localStorage.setItem('nexus_auth_token', token);
 }
 
 /**
  * 获取认证令牌
- * @returns {string|null} JWT令牌或null
+ * @returns {string|null} JWT令牌
  */
 function getAuthToken() {
-    return localStorage.getItem('auth_token');
+    return localStorage.getItem('nexus_auth_token');
+}
+
+/**
+ * 检查是否已登录
+ * @returns {boolean} 是否已登录
+ */
+function isLoggedIn() {
+    return !!getAuthToken();
 }
 
 /**
  * 清除认证令牌
  */
 function clearAuthToken() {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_data');
+    localStorage.removeItem('nexus_auth_token');
 }
 
 /**
- * 检查用户是否已登录
- * @returns {boolean} 是否已登录
+ * 退出登录
  */
-function isLoggedIn() {
-    const token = getAuthToken();
-    if (!token) return false;
+function logout() {
+    clearAuthToken();
+    window.location.href = '/login.html';
+}
+
+// 页面加载时检查登录状态
+document.addEventListener('DOMContentLoaded', function() {
+    // 在需要登录的页面检查登录状态
+    const requiresAuth = [
+        '/community.html',
+        '/profile.html',
+        '/dashboard.html'
+    ];
     
-    // 检查令牌是否过期
-    try {
-        const payload = parseJWT(token);
-        const expiry = payload.exp * 1000; // 转换为毫秒
-        return Date.now() < expiry;
-    } catch (e) {
-        return false;
+    const currentPath = window.location.pathname;
+    
+    if (requiresAuth.some(path => currentPath.endsWith(path)) && !isLoggedIn()) {
+        // 未登录，重定向到登录页
+        window.location.href = '/login.html';
     }
-}
+    
+    // 更新导航UI，显示用户信息或登录/注册链接
+    updateNavigation();
+});
 
 /**
- * 解析JWT令牌
- * @param {string} token JWT令牌
- * @returns {object} JWT负载
+ * 更新导航UI
  */
-function parseJWT(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
+function updateNavigation() {
+    const userMenuContainer = document.querySelector('.user-menu-container');
+    if (!userMenuContainer) return;
+    
+    if (isLoggedIn()) {
+        // 已登录，显示用户信息
+        const token = getAuthToken();
+        const payload = token.split('.')[1];
+        let username = 'User';
         
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        console.error('解析JWT失败', e);
-        return {};
+        try {
+            const decoded = JSON.parse(atob(payload));
+            username = decoded.name || 'User';
+        } catch (e) {
+            console.error('令牌解析错误', e);
+        }
+        
+        userMenuContainer.innerHTML = `
+            <div class="user-avatar">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${username}" alt="Avatar">
+                <span class="user-name">${username}</span>
+                <i class="fas fa-caret-down"></i>
+            </div>
+            <div class="user-dropdown">
+                <a href="/profile.html"><i class="fas fa-user"></i> 个人主页</a>
+                <a href="/dashboard.html"><i class="fas fa-tachometer-alt"></i> 控制台</a>
+                <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> 退出</a>
+            </div>
+        `;
+        
+        // 绑定退出事件
+        document.getElementById('logout-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+        
+        // 绑定下拉菜单切换
+        const userAvatar = document.querySelector('.user-avatar');
+        const userDropdown = document.querySelector('.user-dropdown');
+        
+        userAvatar.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('active');
+        });
+        
+        // 点击其他地方关闭下拉菜单
+        document.addEventListener('click', function() {
+            userDropdown.classList.remove('active');
+        });
+    } else {
+        // 未登录，显示登录/注册链接
+        userMenuContainer.innerHTML = `
+            <div class="auth-links">
+                <a href="/login.html" class="btn-login">登录</a>
+                <a href="/register.html" class="btn-register">注册</a>
+            </div>
+        `;
     }
-}
-
-/**
- * 生成模拟JWT令牌（仅用于演示）
- * @param {string} identifier 用户标识符
- * @returns {string} 模拟JWT令牌
- */
-function generateFakeJWT(identifier) {
-    // 创建一个假的JWT头部
-    const header = {
-        alg: 'HS256',
-        typ: 'JWT'
-    };
-    
-    // 创建一个假的JWT负载
-    const payload = {
-        sub: `user_${Math.floor(Math.random() * 1000)}`,
-        name: identifier,
-        iat: Math.floor(Date.now() / 1000),
-        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) // 1天过期
-    };
-    
-    // 将头部和负载转换为Base64Url
-    const base64Header = btoa(JSON.stringify(header)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    const base64Payload = btoa(JSON.stringify(payload)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    
-    // 在实际应用中，这里应该使用密钥生成签名
-    // 但在前端演示中，我们只是创建一个虚拟签名
-    const fakeSignature = btoa(`${identifier}_${Date.now()}`).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    
-    // 将三部分组合成一个JWT令牌
-    return `${base64Header}.${base64Payload}.${fakeSignature}`;
 }
