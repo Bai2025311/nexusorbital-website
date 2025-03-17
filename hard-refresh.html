@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>强制刷新 - NexusOrbital</title>
+    
+    <!-- 禁用缓存的元标签 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a2f6c !important;
+            background-color: #1a2f6c !important;
+            background-image: none !important;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            margin-top: 0;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(45deg, #4a8be5, #10e2ff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            transition: width 0.3s ease;
+        }
+        
+        #status {
+            margin-top: 20px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        #timestamp {
+            margin-top: 30px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>强力清除缓存工具</h1>
+        <p>此工具将清除浏览器缓存并强制刷新页面，解决样式不更新的问题。</p>
+        
+        <div class="progress-bar">
+            <div id="progress-bar" class="progress"></div>
+        </div>
+        
+        <div id="status">准备清除缓存...</div>
+        
+        <div class="btn-group">
+            <button id="clear-login" class="btn">清除并打开登录页</button>
+            <button id="clear-register" class="btn">清除并打开注册页</button>
+            <a href="auth-test.html" class="btn btn-secondary">返回测试页面</a>
+        </div>
+        
+        <div id="timestamp"></div>
+    </div>
+    
+    <script>
+        // 显示当前时间，证明页面是新加载的
+        document.getElementById('timestamp').textContent = '当前时间: ' + new Date().toLocaleString();
+        
+        // 清除各种缓存的函数
+        async function clearCache() {
+            const progressBar = document.getElementById('progress-bar');
+            const status = document.getElementById('status');
+            
+            // 更新状态
+            status.textContent = '正在清除浏览器缓存...';
+            progressBar.style.width = '10%';
+            
+            // 尝试清除应用缓存 (已废弃但仍兼容)
+            if (window.applicationCache) {
+                try {
+                    window.applicationCache.swapCache();
+                    progressBar.style.width = '30%';
+                } catch (e) {
+                    console.log('应用缓存清除失败:', e);
+                }
+            }
+            
+            // 更新状态
+            await new Promise(resolve => setTimeout(resolve, 300));
+            status.textContent = '正在清除会话存储...';
+            progressBar.style.width = '50%';
+            
+            // 清除localStorage和sessionStorage
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+            } catch (e) {
+                console.log('存储清除失败:', e);
+            }
+            
+            // 更新状态
+            await new Promise(resolve => setTimeout(resolve, 300));
+            status.textContent = '正在清除Cookie...';
+            progressBar.style.width = '70%';
+            
+            // 尝试清除cookies
+            try {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i];
+                    const eqPos = cookie.indexOf('=');
+                    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                }
+            } catch (e) {
+                console.log('Cookie清除失败:', e);
+            }
+            
+            // 更新状态
+            await new Promise(resolve => setTimeout(resolve, 300));
+            status.textContent = '正在刷新资源...';
+            progressBar.style.width = '85%';
+            
+            // 如果支持caches API (PWA)
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(
+                        cacheNames.map(cacheName => caches.delete(cacheName))
+                    );
+                } catch (e) {
+                    console.log('Cache API清除失败:', e);
+                }
+            }
+            
+            // 更新状态
+            await new Promise(resolve => setTimeout(resolve, 300));
+            status.textContent = '完成！准备跳转...';
+            progressBar.style.width = '100%';
+            
+            return new Promise(resolve => setTimeout(resolve, 500));
+        }
+        
+        // 登录页面按钮
+        document.getElementById('clear-login').addEventListener('click', async function() {
+            await clearCache();
+            const timestamp = new Date().getTime();
+            window.location.href = `login.html?nocache=${timestamp}`;
+        });
+        
+        // 注册页面按钮
+        document.getElementById('clear-register').addEventListener('click', async function() {
+            await clearCache();
+            const timestamp = new Date().getTime();
+            window.location.href = `register.html?nocache=${timestamp}`;
+        });
+    </script>
+</body>
+</html>

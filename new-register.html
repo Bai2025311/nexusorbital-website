@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录 - NexusOrbital</title>
+    <title>注册新版 - NexusOrbital</title>
     <link rel="icon" type="image/png" href="favicon/favicon-32x32.png">
     
     <!-- 禁用缓存的元标签 -->
@@ -12,10 +12,10 @@
     <meta http-equiv="Expires" content="0">
     
     <!-- Open Graph 和 社交媒体标签 -->
-    <meta property="og:title" content="登录 - NexusOrbital">
+    <meta property="og:title" content="注册 - NexusOrbital">
     <meta property="og:description" content="加入NexusOrbital太空探索社区，与志同道合的探索者共同探索宇宙的奥秘。">
     <meta property="og:image" content="https://nexusorbital.com/images/og-image.jpg">
-    <meta property="og:url" content="https://nexusorbital.com/login.html">
+    <meta property="og:url" content="https://nexusorbital.com/register.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     
@@ -33,9 +33,7 @@
         }
         body {
             font-family: 'Noto Sans SC', sans-serif;
-            background: #1a2f6c !important;
-            background-color: #1a2f6c !important;
-            background-image: none !important;
+            background: #1a2f6c;
             background-attachment: fixed;
             min-height: 100vh;
             color: #ffffff;
@@ -163,46 +161,6 @@
             margin-bottom: 1.5rem;
         }
         
-        .login-tabs {
-            display: flex;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .tab-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 0.8rem 1rem;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .tab-btn.active {
-            color: #ffffff;
-        }
-        
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #3a7bd5;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -234,20 +192,6 @@
         
         .form-group input::placeholder {
             color: rgba(255, 255, 255, 0.4);
-        }
-        
-        .forgot-password {
-            display: block;
-            text-align: right;
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .forgot-password:hover {
-            color: #ffffff;
         }
         
         /* 按钮样式 */
@@ -417,6 +361,22 @@
             color: #00d2ff;
         }
         
+        /* 验证码按钮 */
+        .verification-code-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-verification-code {
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
         /* 响应式设计 */
         @media (max-width: 992px) {
             .auth-container {
@@ -470,71 +430,76 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <h1>欢迎回来</h1>
-                <p>登录您的NexusOrbital账户</p>
-            </div>
-            
-            <div class="login-tabs">
-                <button class="tab-btn active" data-tab="tab-email">邮箱登录</button>
-                <button class="tab-btn" data-tab="tab-phone">手机登录</button>
+                <h1>创建账户</h1>
+                <p>开始您的太空探索之旅</p>
             </div>
             
             <form class="auth-form">
-                <div id="tab-email" class="tab-content active">
-                    <div class="form-group">
-                        <label for="email">邮箱</label>
-                        <input type="email" id="email" placeholder="请输入您的邮箱">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">密码</label>
-                        <input type="password" id="password" placeholder="请输入您的密码">
-                        <a href="#" class="forgot-password">忘记密码?</a>
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" placeholder="请输入您的用户名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">邮箱</label>
+                    <input type="email" id="email" placeholder="请输入您的邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">手机号</label>
+                    <input type="tel" id="phone" placeholder="请输入您的手机号">
+                </div>
+                
+                <div class="form-group">
+                    <label for="sms-code">验证码</label>
+                    <div class="verification-code-group">
+                        <input type="text" id="sms-code" placeholder="请输入验证码" style="flex: 1;">
+                        <button type="button" class="btn-verification-code">获取验证码</button>
                     </div>
                 </div>
                 
-                <div id="tab-phone" class="tab-content">
-                    <div class="form-group">
-                        <label for="phone">手机号</label>
-                        <input type="tel" id="phone" placeholder="请输入您的手机号">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="verification">验证码</label>
-                        <div class="verification-code-group" style="display: flex; gap: 10px;">
-                            <input type="text" id="verification" placeholder="请输入验证码" style="flex: 1;">
-                            <button type="button" class="btn-verification-code" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: #ffffff; cursor: pointer;">获取验证码</button>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="password">设置密码</label>
+                    <input type="password" id="password" placeholder="请设置您的密码">
                 </div>
                 
-                <button type="button" class="btn-primary full-width">登 录</button>
+                <div class="form-group">
+                    <label for="confirm-password">确认密码</label>
+                    <input type="password" id="confirm-password" placeholder="请再次输入密码">
+                </div>
+                
+                <div class="form-group" style="display: flex; align-items: center;">
+                    <input type="checkbox" id="terms" style="width: auto; margin-right: 10px;">
+                    <label for="terms" style="margin-bottom: 0;">我已阅读并同意 <a href="#" style="color: #3a7bd5; text-decoration: none;">用户协议</a> 和 <a href="#" style="color: #3a7bd5; text-decoration: none;">隐私政策</a></label>
+                </div>
+                
+                <button type="button" class="btn-primary full-width">立即注册</button>
                 
                 <div class="auth-divider">
-                    <span>或通过以下方式登录</span>
+                    <span>或通过以下方式注册</span>
                 </div>
                 
                 <div class="social-login">
                     <button type="button" class="btn-social weixin">
-                        <i class="fab fa-weixin"></i> 微信
+                        <i class="fab fa-weixin"></i> 微信注册
                     </button>
                     <button type="button" class="btn-social weibo">
-                        <i class="fab fa-weibo"></i> 微博
+                        <i class="fab fa-weibo"></i> 微博注册
                     </button>
                     <button type="button" class="btn-social xiaohongshu">
-                        <i class="fas fa-book"></i> 小红书
+                        <i class="fas fa-book"></i> 小红书注册
                     </button>
                 </div>
             </form>
             
             <div class="auth-footer">
-                还没有账户? <a href="register.html">立即注册</a>
+                已有账户? <a href="new-login.html">立即登录</a>
             </div>
         </div>
         
         <div class="auth-info">
-            <h2>为什么加入NexusOrbital?</h2>
-            <p>注册成为NexusOrbital会员，您将获得:</p>
+            <h2>加入NexusOrbital社区</h2>
+            <p>成为NexusOrbital社区的一员，您将获得：</p>
             <ul>
                 <li><i class="fas fa-rocket"></i> 与全球太空探索爱好者交流的机会</li>
                 <li><i class="fas fa-robot"></i> AI设计助手的专业支持</li>
@@ -556,26 +521,6 @@
                 if (href.includes('.html')) {
                     link.setAttribute('href', `${href}?nocache=${timestamp}`);
                 }
-            });
-        });
-    
-        // 切换登录方式
-        document.querySelectorAll('.tab-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                // 隐藏所有内容
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // 移除所有按钮的active类
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                // 显示当前选中的内容
-                const tabId = button.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-                button.classList.add('active');
             });
         });
     </script>

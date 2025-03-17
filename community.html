@@ -324,6 +324,106 @@
         <i class="fas fa-pen"></i>
     </div>
 
+    <!-- 发帖模态框 -->
+    <div class="modal-overlay" id="post-modal-overlay">
+        <div class="post-modal">
+            <div class="modal-header">
+                <h3>发表新帖子</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="post-form">
+                    <div class="form-group">
+                        <label for="post-title">标题</label>
+                        <input type="text" id="post-title" name="post-title" placeholder="请输入帖子标题" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="post-category">分类</label>
+                        <select id="post-category" name="post-category" required>
+                            <option value="">选择分类</option>
+                            <option value="earth-living">地球人居</option>
+                            <option value="space-living">太空人居</option>
+                            <option value="tech">黑科技</option>
+                            <option value="ideas">创意分享</option>
+                            <option value="questions">求助问答</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="post-content">内容</label>
+                        <textarea id="post-content" name="post-content" placeholder="分享您的想法..." rows="6" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>上传图片 (最多3张)</label>
+                        <div class="image-upload-container">
+                            <div class="image-upload-box" id="image-upload-1">
+                                <input type="file" id="post-image-1" name="post-image-1" accept="image/*">
+                                <i class="fas fa-plus"></i>
+                                <span>添加图片</span>
+                            </div>
+                            <div class="image-upload-box" id="image-upload-2">
+                                <input type="file" id="post-image-2" name="post-image-2" accept="image/*">
+                                <i class="fas fa-plus"></i>
+                                <span>添加图片</span>
+                            </div>
+                            <div class="image-upload-box" id="image-upload-3">
+                                <input type="file" id="post-image-3" name="post-image-3" accept="image/*">
+                                <i class="fas fa-plus"></i>
+                                <span>添加图片</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>分享到社交媒体</label>
+                        <div class="social-share-options">
+                            <label class="social-option">
+                                <input type="checkbox" name="share-weixin" id="share-weixin">
+                                <span class="social-icon weixin"><i class="fab fa-weixin"></i></span>
+                                <span>微信</span>
+                            </label>
+                            <label class="social-option">
+                                <input type="checkbox" name="share-weibo" id="share-weibo">
+                                <span class="social-icon weibo"><i class="fab fa-weibo"></i></span>
+                                <span>微博</span>
+                            </label>
+                            <label class="social-option">
+                                <input type="checkbox" name="share-xiaohongshu" id="share-xiaohongshu">
+                                <span class="social-icon xiaohongshu"><i class="fas fa-book"></i></span>
+                                <span>小红书</span>
+                            </label>
+                            <label class="social-option">
+                                <input type="checkbox" name="share-youtube" id="share-youtube">
+                                <span class="social-icon youtube"><i class="fab fa-youtube"></i></span>
+                                <span>YouTube</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="ask-ai" id="ask-ai">
+                            <span class="checkmark"></span>
+                            <span>邀请AI智能体评论</span>
+                        </label>
+                        <select id="ai-agent" name="ai-agent" disabled>
+                            <option value="explorer">探索者</option>
+                            <option value="scientist">科学家</option>
+                            <option value="engineer">工程师</option>
+                            <option value="coordinator">统筹者</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-post">取消</button>
+                <button class="btn-primary" id="submit-post">发布</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 页脚 -->
     <footer class="community-footer">
         <div class="container">
@@ -360,6 +460,26 @@
         </div>
     </footer>
 
+    <!-- 引入JavaScript -->
     <script src="js/community.js"></script>
+    <script src="js/auth.js"></script>
+    
+    <!-- 添加结构化数据，有助于SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebPage",
+        "name": "共创社区 - 寰宇脉络 (NexusOrbital)",
+        "description": "寰宇脉络共创社区是分享太空居住创意的平台，汇集地球人居、太空人居和黑科技三大主题，用户可与AI智能体互动并获取专业反馈。",
+        "publisher": {
+            "@type": "Organization",
+            "name": "寰宇脉络 (NexusOrbital)",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://nexusorbital.com/images/logo.png"
+            }
+        }
+    }
+    </script>
 </body>
 </html>

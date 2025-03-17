@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试登录页面 - NexusOrbital</title>
+    <link rel="icon" type="image/png" href="favicon/favicon-32x32.png">
+    
+    <style>
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-card {
+            background-color: rgba(24, 42, 70, 0.95);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            text-align: center;
+        }
+        
+        .auth-header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>测试登录</h1>
+            <p>这是一个简单的测试页面</p>
+        </div>
+        
+        <form class="auth-form">
+            <div class="form-group">
+                <label for="email">邮箱或手机号</label>
+                <input type="text" id="email" placeholder="请输入您的邮箱或手机号">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" placeholder="请输入您的密码">
+            </div>
+            
+            <button type="button" class="btn-primary">登 录</button>
+        </form>
+    </div>
+</body>
+</html>

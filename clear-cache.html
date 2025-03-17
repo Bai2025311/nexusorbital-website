@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清除缓存 - NexusOrbital</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        
+        p {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(45deg, #4a8be5, #10e2ff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NexusOrbital 缓存刷新工具</h1>
+        <p>点击下方按钮访问页面的无缓存版本。这将强制浏览器加载最新版本的页面内容，避免使用缓存中的旧版本。</p>
+        
+        <div class="button-group">
+            <a href="login.html?cache=clear&t=" class="btn login-btn">访问登录页面</a>
+            <a href="register.html?cache=clear&t=" class="btn register-btn">访问注册页面</a>
+            <button class="btn clear-btn">清除浏览器缓存</button>
+        </div>
+    </div>
+    
+    <script>
+        // 添加时间戳避免缓存
+        function addTimestamp() {
+            const timestamp = new Date().getTime();
+            document.querySelector('.login-btn').href = `login.html?cache=clear&t=${timestamp}`;
+            document.querySelector('.register-btn').href = `register.html?cache=clear&t=${timestamp}`;
+        }
+        
+        // 初始添加时间戳
+        addTimestamp();
+        
+        // 每次点击更新时间戳
+        document.querySelector('.login-btn').addEventListener('click', addTimestamp);
+        document.querySelector('.register-btn').addEventListener('click', addTimestamp);
+        
+        // 清除缓存按钮
+        document.querySelector('.clear-btn').addEventListener('click', function() {
+            if (window.caches) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
+                    alert('缓存已清除！请点击上方按钮访问最新版本的页面。');
+                });
+            } else {
+                alert('请手动清除浏览器缓存：\n1. 打开浏览器设置\n2. 找到清除浏览数据选项\n3. 勾选"缓存的图片和文件"\n4. 点击清除数据');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital - 身份验证页面测试</title>
+    
+    <!-- 禁用缓存的元标签 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a2f6c;
+            background-attachment: fixed;
+            color: #fff;
+            padding: 40px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(24, 42, 70, 0.95);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+        
+        h2 {
+            color: #3a7bd5;
+            margin-bottom: 15px;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .test-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .test-button:hover {
+            background: linear-gradient(45deg, #4a8be5, #10e2ff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
+        }
+        
+        .description {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .clear-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #ff3366, #ff6b6b);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        
+        .clear-button:hover {
+            background: linear-gradient(45deg, #ff4d7e, #ff8585);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.2);
+        }
+        
+        .status-message {
+            background-color: rgba(0, 210, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 30px;
+            border-left: 4px solid #00d2ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NexusOrbital - 身份验证页面测试</h1>
+        
+        <div class="status-message">
+            所有页面已更新为使用内联样式，并添加了缓存清除功能。点击下方按钮测试不同版本的页面。
+        </div>
+        
+        <div class="test-section">
+            <h2>登录页面测试</h2>
+            <div class="description">
+                以下是不同版本的登录页面链接，均已添加内联样式和缓存控制：
+            </div>
+            <div class="button-group">
+                <a href="login.html" class="test-button" target="_blank">原始登录页面</a>
+                <a href="new-login.html" class="test-button" target="_blank">新版登录页面</a>
+                <a href="login-fixed.html" class="test-button" target="_blank">修复版登录页面</a>
+                <a href="login-v2.html" class="test-button" target="_blank">V2登录页面</a>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>注册页面测试</h2>
+            <div class="description">
+                以下是不同版本的注册页面链接，均已添加内联样式和缓存控制：
+            </div>
+            <div class="button-group">
+                <a href="register.html" class="test-button" target="_blank">原始注册页面</a>
+                <a href="new-register.html" class="test-button" target="_blank">新版注册页面</a>
+                <a href="register-fixed.html" class="test-button" target="_blank">修复版注册页面</a>
+                <a href="register-v2.html" class="test-button" target="_blank">V2注册页面</a>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>强制清除缓存</h2>
+            <div class="description">
+                点击下方按钮可以强制添加时间戳参数，绕过浏览器缓存：
+            </div>
+            <div class="button-group">
+                <button id="clear-cache-btn" class="clear-button">清除缓存并刷新页面</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 添加时间戳到所有链接
+        document.addEventListener('DOMContentLoaded', function() {
+            const timestamp = new Date().getTime();
+            const links = document.querySelectorAll('a[href]');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.includes('.html')) {
+                    link.setAttribute('href', `${href}?nocache=${timestamp}`);
+                }
+            });
+            
+            // 清除缓存按钮功能
+            document.getElementById('clear-cache-btn').addEventListener('click', function() {
+                window.location.reload(true); // 强制从服务器重新加载
+            });
+        });
+    </script>
+</body>
+</html>

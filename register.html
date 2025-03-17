@@ -4,176 +4,526 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>注册 - NexusOrbital</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/auth.css">
     <link rel="icon" type="image/png" href="favicon/favicon-32x32.png">
+    
+    <!-- 禁用缓存的元标签 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Open Graph 和 社交媒体标签 -->
+    <meta property="og:title" content="注册 - NexusOrbital">
+    <meta property="og:description" content="加入NexusOrbital太空探索社区，与志同道合的探索者共同探索宇宙的奥秘。">
+    <meta property="og:image" content="https://nexusorbital.com/images/og-image.jpg">
+    <meta property="og:url" content="https://nexusorbital.com/register.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <!-- 字体和图标 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/3b5ee8c66b.js" crossorigin="anonymous"></script>
+    
+    <style>
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+        }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #1a2f6c !important;
+            background-color: #1a2f6c !important;
+            background-image: none !important;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+        
+        /* 导航栏样式 */
+        .main-header {
+            background-color: transparent;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            flex: 0 0 auto;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .main-nav {
+            margin-left: 2rem;
+        }
+        
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 1.5rem;
+        }
+        
+        .main-nav a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: #ffffff;
+        }
+        
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #3a7bd5;
+            transition: width 0.3s ease;
+        }
+        
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+        
+        /* 身份验证容器 */
+        .auth-container {
+            display: flex;
+            max-width: 1000px;
+            margin: 5rem auto 2rem;
+            min-height: calc(100vh - 300px);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .auth-card {
+            flex: 1;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(24, 42, 70, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .auth-info {
+            flex: 1;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, #2a3f8c, #1a2f6c);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* 表单标题 */
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .auth-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+        
+        /* 表单元素 */
+        .auth-form {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3a7bd5;
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* 按钮样式 */
+        .btn-primary {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #4a8be5, #10e2ff);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .full-width {
+            width: 100%;
+        }
+        
+        /* 分隔线 */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .auth-divider span {
+            padding: 0 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* 社交登录按钮 */
+        .social-login {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-social {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: white;
+            min-width: 120px;
+        }
+        
+        .btn-social:hover {
+            background-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .btn-social i {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn-social.weixin {
+            background-color: rgba(7, 193, 96, 0.2);
+            color: #fff;
+            border: 1px solid rgba(7, 193, 96, 0.3);
+        }
+        
+        .btn-social.weixin:hover {
+            background-color: rgba(7, 193, 96, 0.3);
+        }
+        
+        .btn-social.weibo {
+            background-color: rgba(230, 22, 45, 0.2);
+            color: #fff;
+            border: 1px solid rgba(230, 22, 45, 0.3);
+        }
+        
+        .btn-social.weibo:hover {
+            background-color: rgba(230, 22, 45, 0.3);
+        }
+        
+        .btn-social.xiaohongshu {
+            background-color: rgba(255, 50, 50, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 50, 50, 0.3);
+        }
+        
+        .btn-social.xiaohongshu:hover {
+            background-color: rgba(255, 50, 50, 0.3);
+        }
+        
+        /* 页脚 */
+        .auth-footer {
+            margin-top: auto;
+            text-align: center;
+            padding-top: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .auth-footer a {
+            color: #3a7bd5;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .auth-footer a:hover {
+            color: #00d2ff;
+        }
+        
+        /* 信息栏 */
+        .auth-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .auth-info p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .auth-info ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .auth-info ul li {
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .auth-info ul li i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+            color: #00d2ff;
+        }
+        
+        /* 验证码按钮 */
+        .verification-code-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-verification-code {
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 600px;
+            }
+            
+            .auth-info {
+                order: -1;
+                padding: 2rem;
+            }
+            
+            .auth-card {
+                border-right: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+            
+            .auth-container {
+                margin-top: 4rem;
+            }
+        }
+    </style>
 </head>
-<body class="auth-page register-page">
+<body>
     <!-- 导航栏 -->
     <header class="main-header">
         <div class="container">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="images/logo.svg" alt="NexusOrbital Logo">
-                </a>
-            </div>
+            <a href="index.html?nocache=1643723400" class="logo">
+                <img src="images/logo-light.png" alt="NexusOrbital Logo">
+            </a>
+            
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html">首页</a></li>
-                    <li><a href="missions.html">太空任务</a></li>
-                    <li><a href="technology.html">技术</a></li>
-                    <li><a href="agents.html">智能体</a></li>
-                    <li><a href="community.html">社区</a></li>
-                    <li><a href="about.html">关于我们</a></li>
+                    <li><a href="index.html?nocache=1643723400">首页</a></li>
+                    <li><a href="community.html?nocache=1643723400">社区</a></li>
+                    <li><a href="agents.html?nocache=1643723400">AI助手</a></li>
+                    <li><a href="design-studio.html?nocache=1643723400">设计工作室</a></li>
+                    <li><a href="about.html?nocache=1643723400">关于我们</a></li>
                 </ul>
             </nav>
-            <button class="mobile-menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </div>
     </header>
-
+    
     <!-- 主要内容 -->
-    <main>
-        <section class="auth-container">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <h1>创建账户</h1>
-                    <p>开始您的太空探索之旅</p>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>创建账户</h1>
+                <p>开始您的太空探索之旅</p>
+            </div>
+            
+            <form class="auth-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" placeholder="请输入您的用户名">
                 </div>
                 
-                <form class="auth-form">
-                    <div class="form-group">
-                        <label for="username">用户名</label>
-                        <input type="text" id="username" name="username" required>
+                <div class="form-group">
+                    <label for="email">邮箱</label>
+                    <input type="email" id="email" placeholder="请输入您的邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">手机号</label>
+                    <input type="tel" id="phone" placeholder="请输入您的手机号">
+                </div>
+                
+                <div class="form-group">
+                    <label for="sms-code">验证码</label>
+                    <div class="verification-code-group">
+                        <input type="text" id="sms-code" placeholder="请输入验证码" style="flex: 1;">
+                        <button type="button" class="btn-verification-code">获取验证码</button>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="email">邮箱</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password">密码</label>
-                        <input type="password" id="password" name="password" required>
-                        <small>密码至少8位，包含字母和数字</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="confirm-password">确认密码</label>
-                        <input type="password" id="confirm-password" name="confirm-password" required>
-                    </div>
-                    
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">我已阅读并同意<a href="#">用户协议</a>和<a href="#">隐私政策</a></label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <button type="submit" class="btn-primary full-width">注册</button>
-                    </div>
-                </form>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">设置密码</label>
+                    <input type="password" id="password" placeholder="请设置您的密码">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">确认密码</label>
+                    <input type="password" id="confirm-password" placeholder="请再次输入密码">
+                </div>
+                
+                <div class="form-group" style="display: flex; align-items: center;">
+                    <input type="checkbox" id="terms" style="width: auto; margin-right: 10px;">
+                    <label for="terms" style="margin-bottom: 0;">我已阅读并同意 <a href="#" style="color: #3a7bd5; text-decoration: none;">用户协议</a> 和 <a href="#" style="color: #3a7bd5; text-decoration: none;">隐私政策</a></label>
+                </div>
+                
+                <button type="button" class="btn-primary full-width">立即注册</button>
                 
                 <div class="auth-divider">
-                    <span>或</span>
+                    <span>或通过以下方式注册</span>
                 </div>
                 
                 <div class="social-login">
-                    <button class="btn-social weixin">
+                    <button type="button" class="btn-social weixin">
                         <i class="fab fa-weixin"></i> 微信注册
                     </button>
-                    <button class="btn-social weibo">
+                    <button type="button" class="btn-social weibo">
                         <i class="fab fa-weibo"></i> 微博注册
                     </button>
+                    <button type="button" class="btn-social xiaohongshu">
+                        <i class="fas fa-book"></i> 小红书注册
+                    </button>
                 </div>
-                
-                <div class="auth-footer">
-                    <p>已有账户? <a href="login.html">立即登录</a></p>
-                </div>
-            </div>
+            </form>
             
-            <div class="auth-info">
-                <h2>为什么加入NexusOrbital?</h2>
-                <p>注册成为NexusOrbital会员，您将获得：</p>
-                <ul>
-                    <li><i class="fas fa-robot"></i> 与专业智能体的全方位互动</li>
-                    <li><i class="fas fa-tools"></i> AI设计工坊的高级功能</li>
-                    <li><i class="fas fa-users"></i> 参与全球太空爱好者社区</li>
-                    <li><i class="fas fa-rocket"></i> 虚拟太空任务的参与权</li>
-                    <li><i class="fas fa-graduation-cap"></i> 个性化学习路径</li>
-                    <li><i class="fas fa-cloud-upload-alt"></i> 云端项目存储</li>
-                    <li><i class="fas fa-certificate"></i> 获取数字徽章和认证</li>
-                </ul>
-            </div>
-        </section>
-    </main>
-
-    <!-- 页脚 -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <img src="images/logo-footer.svg" alt="NexusOrbital Logo">
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h3>导航</h3>
-                        <ul>
-                            <li><a href="index.html">首页</a></li>
-                            <li><a href="missions.html">太空任务</a></li>
-                            <li><a href="technology.html">技术</a></li>
-                            <li><a href="agents.html">智能体</a></li>
-                            <li><a href="community.html">社区</a></li>
-                            <li><a href="about.html">关于我们</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>资源</h3>
-                        <ul>
-                            <li><a href="#">知识库</a></li>
-                            <li><a href="#">API文档</a></li>
-                            <li><a href="#">开发者中心</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>法律</h3>
-                        <ul>
-                            <li><a href="#">隐私政策</a></li>
-                            <li><a href="#">使用条款</a></li>
-                            <li><a href="#">Cookie政策</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h3>关注我们</h3>
-                        <div class="social-icons">
-                            <a href="#"><i class="fab fa-weibo"></i></a>
-                            <a href="#"><i class="fab fa-weixin"></i></a>
-                            <a href="#"><i class="fab fa-bilibili"></i></a>
-                            <a href="#"><i class="fab fa-github"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 NexusOrbital 太空探索平台. 保留所有权利.</p>
+            <div class="auth-footer">
+                已有账户? <a href="login.html?nocache=1643723400">立即登录</a>
             </div>
         </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="js/main.js"></script>
+        
+        <div class="auth-info">
+            <h2>加入NexusOrbital社区</h2>
+            <p>成为NexusOrbital社区的一员，您将获得：</p>
+            <ul>
+                <li><i class="fas fa-rocket"></i> 与全球太空探索爱好者交流的机会</li>
+                <li><i class="fas fa-robot"></i> AI设计助手的专业支持</li>
+                <li><i class="fas fa-globe-asia"></i> 参与全球太空探索交流社区</li>
+                <li><i class="fas fa-shield-alt"></i> 虚拟天文台专属权限</li>
+                <li><i class="fas fa-puzzle-piece"></i> 不断完善的太空主题内容</li>
+            </ul>
+        </div>
+    </div>
+    
     <script>
-        // 仅用于演示，实际生产环境需要后端处理
-        document.querySelector('.auth-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('注册功能正在开发中，敬请期待');
+        // 添加cache-busting参数到所有链接
+        document.addEventListener('DOMContentLoaded', function() {
+            const timestamp = new Date().getTime();
+            const links = document.querySelectorAll('a[href]');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href.includes('.html')) {
+                    link.setAttribute('href', `${href}?nocache=${timestamp}`);
+                }
+            });
         });
     </script>
 </body>

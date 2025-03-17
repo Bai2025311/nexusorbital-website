@@ -6,11 +6,6 @@
     <title>登录 - NexusOrbital</title>
     <link rel="icon" type="image/png" href="favicon/favicon-32x32.png">
     
-    <!-- 禁用缓存的元标签 -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
     <!-- Open Graph 和 社交媒体标签 -->
     <meta property="og:title" content="登录 - NexusOrbital">
     <meta property="og:description" content="加入NexusOrbital太空探索社区，与志同道合的探索者共同探索宇宙的奥秘。">
@@ -33,9 +28,7 @@
         }
         body {
             font-family: 'Noto Sans SC', sans-serif;
-            background: #1a2f6c !important;
-            background-color: #1a2f6c !important;
-            background-image: none !important;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             background-attachment: fixed;
             min-height: 100vh;
             color: #ffffff;
@@ -501,9 +494,9 @@
                     
                     <div class="form-group">
                         <label for="verification">验证码</label>
-                        <div class="verification-code-group" style="display: flex; gap: 10px;">
-                            <input type="text" id="verification" placeholder="请输入验证码" style="flex: 1;">
-                            <button type="button" class="btn-verification-code" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; color: #ffffff; cursor: pointer;">获取验证码</button>
+                        <div class="verification-code-group">
+                            <input type="text" id="verification" placeholder="请输入验证码">
+                            <button type="button" class="btn-verification-code">获取验证码</button>
                         </div>
                     </div>
                 </div>
@@ -546,19 +539,6 @@
     </div>
     
     <script>
-        // 添加cache-busting参数到所有链接
-        document.addEventListener('DOMContentLoaded', function() {
-            const timestamp = new Date().getTime();
-            const links = document.querySelectorAll('a[href]');
-            
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href.includes('.html')) {
-                    link.setAttribute('href', `${href}?nocache=${timestamp}`);
-                }
-            });
-        });
-    
         // 切换登录方式
         document.querySelectorAll('.tab-btn').forEach(button => {
             button.addEventListener('click', () => {

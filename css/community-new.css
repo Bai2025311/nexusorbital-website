@@ -613,6 +613,361 @@ body {
     font-size: 20px;
 }
 
+/* 发帖模态框 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.post-modal {
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .post-modal {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 表单样式 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* 图片上传区域样式 */
+.image-upload-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.image-upload-box {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.image-upload-box:hover {
+    border-color: var(--primary-color);
+}
+
+.image-upload-box input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.image-upload-box i {
+    font-size: 24px;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+}
+
+.image-upload-box span {
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+}
+
+.image-upload-box.has-preview {
+    border: none;
+}
+
+.image-upload-box.has-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-upload-box .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-upload-box.has-preview:hover .remove-image {
+    opacity: 1;
+}
+
+/* 社交媒体分享选项 */
+.social-share-options {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.social-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.social-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.social-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 8px;
+}
+
+.social-option span:not(.social-icon) {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+}
+
+.social-icon i {
+    font-size: 24px;
+}
+
+.social-icon.weixin {
+    color: #09bb07;
+}
+
+.social-icon.weibo {
+    color: #e6162d;
+}
+
+.social-icon.xiaohongshu {
+    color: #fe2c55;
+}
+
+.social-icon.youtube {
+    color: #ff0000;
+}
+
+.social-option input[type="checkbox"]:checked + .social-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.social-option input[type="checkbox"]:checked ~ span:not(.social-icon) {
+    color: var(--text-primary);
+}
+
+/* 自定义复选框 */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+#ai-agent {
+    margin-top: 10px;
+    display: block;
+}
+
+/* 按钮样式 */
+.btn-primary, .btn-secondary {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--blue-gradient);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2c68c9 0%, #00bce7 100%);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 /* 页脚 */
 .community-footer {
     background-color: var(--dark-bg);
@@ -711,5 +1066,187 @@ body {
     }
     .post-actions {
         flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .post-modal {
+        width: 95%;
+    }
+    
+    .image-upload-container {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .form-group input[type="text"],
+    .form-group textarea,
+    .form-group select {
+        padding: 10px;
+    }
+    
+    .image-upload-box {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* 消息提示（Toast Message）样式 */
+.toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    max-width: 350px;
+    z-index: 9999;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.toast-message.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast-message i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.toast-message.success {
+    background-color: rgba(40, 167, 69, 0.9);
+    color: white;
+}
+
+.toast-message.warning {
+    background-color: rgba(255, 193, 7, 0.9);
+    color: #212529;
+}
+
+.toast-message.error {
+    background-color: rgba(220, 53, 69, 0.9);
+    color: white;
+}
+
+/* 用户导航样式 */
+.user-nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.user-nav:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-nav i.fa-caret-down {
+    margin-left: 5px;
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.user-nav:hover i.fa-caret-down {
+    transform: rotate(180deg);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 180px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.user-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--card-bg);
+    transform: rotate(45deg);
+}
+
+.user-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.user-dropdown a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.user-dropdown a i {
+    width: 18px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .user-name {
+        display: none;
+    }
+    
+    .user-nav i.fa-caret-down {
+        display: none;
     }
 }
