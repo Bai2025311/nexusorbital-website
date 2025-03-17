@@ -130,6 +130,33 @@
             transform: scaleX(1) !important;
         }
         
+        /* 汉堡菜单 */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease;
+            background-color: #fff;
+        }
+        
+        .hamburger.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        
+        .hamburger.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+        
         /* 身份验证容器 */
         .auth-container {
             display: flex;
@@ -417,12 +444,61 @@
         }
         
         @media (max-width: 768px) {
-            .main-nav {
-                display: none;
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: rgba(0, 0, 0, 0.9);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                padding: 2rem 0;
+                z-index: 100;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-menu li {
+                margin: 1.5rem 0;
             }
             
             .auth-container {
                 margin-top: 4rem;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+            
+            .btn-social {
+                margin-bottom: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .auth-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .auth-card {
+                padding: 1.5rem;
+            }
+            
+            .auth-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-group input {
+                padding: 0.7rem;
             }
         }
     </style>
@@ -435,6 +511,11 @@
                 <a href="index.html" class="logo">
                     <h1>NexusOrbital</h1>
                 </a>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
                 <ul class="nav-menu">
                     <li><a href="about.html">关于我们</a></li>
                     <li><a href="community.html" class="active">共创社区</a></li>
@@ -531,17 +612,54 @@
     </div>
     
     <script>
-        // 添加cache-busting参数到所有链接
         document.addEventListener('DOMContentLoaded', function() {
+            // 添加cache-busting参数到所有链接
             const timestamp = new Date().getTime();
             const links = document.querySelectorAll('a[href]');
             
             links.forEach(link => {
                 const href = link.getAttribute('href');
-                if (href.includes('.html')) {
-                    link.setAttribute('href', `${href}?nocache=${timestamp}`);
+                if (href.indexOf('?') === -1) {
+                    link.setAttribute('href', href + '?v=' + timestamp);
+                } else {
+                    link.setAttribute('href', href + '&v=' + timestamp);
                 }
             });
+            
+            // 切换标签功能
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 移除所有标签的活动状态
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // 添加当前标签的活动状态
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // 移动端菜单功能
+            const hamburger = document.querySelector(".hamburger");
+            const navMenu = document.querySelector(".nav-menu");
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener("click", function() {
+                    hamburger.classList.toggle("active");
+                    navMenu.classList.toggle("active");
+                });
+                
+                // 点击导航链接时关闭菜单
+                document.querySelectorAll(".nav-menu a").forEach(link => {
+                    link.addEventListener("click", function() {
+                        hamburger.classList.remove("active");
+                        navMenu.classList.remove("active");
+                    });
+                });
+            }
         });
     </script>
 </body>
