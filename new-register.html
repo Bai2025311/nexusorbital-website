@@ -51,17 +51,29 @@
             margin: 0 auto;
             padding: 0 15px;
             display: flex;
-            justify-content: center; /* 居中显示导航 */
+            justify-content: space-between; /* 修改为两侧分布 */
             align-items: center;
         }
         
         .navbar {
             display: flex !important;
-            justify-content: center !important; /* 居中显示导航项 */
+            justify-content: space-between !important; /* 修改为两侧分布 */
             align-items: center !important;
             padding: 10px 0 !important;
             background-color: transparent !important;
             position: static !important;
+            width: 100% !important;
+        }
+        
+        .logo {
+            color: #fff !important;
+            text-decoration: none !important;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem !important;
+            font-weight: bold !important;
+            margin: 0 !important;
         }
         
         .nav-menu {
@@ -418,11 +430,14 @@
     <header class="main-header">
         <div class="container">
             <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <h1>NexusOrbital</h1>
+                </a>
                 <ul class="nav-menu">
                     <li><a href="about.html">关于我们</a></li>
                     <li><a href="community.html" class="active">共创社区</a></li>
                     <li><a href="design-studio.html">AI设计工坊</a></li>
-                    <li><a href="marketplace.html">公寓商城</a></li>
+                    <li><a href="marketplace.html">众筹商城</a></li>
                     <li><a href="agents.html">智能体系统</a></li>
                 </ul>
             </nav>
