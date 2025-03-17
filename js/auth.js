@@ -197,41 +197,26 @@ function loginWithEmail(email, password) {
     // 模拟API请求
     console.log('邮箱登录', email, password);
     
-    // 这里应该是实际的API调用
-    /* 
-    fetch('/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-            email: email,
-            password: password 
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.token) {
-            // 保存JWT令牌
-            storeAuthToken(data.token);
-            
-            // 跳转到主页或之前的页面
-            window.location.href = data.redirectUrl || '/index.html';
-        } else {
-            alert('登录失败：' + (data.message || '未知错误'));
-        }
-    })
-    .catch(error => {
-        console.error('登录请求失败:', error);
-        alert('登录失败，请稍后重试');
-    });
-    */
+    // 从本地存储获取用户
+    const users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
     
-    // 为演示目的，模拟登录成功
-    const fakeToken = generateFakeJWT(email);
-    storeAuthToken(fakeToken);
-    alert('登录成功！');
-    window.location.href = '/community.html';
+    // 检查用户是否存在
+    const user = users.find(u => u.email === email && u.password === password);
+    
+    if (user) {
+        // 更新最后登录时间
+        user.lastLogin = new Date().toISOString();
+        localStorage.setItem('nexus_users', JSON.stringify(users));
+        
+        // 生成并存储 JWT
+        const token = generateFakeJWT(user.username);
+        storeAuthToken(token);
+        
+        alert('登录成功！');
+        window.location.href = '/community.html';
+    } else {
+        alert('邮箱或密码错误');
+    }
 }
 
 /**
@@ -244,41 +229,33 @@ function loginWithPhone(countryCode, phone, code) {
     // 模拟API请求
     console.log('手机登录', countryCode, phone, code);
     
-    // 这里应该是实际的API调用
-    /* 
-    fetch('/api/login/phone', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            phone: `${countryCode}${phone}`,
-            code: code
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.token) {
-            // 保存JWT令牌
-            storeAuthToken(data.token);
-            
-            // 跳转到主页或之前的页面
-            window.location.href = data.redirectUrl || '/index.html';
-        } else {
-            alert('登录失败：' + (data.message || '未知错误'));
-        }
-    })
-    .catch(error => {
-        console.error('登录请求失败:', error);
-        alert('登录失败，请稍后重试');
-    });
-    */
+    // 从本地存储获取用户
+    const users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
+    const phoneNumber = `${countryCode}${phone}`;
     
-    // 为演示目的，模拟登录成功
-    const fakeToken = generateFakeJWT(`${countryCode}${phone}`);
-    storeAuthToken(fakeToken);
-    alert('登录成功！');
-    window.location.href = '/community.html';
+    // 简单验证验证码
+    if (code !== '123456') { // 测试使用，实际应该从服务器验证
+        alert('验证码错误');
+        return;
+    }
+    
+    // 检查用户是否存在
+    const user = users.find(u => u.phone === phoneNumber);
+    
+    if (user) {
+        // 更新最后登录时间
+        user.lastLogin = new Date().toISOString();
+        localStorage.setItem('nexus_users', JSON.stringify(users));
+        
+        // 生成并存储 JWT
+        const token = generateFakeJWT(user.username);
+        storeAuthToken(token);
+        
+        alert('登录成功！');
+        window.location.href = '/community.html';
+    } else {
+        alert('手机号未注册');
+    }
 }
 
 /**
@@ -319,35 +296,30 @@ function registerWithEmail(username, email, password) {
     // 模拟API请求
     console.log('邮箱注册', username, email, password);
     
-    // 这里应该是实际的API调用
-    /* 
-    fetch('/api/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: username,
-            email: email,
-            password: password
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('注册成功，请登录');
-            window.location.href = '/login.html';
-        } else {
-            alert('注册失败：' + (data.message || '未知错误'));
-        }
-    })
-    .catch(error => {
-        console.error('注册请求失败:', error);
-        alert('注册失败，请稍后重试');
-    });
-    */
+    // 获取已有用户
+    let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
     
-    // 为演示目的，模拟注册成功
+    // 检查用户名或邮箱是否已存在
+    const userExists = users.some(user => user.username === username || user.email === email);
+    if (userExists) {
+        alert('用户名或邮箱已经被注册');
+        return;
+    }
+    
+    // 添加新用户
+    const newUser = {
+        id: generateUUID(),
+        username: username,
+        email: email,
+        password: password, // 注意：实际应用中应该对密码进行加密
+        createdAt: new Date().toISOString(),
+        lastLogin: null
+    };
+    
+    users.push(newUser);
+    localStorage.setItem('nexus_users', JSON.stringify(users));
+    
+    // 注册成功
     alert('注册成功，请登录');
     window.location.href = '/login.html';
 }
@@ -364,38 +336,54 @@ function registerWithPhone(username, countryCode, phone, code, password) {
     // 模拟API请求
     console.log('手机注册', username, countryCode, phone, code, password);
     
-    // 这里应该是实际的API调用
-    /* 
-    fetch('/api/register/phone', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: username,
-            phone: `${countryCode}${phone}`,
-            code: code,
-            password: password
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('注册成功，请登录');
-            window.location.href = '/login.html';
-        } else {
-            alert('注册失败：' + (data.message || '未知错误'));
-        }
-    })
-    .catch(error => {
-        console.error('注册请求失败:', error);
-        alert('注册失败，请稍后重试');
-    });
-    */
+    // 简单验证验证码
+    if (code !== '123456') { // 测试使用，实际应该从服务器验证
+        alert('验证码错误');
+        return;
+    }
     
-    // 为演示目的，模拟注册成功
+    // 获取已有用户
+    let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
+    
+    // 检查用户名或手机号是否已存在
+    const phoneNumber = `${countryCode}${phone}`;
+    const userExists = users.some(user => 
+        user.username === username || 
+        (user.phone && user.phone === phoneNumber)
+    );
+    
+    if (userExists) {
+        alert('用户名或手机号已经被注册');
+        return;
+    }
+    
+    // 添加新用户
+    const newUser = {
+        id: generateUUID(),
+        username: username,
+        phone: phoneNumber,
+        password: password, // 注意：实际应用中应该对密码进行加密
+        createdAt: new Date().toISOString(),
+        lastLogin: null
+    };
+    
+    users.push(newUser);
+    localStorage.setItem('nexus_users', JSON.stringify(users));
+    
+    // 注册成功
     alert('注册成功，请登录');
     window.location.href = '/login.html';
+}
+
+/**
+ * 生成UUID
+ * @returns {string} UUID
+ */
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }
 
 /**

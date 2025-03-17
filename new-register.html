@@ -503,6 +503,66 @@
                 padding: 0.7rem;
             }
         }
+        
+        /* 选项卡样式 */
+        .tab-selector {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+        
+        .tab-btn.active {
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .phone-input-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .phone-input-group select {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px 0 0 6px;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .phone-input-group input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0 6px 6px 0;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -535,48 +595,83 @@
             <div class="auth-header">
                 <h1>创建账户</h1>
                 <p>开始您的太空探索之旅</p>
+                
+                <!-- 选项卡切换 -->
+                <div class="tab-selector">
+                    <button class="tab-btn active" data-tab="email-tab">邮箱注册</button>
+                    <button class="tab-btn" data-tab="phone-tab">手机注册</button>
+                </div>
             </div>
             
             <form class="auth-form">
-                <div class="form-group">
-                    <label for="username">用户名</label>
-                    <input type="text" id="username" placeholder="请输入您的用户名">
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">邮箱</label>
-                    <input type="email" id="email" placeholder="请输入您的邮箱">
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">手机号</label>
-                    <input type="tel" id="phone" placeholder="请输入您的手机号">
-                </div>
-                
-                <div class="form-group">
-                    <label for="sms-code">验证码</label>
-                    <div class="verification-code-group">
-                        <input type="text" id="sms-code" placeholder="请输入验证码" style="flex: 1;">
-                        <button type="button" class="btn-verification-code">获取验证码</button>
+                <!-- 邮箱注册选项卡 -->
+                <div id="email-tab" class="tab-content active">
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" name="username" placeholder="请输入您的用户名">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">邮箱</label>
+                        <input type="email" id="email" name="email" placeholder="请输入您的邮箱">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">设置密码</label>
+                        <input type="password" id="password" name="password" placeholder="请设置您的密码">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">确认密码</label>
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="请再次输入密码">
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; align-items: center;">
+                        <input type="checkbox" id="terms" name="terms" style="width: auto; margin-right: 10px;" required>
+                        <label for="terms" style="margin-bottom: 0;">我已阅读并同意 <a href="#" style="color: #3a7bd5; text-decoration: none;">用户协议</a> 和 <a href="#" style="color: #3a7bd5; text-decoration: none;">隐私政策</a></label>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="password">设置密码</label>
-                    <input type="password" id="password" placeholder="请设置您的密码">
+                <!-- 手机注册选项卡 -->
+                <div id="phone-tab" class="tab-content">
+                    <div class="form-group">
+                        <label for="phone-username">用户名</label>
+                        <input type="text" id="phone-username" name="phone-username" placeholder="请输入您的用户名">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">手机号</label>
+                        <div class="phone-input-group">
+                            <select id="country-code" name="country-code">
+                                <option value="+86">+86</option>
+                                <option value="+1">+1</option>
+                                <option value="+44">+44</option>
+                                <option value="+81">+81</option>
+                            </select>
+                            <input type="tel" id="phone" name="phone" placeholder="请输入您的手机号">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="verification-code">验证码</label>
+                        <div class="verification-code-group">
+                            <input type="text" id="verification-code" name="verification-code" placeholder="请输入验证码">
+                            <button type="button" class="btn-verification-code">获取验证码</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone-password">设置密码</label>
+                        <input type="password" id="phone-password" name="phone-password" placeholder="请设置您的密码">
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; align-items: center;">
+                        <input type="checkbox" id="phone-terms" name="phone-terms" style="width: auto; margin-right: 10px;" required>
+                        <label for="phone-terms" style="margin-bottom: 0;">我已阅读并同意 <a href="#" style="color: #3a7bd5; text-decoration: none;">用户协议</a> 和 <a href="#" style="color: #3a7bd5; text-decoration: none;">隐私政策</a></label>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="confirm-password">确认密码</label>
-                    <input type="password" id="confirm-password" placeholder="请再次输入密码">
-                </div>
-                
-                <div class="form-group" style="display: flex; align-items: center;">
-                    <input type="checkbox" id="terms" style="width: auto; margin-right: 10px;">
-                    <label for="terms" style="margin-bottom: 0;">我已阅读并同意 <a href="#" style="color: #3a7bd5; text-decoration: none;">用户协议</a> 和 <a href="#" style="color: #3a7bd5; text-decoration: none;">隐私政策</a></label>
-                </div>
-                
-                <button type="button" class="btn-primary full-width">立即注册</button>
+                <button type="submit" class="btn-primary full-width">立即注册</button>
                 
                 <div class="auth-divider">
                     <span>或通过以下方式注册</span>
