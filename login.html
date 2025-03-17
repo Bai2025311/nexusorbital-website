@@ -45,6 +45,7 @@
         header {
             background-color: transparent !important;
             position: relative !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         header .container {
@@ -52,28 +53,17 @@
             margin: 0 auto;
             padding: 0 15px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
         
         .navbar {
             display: flex !important;
-            justify-content: space-between !important;
+            justify-content: center !important;
             align-items: center !important;
             padding: 10px 0 !important;
             background-color: transparent !important;
             position: static !important;
-        }
-        
-        .logo {
-            color: #fff !important;
-            text-decoration: none !important;
-        }
-        
-        .logo h1 {
-            font-size: 1.5rem !important;
-            font-weight: bold !important;
-            margin: 0 !important;
         }
         
         .nav-menu {
@@ -84,32 +74,48 @@
         }
         
         .nav-menu li {
-            margin-left: 1.2rem !important;
+            margin: 0 1.5rem !important;
         }
         
         .nav-menu a {
             color: #fff !important;
             text-decoration: none !important;
-            font-size: 0.95rem !important;
+            font-size: 1rem !important;
             font-weight: normal !important;
+            padding: 0.8rem 0 !important;
+            display: inline-block !important;
+            position: relative !important;
         }
         
         .nav-menu a.active {
             color: #00d2ff !important;
+            position: relative !important;
         }
         
-        .nav-menu a.btn-primary {
-            display: inline-block !important;
-            background: linear-gradient(135deg, #3a7bd5, #00d2ff) !important;
-            color: #fff !important;
-            padding: 0.5rem 1.2rem !important;
-            border-radius: 50px !important;
-            text-decoration: none !important;
-            font-weight: 500 !important;
+        .nav-menu a.active::after {
+            content: '' !important;
+            position: absolute !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 2px !important;
+            background-color: #00d2ff !important;
         }
         
-        .hamburger {
-            display: none !important;
+        .nav-menu a::after {
+            content: '' !important;
+            position: absolute !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 2px !important;
+            background-color: #fff !important;
+            transform: scaleX(0) !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .nav-menu a:hover::after {
+            transform: scaleX(1) !important;
         }
         
         /* 身份验证容器 */
@@ -451,17 +457,13 @@
     <!-- 导航栏 -->
     <header class="main-header">
         <div class="container">
-            <a href="index.html" class="logo">
-                <h1>NexusOrbital</h1>
-            </a>
-            
             <nav class="navbar">
                 <ul class="nav-menu">
-                    <li><a href="index.html">首页</a></li>
-                    <li><a href="community.html">社区</a></li>
-                    <li><a href="agents.html">AI助手</a></li>
-                    <li><a href="design-studio.html">设计工作室</a></li>
                     <li><a href="about.html">关于我们</a></li>
+                    <li><a href="community.html" class="active">共创社区</a></li>
+                    <li><a href="design-studio.html">AI设计工坊</a></li>
+                    <li><a href="marketplace.html">公寓商城</a></li>
+                    <li><a href="agents.html">智能体系统</a></li>
                 </ul>
             </nav>
         </div>
