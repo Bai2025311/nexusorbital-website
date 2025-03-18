@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital认证系统测试</title>
+    <style>
+        /* 全局样式 */
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #ff006e;
+            --dark-color: #0c1c3e;
+            --light-color: #f5f8ff;
+            --success-color: #06d6a0;
+            --warning-color: #ffd166;
+            --error-color: #ef476f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 布局 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        /* 卡片 */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+        }
+
+        /* 标签页 */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 表单 */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2b75e6;
+        }
+
+        /* 结果区域 */
+        .result {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 15px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .error {
+            border-left: 4px solid var(--error-color);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+                border-bottom: none;
+            }
+
+            .tab {
+                border-bottom: 1px solid #ddd;
+            }
+        }
+
+        /* 辅助类 */
+        .text-center {
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-color);
+        }
+
+        .badge-success {
+            background-color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .badge-error {
+            background-color: var(--error-color);
+        }
+
+        /* 加载动画 */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .gap-2 {
+            gap: 10px;
+        }
+
+        #jwt-decode {
+            margin-top: 20px;
+        }
+
+        .info-panel {
+            background-color: #e9f5ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NexusOrbital认证系统测试控制台</h1>
+    </header>
+
+    <div class="container">
+        <div class="info-panel">
+            <p><strong>欢迎使用NexusOrbital认证系统测试控制台!</strong> 本页面用于测试认证API的各项功能。系统状态：<span id="system-status">检查中...</span></p>
+            <p>基准URL: <code id="base-url"></code></p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>API测试</h2>
+                <span id="api-status" class="badge badge-warning">等待检测</span>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" data-tab="email-register">邮箱注册</div>
+                <div class="tab" data-tab="email-login">邮箱登录</div>
+                <div class="tab" data-tab="sms-verify">短信验证</div>
+                <div class="tab" data-tab="phone-login">手机登录</div>
+                <div class="tab" data-tab="token-verify">令牌验证</div>
+                <div class="tab" data-tab="health-check">健康检查</div>
+            </div>
+
+            <div class="tab-content active" id="email-register">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">用户名</label>
+                        <input type="text" id="register-username" placeholder="输入用户名" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-email">邮箱</label>
+                        <input type="email" id="register-email" placeholder="输入邮箱地址" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-password">密码</label>
+                        <input type="password" id="register-password" placeholder="输入密码" required>
+                    </div>
+
+                    <button type="submit">注册</button>
+                </form>
+                <div class="loader" id="register-loader"></div>
+                <div class="result" id="register-result"></div>
+            </div>
+
+            <div class="tab-content" id="email-login">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">邮箱</label>
+                        <input type="email" id="login-email" placeholder="输入邮箱地址" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">密码</label>
+                        <input type="password" id="login-password" placeholder="输入密码" required>
+                    </div>
+
+                    <button type="submit">登录</button>
+                </form>
+                <div class="loader" id="login-loader"></div>
+                <div class="result" id="login-result"></div>
+            </div>
+
+            <div class="tab-content" id="sms-verify">
+                <form id="sms-form">
+                    <div class="form-group">
+                        <label for="sms-country-code">国家代码</label>
+                        <input type="text" id="sms-country-code" placeholder="国家代码，例如86" value="86" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sms-phone">手机号码</label>
+                        <input type="text" id="sms-phone" placeholder="手机号码，不包含国家代码" required>
+                    </div>
+
+                    <button type="submit">发送验证码</button>
+                </form>
+                <div class="loader" id="sms-loader"></div>
+                <div class="result" id="sms-result"></div>
+            </div>
+
+            <div class="tab-content" id="phone-login">
+                <form id="phone-login-form">
+                    <div class="form-group">
+                        <label for="phone-login-country-code">国家代码</label>
+                        <input type="text" id="phone-login-country-code" placeholder="国家代码，例如86" value="86" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone-login-phone">手机号码</label>
+                        <input type="text" id="phone-login-phone" placeholder="手机号码，不包含国家代码" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone-login-code">验证码</label>
+                        <input type="text" id="phone-login-code" placeholder="输入收到的验证码" required>
+                    </div>
+
+                    <button type="submit">登录</button>
+                </form>
+                <div class="loader" id="phone-login-loader"></div>
+                <div class="result" id="phone-login-result"></div>
+            </div>
+
+            <div class="tab-content" id="token-verify">
+                <form id="token-form">
+                    <div class="form-group">
+                        <label for="token-input">JWT令牌</label>
+                        <input type="text" id="token-input" placeholder="输入JWT令牌" required>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="submit">验证令牌</button>
+                        <button type="button" id="decode-token">解码令牌</button>
+                    </div>
+                </form>
+                <div class="loader" id="token-loader"></div>
+                <div class="result" id="token-result"></div>
+                <div class="result" id="jwt-decode" style="display: none;"></div>
+            </div>
+
+            <div class="tab-content" id="health-check">
+                <div class="info-panel">
+                    <p>健康检查API用于验证服务器状态和连接。点击按钮检查API健康状态。</p>
+                </div>
+                <button id="check-health">检查服务器健康状态</button>
+                <div class="loader" id="health-loader"></div>
+                <div class="result" id="health-result"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>会话信息</h2>
+            </div>
+            <div id="session-info">
+                <p>当前状态: <span id="auth-status">未认证</span></p>
+                <div id="user-info" style="display: none;">
+                    <p>用户ID: <span id="user-id"></span></p>
+                    <p>用户名: <span id="user-name"></span></p>
+                    <p>邮箱/手机: <span id="user-contact"></span></p>
+                </div>
+                <button id="logout" style="display: none;">注销</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        const baseUrl = window.location.origin;
+        document.getElementById('base-url').textContent = baseUrl;
+
+        // 存储令牌
+        let currentToken = localStorage.getItem('auth_token');
+        
+        // 初始化页面
+        (function init() {
+            // 检查健康状态
+            checkHealth();
+            
+            // 如果有令牌，验证并更新状态
+            if (currentToken) {
+                verifyToken(currentToken)
+                    .then(user => {
+                        if (user) {
+                            updateSessionInfo(true, user);
+                        } else {
+                            // 令牌无效，清除
+                            localStorage.removeItem('auth_token');
+                            currentToken = null;
+                            updateSessionInfo(false);
+                        }
+                    })
+                    .catch(() => {
+                        // 发生错误，清除令牌
+                        localStorage.removeItem('auth_token');
+                        currentToken = null;
+                        updateSessionInfo(false);
+                    });
+            }
+            
+            // 设置标签页切换
+            setupTabs();
+            
+            // 设置表单提交事件
+            setupFormHandlers();
+        })();
+
+        // 标签页切换
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.tab;
+                    
+                    // 更新活动标签
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // 更新活动内容
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+        }
+
+        // 表单处理程序
+        function setupFormHandlers() {
+            // 邮箱注册
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('register-username').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                
+                // 显示加载动画
+                document.getElementById('register-loader').style.display = 'block';
+                
+                // 发送请求
+                fetch(`${baseUrl}/api/register/email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const resultEl = document.getElementById('register-result');
+                    resultEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.success) {
+                        resultEl.className = 'result success';
+                        
+                        // 保存令牌
+                        if (data.token) {
+                            currentToken = data.token;
+                            localStorage.setItem('auth_token', data.token);
+                            
+                            // 更新用户信息
+                            updateSessionInfo(true, data.user);
+                        }
+                    } else {
+                        resultEl.className = 'result error';
+                    }
+                })
+                .catch(error => {
+                    const resultEl = document.getElementById('register-result');
+                    resultEl.textContent = 'Error: ' + error.message;
+                    resultEl.className = 'result error';
+                })
+                .finally(() => {
+                    document.getElementById('register-loader').style.display = 'none';
+                });
+            });
+            
+            // 邮箱登录
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                // 显示加载动画
+                document.getElementById('login-loader').style.display = 'block';
+                
+                // 发送请求
+                fetch(`${baseUrl}/api/login/email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const resultEl = document.getElementById('login-result');
+                    resultEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.success) {
+                        resultEl.className = 'result success';
+                        
+                        // 保存令牌
+                        if (data.token) {
+                            currentToken = data.token;
+                            localStorage.setItem('auth_token', data.token);
+                            
+                            // 更新用户信息
+                            updateSessionInfo(true, data.user);
+                        }
+                    } else {
+                        resultEl.className = 'result error';
+                    }
+                })
+                .catch(error => {
+                    const resultEl = document.getElementById('login-result');
+                    resultEl.textContent = 'Error: ' + error.message;
+                    resultEl.className = 'result error';
+                })
+                .finally(() => {
+                    document.getElementById('login-loader').style.display = 'none';
+                });
+            });
+            
+            // 发送短信验证码
+            document.getElementById('sms-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const countryCode = document.getElementById('sms-country-code').value;
+                const phone = document.getElementById('sms-phone').value;
+                
+                // 显示加载动画
+                document.getElementById('sms-loader').style.display = 'block';
+                
+                // 发送请求
+                fetch(`${baseUrl}/api/send-sms`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ countryCode, phone })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const resultEl = document.getElementById('sms-result');
+                    resultEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.success) {
+                        resultEl.className = 'result success';
+                        
+                        // 自动填充手机登录表单
+                        document.getElementById('phone-login-country-code').value = countryCode;
+                        document.getElementById('phone-login-phone').value = phone;
+                        if (data.code) {
+                            document.getElementById('phone-login-code').value = data.code;
+                        }
+                    } else {
+                        resultEl.className = 'result error';
+                    }
+                })
+                .catch(error => {
+                    const resultEl = document.getElementById('sms-result');
+                    resultEl.textContent = 'Error: ' + error.message;
+                    resultEl.className = 'result error';
+                })
+                .finally(() => {
+                    document.getElementById('sms-loader').style.display = 'none';
+                });
+            });
+            
+            // 手机号登录
+            document.getElementById('phone-login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const countryCode = document.getElementById('phone-login-country-code').value;
+                const phone = document.getElementById('phone-login-phone').value;
+                const code = document.getElementById('phone-login-code').value;
+                
+                // 显示加载动画
+                document.getElementById('phone-login-loader').style.display = 'block';
+                
+                // 发送请求
+                fetch(`${baseUrl}/api/login/phone`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ countryCode, phone, code })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const resultEl = document.getElementById('phone-login-result');
+                    resultEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.success) {
+                        resultEl.className = 'result success';
+                        
+                        // 保存令牌
+                        if (data.token) {
+                            currentToken = data.token;
+                            localStorage.setItem('auth_token', data.token);
+                            
+                            // 更新用户信息
+                            updateSessionInfo(true, data.user);
+                        }
+                    } else {
+                        resultEl.className = 'result error';
+                    }
+                })
+                .catch(error => {
+                    const resultEl = document.getElementById('phone-login-result');
+                    resultEl.textContent = 'Error: ' + error.message;
+                    resultEl.className = 'result error';
+                })
+                .finally(() => {
+                    document.getElementById('phone-login-loader').style.display = 'none';
+                });
+            });
+            
+            // 令牌验证
+            document.getElementById('token-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const token = document.getElementById('token-input').value;
+                
+                // 显示加载动画
+                document.getElementById('token-loader').style.display = 'block';
+                
+                // 发送请求
+                fetch(`${baseUrl}/api/verify-token`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const resultEl = document.getElementById('token-result');
+                    resultEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.success) {
+                        resultEl.className = 'result success';
+                        
+                        // 更新令牌
+                        currentToken = token;
+                        localStorage.setItem('auth_token', token);
+                        
+                        // 更新用户信息
+                        updateSessionInfo(true, data.user);
+                    } else {
+                        resultEl.className = 'result error';
+                    }
+                })
+                .catch(error => {
+                    const resultEl = document.getElementById('token-result');
+                    resultEl.textContent = 'Error: ' + error.message;
+                    resultEl.className = 'result error';
+                })
+                .finally(() => {
+                    document.getElementById('token-loader').style.display = 'none';
+                });
+            });
+            
+            // 解码JWT令牌
+            document.getElementById('decode-token').addEventListener('click', function() {
+                const token = document.getElementById('token-input').value;
+                if (!token) {
+                    alert('请输入令牌');
+                    return;
+                }
+                
+                try {
+                    const decoded = decodeJWT(token);
+                    const resultEl = document.getElementById('jwt-decode');
+                    resultEl.style.display = 'block';
+                    resultEl.textContent = JSON.stringify(decoded, null, 2);
+                    resultEl.className = 'result success';
+                } catch (error) {
+                    const resultEl = document.getElementById('jwt-decode');
+                    resultEl.style.display = 'block';
+                    resultEl.textContent = 'Error: ' + error.message;
+                    resultEl.className = 'result error';
+                }
+            });
+            
+            // 健康检查
+            document.getElementById('check-health').addEventListener('click', function() {
+                checkHealth();
+            });
+            
+            // 注销
+            document.getElementById('logout').addEventListener('click', function() {
+                currentToken = null;
+                localStorage.removeItem('auth_token');
+                updateSessionInfo(false);
+            });
+        }
+
+        // 验证令牌
+        function verifyToken(token) {
+            return fetch(`${baseUrl}/api/verify-token`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    return data.user;
+                }
+                return null;
+            })
+            .catch(() => null);
+        }
+
+        // 更新会话信息
+        function updateSessionInfo(authenticated, user = null) {
+            const authStatus = document.getElementById('auth-status');
+            const userInfo = document.getElementById('user-info');
+            const logoutBtn = document.getElementById('logout');
+            
+            if (authenticated && user) {
+                authStatus.textContent = '已认证';
+                authStatus.style.color = 'green';
+                
+                document.getElementById('user-id').textContent = user.id || '';
+                document.getElementById('user-name').textContent = user.username || '';
+                document.getElementById('user-contact').textContent = user.email || user.phone || '';
+                
+                userInfo.style.display = 'block';
+                logoutBtn.style.display = 'block';
+                
+                // 自动填充令牌验证表单
+                document.getElementById('token-input').value = currentToken;
+            } else {
+                authStatus.textContent = '未认证';
+                authStatus.style.color = 'red';
+                
+                userInfo.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        // 解码JWT令牌
+        function decodeJWT(token) {
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                throw new Error('无效的JWT令牌格式');
+            }
+            
+            // 解码载荷部分
+            const payload = parts[1];
+            const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+            
+            return JSON.parse(decoded);
+        }
+
+        // 检查API健康状态
+        function checkHealth() {
+            const statusElement = document.getElementById('system-status');
+            const apiStatus = document.getElementById('api-status');
+            const resultEl = document.getElementById('health-result');
+            const loader = document.getElementById('health-loader');
+            
+            statusElement.textContent = '检查中...';
+            statusElement.style.color = 'orange';
+            
+            apiStatus.textContent = '检查中';
+            apiStatus.className = 'badge badge-warning';
+            
+            // 显示加载动画
+            loader.style.display = 'block';
+            
+            fetch(`${baseUrl}/api/health`)
+                .then(response => response.json())
+                .then(data => {
+                    resultEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    if (data.status === 'ok') {
+                        resultEl.className = 'result success';
+                        
+                        statusElement.textContent = '正常';
+                        statusElement.style.color = 'green';
+                        
+                        apiStatus.textContent = '正常';
+                        apiStatus.className = 'badge badge-success';
+                    } else {
+                        resultEl.className = 'result error';
+                        
+                        statusElement.textContent = '异常';
+                        statusElement.style.color = 'red';
+                        
+                        apiStatus.textContent = '异常';
+                        apiStatus.className = 'badge badge-error';
+                    }
+                })
+                .catch(error => {
+                    resultEl.textContent = 'Error: ' + error.message;
+                    resultEl.className = 'result error';
+                    
+                    statusElement.textContent = '连接失败';
+                    statusElement.style.color = 'red';
+                    
+                    apiStatus.textContent = '无法连接';
+                    apiStatus.className = 'badge badge-error';
+                })
+                .finally(() => {
+                    loader.style.display = 'none';
+                });
+        }
+    </script>
+</body>
+</html>

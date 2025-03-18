@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital API 测试页面</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle at center, #192231 0%, #0b0f17 100%);
+            color: #e6f1ff;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1, h2, h3 {
+            color: #4fc3f7;
+            margin-top: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card {
+            background: rgba(30, 40, 70, 0.7);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b3e5fc;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #4fc3f7, #0288d1);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #5fd3ff, #0299e3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(2, 136, 209, 0.4);
+        }
+        
+        .response {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            overflow-x: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #8bc34a;
+        }
+        
+        .response.error {
+            color: #f44336;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            background-color: rgba(30, 40, 70, 0.5);
+            margin-right: 5px;
+        }
+        
+        .tab.active {
+            background-color: rgba(30, 40, 70, 0.7);
+            border-top: 2px solid #4fc3f7;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .endpoint {
+            color: #ff9800;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NexusOrbital API 测试工具</h1>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="register">注册</div>
+            <div class="tab" data-tab="login">登录</div>
+            <div class="tab" data-tab="verify">验证</div>
+            <div class="tab" data-tab="sms">短信</div>
+        </div>
+        
+        <!-- 注册相关API -->
+        <div class="tab-content active" id="register-tab">
+            <div class="card">
+                <h2>邮箱注册 <span class="endpoint">POST /api/register/email</span></h2>
+                
+                <div class="form-group">
+                    <label for="reg-email-username">用户名</label>
+                    <input type="text" id="reg-email-username" placeholder="请输入用户名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-email">邮箱</label>
+                    <input type="email" id="reg-email" placeholder="请输入邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-email-password">密码</label>
+                    <input type="password" id="reg-email-password" placeholder="请输入密码">
+                </div>
+                
+                <button onclick="registerWithEmail()">测试邮箱注册</button>
+                
+                <div class="response" id="reg-email-response"></div>
+            </div>
+            
+            <div class="card">
+                <h2>手机号注册 <span class="endpoint">POST /api/register/phone</span></h2>
+                
+                <div class="form-group">
+                    <label for="reg-phone-username">用户名</label>
+                    <input type="text" id="reg-phone-username" placeholder="请输入用户名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-country-code">国家代码</label>
+                    <select id="reg-country-code">
+                        <option value="+86">中国 (+86)</option>
+                        <option value="+1">美国/加拿大 (+1)</option>
+                        <option value="+44">英国 (+44)</option>
+                        <option value="+81">日本 (+81)</option>
+                        <option value="+82">韩国 (+82)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-phone">手机号码</label>
+                    <input type="text" id="reg-phone" placeholder="请输入手机号码">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-phone-code">验证码</label>
+                    <input type="text" id="reg-phone-code" placeholder="请输入验证码">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-phone-password">密码</label>
+                    <input type="password" id="reg-phone-password" placeholder="请输入密码">
+                </div>
+                
+                <button onclick="registerWithPhone()">测试手机注册</button>
+                
+                <div class="response" id="reg-phone-response"></div>
+            </div>
+        </div>
+        
+        <!-- 登录相关API -->
+        <div class="tab-content" id="login-tab">
+            <div class="card">
+                <h2>邮箱登录 <span class="endpoint">POST /api/login/email</span></h2>
+                
+                <div class="form-group">
+                    <label for="login-email">邮箱</label>
+                    <input type="email" id="login-email" placeholder="请输入邮箱">
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-email-password">密码</label>
+                    <input type="password" id="login-email-password" placeholder="请输入密码">
+                </div>
+                
+                <button onclick="loginWithEmail()">测试邮箱登录</button>
+                
+                <div class="response" id="login-email-response"></div>
+            </div>
+            
+            <div class="card">
+                <h2>手机号登录 <span class="endpoint">POST /api/login/phone</span></h2>
+                
+                <div class="form-group">
+                    <label for="login-country-code">国家代码</label>
+                    <select id="login-country-code">
+                        <option value="+86">中国 (+86)</option>
+                        <option value="+1">美国/加拿大 (+1)</option>
+                        <option value="+44">英国 (+44)</option>
+                        <option value="+81">日本 (+81)</option>
+                        <option value="+82">韩国 (+82)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-phone">手机号码</label>
+                    <input type="text" id="login-phone" placeholder="请输入手机号码">
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-phone-code">验证码</label>
+                    <input type="text" id="login-phone-code" placeholder="请输入验证码">
+                </div>
+                
+                <button onclick="loginWithPhone()">测试手机登录</button>
+                
+                <div class="response" id="login-phone-response"></div>
+            </div>
+        </div>
+        
+        <!-- 验证相关API -->
+        <div class="tab-content" id="verify-tab">
+            <div class="card">
+                <h2>验证令牌 <span class="endpoint">GET /api/auth/verify</span></h2>
+                
+                <div class="form-group">
+                    <label for="verify-token">JWT令牌</label>
+                    <input type="text" id="verify-token" placeholder="请输入JWT令牌">
+                </div>
+                
+                <button onclick="verifyToken()">测试令牌验证</button>
+                
+                <div class="response" id="verify-response"></div>
+            </div>
+        </div>
+        
+        <!-- 短信相关API -->
+        <div class="tab-content" id="sms-tab">
+            <div class="card">
+                <h2>发送短信验证码 <span class="endpoint">POST /api/sms/send</span></h2>
+                
+                <div class="form-group">
+                    <label for="sms-country-code">国家代码</label>
+                    <select id="sms-country-code">
+                        <option value="+86">中国 (+86)</option>
+                        <option value="+1">美国/加拿大 (+1)</option>
+                        <option value="+44">英国 (+44)</option>
+                        <option value="+81">日本 (+81)</option>
+                        <option value="+82">韩国 (+82)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sms-phone">手机号码</label>
+                    <input type="text" id="sms-phone" placeholder="请输入手机号码">
+                </div>
+                
+                <button onclick="sendSmsCode()">测试发送验证码</button>
+                
+                <div class="response" id="sms-response"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // API基础URL
+        const API_BASE_URL = 'http://localhost:3000/api';
+        
+        // 切换选项卡
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有活动状态
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加当前选项卡的活动状态
+                this.classList.add('active');
+                document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
+            });
+        });
+        
+        // 显示响应
+        function showResponse(elementId, data, isError = false) {
+            const responseElement = document.getElementById(elementId);
+            responseElement.textContent = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+            responseElement.className = isError ? 'response error' : 'response';
+        }
+        
+        // 处理API请求
+        async function apiRequest(endpoint, method, body = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                // 如果是验证令牌请求，添加Authorization头
+                if (endpoint === '/auth/verify') {
+                    const token = document.getElementById('verify-token').value;
+                    options.headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                return await response.json();
+            } catch (error) {
+                console.error('API请求错误:', error);
+                return { success: false, message: '网络错误或服务器未响应' };
+            }
+        }
+        
+        // 邮箱注册
+        async function registerWithEmail() {
+            const username = document.getElementById('reg-email-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-email-password').value;
+            
+            if (!username || !email || !password) {
+                showResponse('reg-email-response', '请填写所有必填字段', true);
+                return;
+            }
+            
+            const data = await apiRequest('/register/email', 'POST', { username, email, password });
+            showResponse('reg-email-response', data, !data.success);
+            
+            // 如果成功，自动填充到验证部分
+            if (data.success && data.token) {
+                document.getElementById('verify-token').value = data.token;
+            }
+        }
+        
+        // 手机注册
+        async function registerWithPhone() {
+            const username = document.getElementById('reg-phone-username').value;
+            const countryCode = document.getElementById('reg-country-code').value;
+            const phone = document.getElementById('reg-phone').value;
+            const code = document.getElementById('reg-phone-code').value;
+            const password = document.getElementById('reg-phone-password').value;
+            
+            if (!username || !countryCode || !phone || !code || !password) {
+                showResponse('reg-phone-response', '请填写所有必填字段', true);
+                return;
+            }
+            
+            const data = await apiRequest('/register/phone', 'POST', { 
+                username, countryCode, phone, code, password 
+            });
+            showResponse('reg-phone-response', data, !data.success);
+            
+            // 如果成功，自动填充到验证部分
+            if (data.success && data.token) {
+                document.getElementById('verify-token').value = data.token;
+            }
+        }
+        
+        // 邮箱登录
+        async function loginWithEmail() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-email-password').value;
+            
+            if (!email || !password) {
+                showResponse('login-email-response', '请填写所有必填字段', true);
+                return;
+            }
+            
+            const data = await apiRequest('/login/email', 'POST', { email, password });
+            showResponse('login-email-response', data, !data.success);
+            
+            // 如果成功，自动填充到验证部分
+            if (data.success && data.token) {
+                document.getElementById('verify-token').value = data.token;
+            }
+        }
+        
+        // 手机登录
+        async function loginWithPhone() {
+            const countryCode = document.getElementById('login-country-code').value;
+            const phone = document.getElementById('login-phone').value;
+            const code = document.getElementById('login-phone-code').value;
+            
+            if (!countryCode || !phone || !code) {
+                showResponse('login-phone-response', '请填写所有必填字段', true);
+                return;
+            }
+            
+            const data = await apiRequest('/login/phone', 'POST', { countryCode, phone, code });
+            showResponse('login-phone-response', data, !data.success);
+            
+            // 如果成功，自动填充到验证部分
+            if (data.success && data.token) {
+                document.getElementById('verify-token').value = data.token;
+            }
+        }
+        
+        // 验证令牌
+        async function verifyToken() {
+            const token = document.getElementById('verify-token').value;
+            
+            if (!token) {
+                showResponse('verify-response', '请输入JWT令牌', true);
+                return;
+            }
+            
+            const data = await apiRequest('/auth/verify', 'GET');
+            showResponse('verify-response', data, !data.success);
+        }
+        
+        // 发送短信验证码
+        async function sendSmsCode() {
+            const countryCode = document.getElementById('sms-country-code').value;
+            const phone = document.getElementById('sms-phone').value;
+            
+            if (!countryCode || !phone) {
+                showResponse('sms-response', '请填写所有必填字段', true);
+                return;
+            }
+            
+            const data = await apiRequest('/sms/send', 'POST', { countryCode, phone });
+            showResponse('sms-response', data, !data.success);
+            
+            // 如果发送成功，自动填充到相关表单
+            if (data.success) {
+                // 填充到手机登录表单
+                document.getElementById('login-country-code').value = countryCode;
+                document.getElementById('login-phone').value = phone;
+                
+                // 填充到手机注册表单
+                document.getElementById('reg-country-code').value = countryCode;
+                document.getElementById('reg-phone').value = phone;
+            }
+        }
+    </script>
+</body>
+</html>

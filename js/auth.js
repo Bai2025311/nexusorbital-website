@@ -4,7 +4,7 @@
  */
 
 // API基础URL，生产环境应该使用相对路径或HTTPS
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
 
 document.addEventListener("DOMContentLoaded", function() {
     // 处理登录/注册选项卡切换
@@ -37,25 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 const countryCode = this.closest('form').querySelector('[name="country-code"]');
                 
                 if (phoneInput && phoneInput.value) {
-                    // 禁用按钮并开始倒计时
-                    const originalText = this.textContent;
-                    this.disabled = true;
-                    let countdown = 60;
-                    
-                    this.textContent = `${countdown}秒后重试`;
-                    
-                    const timer = setInterval(() => {
-                        countdown--;
-                        this.textContent = `${countdown}秒后重试`;
-                        
-                        if (countdown <= 0) {
-                            clearInterval(timer);
-                            this.disabled = false;
-                            this.textContent = originalText;
-                        }
-                    }, 1000);
-                    
-                    // 发送短信验证码请求
                     sendVerificationCode(countryCode.value, phoneInput.value);
                 } else {
                     showMessage('请输入有效的手机号码');
@@ -172,47 +153,58 @@ document.addEventListener("DOMContentLoaded", function() {
  */
 function sendVerificationCode(countryCode, phone) {
     // 验证手机号格式
-    if (!phone || phone.length < 5) {
+    if (!phone || !/^\d{5,15}$/.test(phone)) {
         showMessage('请输入有效的手机号码');
         return;
     }
     
-    // 判断是否是中国手机号 (以1开头的11位数字)
-    if (countryCode === '+86' && !/^1\d{10}$/.test(phone)) {
-        showMessage('请输入有效的手机号码');
-        return;
-    }
-    
-    // 生成随机6位验证码
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-    
-    // 存储验证码到 sessionStorage，实际应用中应该由服务器生成并验证
-    sessionStorage.setItem(`verification_code_${countryCode}${phone}`, verificationCode);
-    
-    // 显示验证码（在实际应用中应通过短信发送，这里为了测试方便直接显示）
-    showMessage(`测试用验证码：${verificationCode}，已发送到 ${countryCode}${phone}`);
-    
-    // 添加倒计时效果
-    const btnVerificationCode = document.querySelector('.btn-verification-code');
-    if (btnVerificationCode) {
-        let countdown = 60;
-        btnVerificationCode.disabled = true;
-        btnVerificationCode.style.backgroundColor = 'rgba(125, 125, 125, 0.5)';
+    // 显示发送中状态
+    const sendButton = document.querySelector('.send-code-btn');
+    if (sendButton) {
+        const originalText = sendButton.textContent;
+        sendButton.disabled = true;
+        sendButton.textContent = '发送中...';
         
-        const timer = setInterval(() => {
-            btnVerificationCode.textContent = `重新获取(${countdown}s)`;
-            countdown--;
-            
-            if (countdown < 0) {
-                clearInterval(timer);
-                btnVerificationCode.disabled = false;
-                btnVerificationCode.textContent = '获取验证码';
-                btnVerificationCode.style.backgroundColor = '';
+        // 调用API发送验证码
+        fetch(`${API_BASE_URL}/sms/send`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ countryCode, phone })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage('验证码已发送，请查收');
+                
+                // 倒计时禁用按钮
+                let countdown = 60;
+                sendButton.textContent = `重新发送(${countdown}s)`;
+                
+                const timer = setInterval(() => {
+                    countdown--;
+                    sendButton.textContent = `重新发送(${countdown}s)`;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(timer);
+                        sendButton.disabled = false;
+                        sendButton.textContent = originalText;
+                    }
+                }, 1000);
+            } else {
+                showMessage(data.message || '验证码发送失败');
+                sendButton.disabled = false;
+                sendButton.textContent = originalText;
             }
-        }, 1000);
+        })
+        .catch(error => {
+            console.error('发送验证码错误:', error);
+            showMessage('网络错误，请稍后再试');
+            sendButton.disabled = false;
+            sendButton.textContent = originalText;
+        });
     }
-    
-    console.log(`验证码 ${verificationCode} 已发送到 ${countryCode}${phone}`);
 }
 
 /**
@@ -221,28 +213,46 @@ function sendVerificationCode(countryCode, phone) {
  * @param {string} password 密码
  */
 function loginWithEmail(email, password) {
-    // 模拟API请求
-    console.log('邮箱登录', email, password);
-    
-    // 从本地存储获取用户
-    const users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
-    
-    // 检查用户是否存在
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-        // 更新最后登录时间
-        user.lastLogin = new Date().toISOString();
-        localStorage.setItem('nexus_users', JSON.stringify(users));
+    // 显示加载状态
+    const loginButton = document.querySelector('#email-login-form button[type="submit"]');
+    if (loginButton) {
+        const originalText = loginButton.textContent;
+        loginButton.disabled = true;
+        loginButton.textContent = '登录中...';
         
-        // 生成并存储 JWT
-        const token = generateFakeJWT(user.username);
-        storeAuthToken(token);
-        
-        showMessage('登录成功！');
-        window.location.href = '/community.html';
-    } else {
-        showMessage('邮箱或密码错误');
+        // 调用API登录
+        fetch(`${API_BASE_URL}/login/email`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 存储JWT令牌
+                storeAuthToken(data.token);
+                
+                // 存储用户信息
+                if (data.user) {
+                    localStorage.setItem('nexus_user', JSON.stringify(data.user));
+                }
+                
+                showMessage('登录成功！');
+                window.location.href = '/community.html';
+            } else {
+                showMessage(data.message || '邮箱或密码错误');
+                loginButton.disabled = false;
+                loginButton.textContent = originalText;
+            }
+        })
+        .catch(error => {
+            console.error('登录错误:', error);
+            showMessage('网络错误，请稍后再试');
+            loginButton.disabled = false;
+            loginButton.textContent = originalText;
+        });
     }
 }
 
@@ -253,36 +263,46 @@ function loginWithEmail(email, password) {
  * @param {string} code 验证码
  */
 function loginWithPhone(countryCode, phone, code) {
-    // 模拟API请求
-    console.log('手机登录', countryCode, phone, code);
-    
-    // 从本地存储获取用户
-    const users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
-    const phoneNumber = `${countryCode}${phone}`;
-    
-    // 简单验证验证码
-    const storedCode = sessionStorage.getItem(`verification_code_${phoneNumber}`);
-    if (code !== storedCode) { 
-        showMessage('验证码错误');
-        return;
-    }
-    
-    // 检查用户是否存在
-    const user = users.find(u => u.phone === phoneNumber);
-    
-    if (user) {
-        // 更新最后登录时间
-        user.lastLogin = new Date().toISOString();
-        localStorage.setItem('nexus_users', JSON.stringify(users));
+    // 显示加载状态
+    const loginButton = document.querySelector('#phone-login-form button[type="submit"]');
+    if (loginButton) {
+        const originalText = loginButton.textContent;
+        loginButton.disabled = true;
+        loginButton.textContent = '登录中...';
         
-        // 生成并存储 JWT
-        const token = generateFakeJWT(user.username);
-        storeAuthToken(token);
-        
-        showMessage('登录成功！');
-        window.location.href = '/community.html';
-    } else {
-        showMessage('手机号未注册');
+        // 调用API登录
+        fetch(`${API_BASE_URL}/login/phone`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ countryCode, phone, code })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // 存储JWT令牌
+                storeAuthToken(data.token);
+                
+                // 存储用户信息
+                if (data.user) {
+                    localStorage.setItem('nexus_user', JSON.stringify(data.user));
+                }
+                
+                showMessage('登录成功！');
+                window.location.href = '/community.html';
+            } else {
+                showMessage(data.message || '验证码错误或手机号未注册');
+                loginButton.disabled = false;
+                loginButton.textContent = originalText;
+            }
+        })
+        .catch(error => {
+            console.error('登录错误:', error);
+            showMessage('网络错误，请稍后再试');
+            loginButton.disabled = false;
+            loginButton.textContent = originalText;
+        });
     }
 }
 
@@ -531,35 +551,53 @@ function registerWithSocial(socialType) {
  * @param {string} password 密码
  */
 function registerWithEmail(username, email, password) {
-    // 模拟API请求
-    console.log('邮箱注册', username, email, password);
-    
-    // 获取已有用户
-    let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
-    
-    // 检查用户名或邮箱是否已存在
-    const userExists = users.some(user => user.username === username || user.email === email);
-    if (userExists) {
-        showMessage('用户名或邮箱已经被注册');
-        return;
+    // 显示加载状态
+    const registerButton = document.querySelector('#email-register-form button[type="submit"]');
+    if (registerButton) {
+        const originalText = registerButton.textContent;
+        registerButton.disabled = true;
+        registerButton.textContent = '注册中...';
+        
+        // 调用API注册
+        fetch(`${API_BASE_URL}/register/email`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage('注册成功，请登录');
+                
+                // 如果是在注册页面，跳转到登录页
+                if (window.location.pathname.includes('register.html')) {
+                    window.location.href = '/login.html';
+                } else {
+                    // 如果是在登录页的注册选项卡，切换到登录选项卡
+                    const loginTab = document.querySelector('[data-tab="login"]');
+                    if (loginTab) {
+                        loginTab.click();
+                    }
+                    
+                    // 重置表单
+                    const form = document.getElementById('email-register-form');
+                    if (form) form.reset();
+                }
+            } else {
+                showMessage(data.message || '注册失败，请稍后重试');
+                registerButton.disabled = false;
+                registerButton.textContent = originalText;
+            }
+        })
+        .catch(error => {
+            console.error('注册错误:', error);
+            showMessage('网络错误，请稍后再试');
+            registerButton.disabled = false;
+            registerButton.textContent = originalText;
+        });
     }
-    
-    // 添加新用户
-    const newUser = {
-        id: generateUUID(),
-        username: username,
-        email: email,
-        password: password, // 注意：实际应用中应该对密码进行加密
-        createdAt: new Date().toISOString(),
-        lastLogin: null
-    };
-    
-    users.push(newUser);
-    localStorage.setItem('nexus_users', JSON.stringify(users));
-    
-    // 注册成功
-    showMessage('注册成功，请登录');
-    window.location.href = '/login.html';
 }
 
 /**
@@ -571,47 +609,53 @@ function registerWithEmail(username, email, password) {
  * @param {string} password 密码
  */
 function registerWithPhone(username, countryCode, phone, code, password) {
-    // 模拟API请求
-    console.log('手机注册', username, countryCode, phone, code, password);
-    
-    // 简单验证验证码
-    const storedCode = sessionStorage.getItem(`verification_code_${countryCode}${phone}`);
-    if (code !== storedCode) { 
-        showMessage('验证码错误');
-        return;
+    // 显示加载状态
+    const registerButton = document.querySelector('#phone-register-form button[type="submit"]');
+    if (registerButton) {
+        const originalText = registerButton.textContent;
+        registerButton.disabled = true;
+        registerButton.textContent = '注册中...';
+        
+        // 调用API注册
+        fetch(`${API_BASE_URL}/register/phone`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, countryCode, phone, code, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage('注册成功，请登录');
+                
+                // 如果是在注册页面，跳转到登录页
+                if (window.location.pathname.includes('register.html')) {
+                    window.location.href = '/login.html';
+                } else {
+                    // 如果是在登录页的注册选项卡，切换到登录选项卡
+                    const loginTab = document.querySelector('[data-tab="login"]');
+                    if (loginTab) {
+                        loginTab.click();
+                    }
+                    
+                    // 重置表单
+                    const form = document.getElementById('phone-register-form');
+                    if (form) form.reset();
+                }
+            } else {
+                showMessage(data.message || '注册失败，请稍后重试');
+                registerButton.disabled = false;
+                registerButton.textContent = originalText;
+            }
+        })
+        .catch(error => {
+            console.error('注册错误:', error);
+            showMessage('网络错误，请稍后再试');
+            registerButton.disabled = false;
+            registerButton.textContent = originalText;
+        });
     }
-    
-    // 获取已有用户
-    let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
-    
-    // 检查用户名或手机号是否已存在
-    const phoneNumber = `${countryCode}${phone}`;
-    const userExists = users.some(user => 
-        user.username === username || 
-        (user.phone && user.phone === phoneNumber)
-    );
-    
-    if (userExists) {
-        showMessage('用户名或手机号已经被注册');
-        return;
-    }
-    
-    // 添加新用户
-    const newUser = {
-        id: generateUUID(),
-        username: username,
-        phone: phoneNumber,
-        password: password, // 注意：实际应用中应该对密码进行加密
-        createdAt: new Date().toISOString(),
-        lastLogin: null
-    };
-    
-    users.push(newUser);
-    localStorage.setItem('nexus_users', JSON.stringify(users));
-    
-    // 注册成功
-    showMessage('注册成功，请登录');
-    window.location.href = '/login.html';
 }
 
 /**
@@ -665,7 +709,27 @@ function getAuthToken() {
  * @returns {boolean} 是否已登录
  */
 function isLoggedIn() {
-    return !!getAuthToken();
+    const token = getAuthToken();
+    if (!token) return false;
+    
+    // 验证令牌是否过期
+    try {
+        // 解析JWT令牌，获取过期时间
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const exp = payload.exp;
+        
+        // 如果已过期，清除令牌并返回false
+        if (exp && exp * 1000 < Date.now()) {
+            clearAuthToken();
+            return false;
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('验证令牌出错', error);
+        clearAuthToken();
+        return false;
+    }
 }
 
 /**
@@ -673,6 +737,7 @@ function isLoggedIn() {
  */
 function clearAuthToken() {
     localStorage.removeItem('nexus_auth_token');
+    localStorage.removeItem('nexus_user');
 }
 
 /**
@@ -680,7 +745,59 @@ function clearAuthToken() {
  */
 function logout() {
     clearAuthToken();
+    showMessage('已退出登录');
     window.location.href = '/login.html';
+}
+
+/**
+ * 获取当前用户信息
+ * @returns {Object|null} 用户信息
+ */
+function getCurrentUser() {
+    // 从本地存储获取用户信息
+    const userJson = localStorage.getItem('nexus_user');
+    if (userJson) {
+        try {
+            return JSON.parse(userJson);
+        } catch (e) {
+            console.error('解析用户信息出错:', e);
+            return null;
+        }
+    }
+    return null;
+}
+
+/**
+ * 验证令牌
+ * @returns {Promise<boolean>} 是否有效
+ */
+function verifyToken() {
+    const token = getAuthToken();
+    if (!token) return Promise.resolve(false);
+    
+    return fetch(`${API_BASE_URL}/auth/verify`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.user) {
+            // 更新存储的用户信息
+            localStorage.setItem('nexus_user', JSON.stringify(data.user));
+            return true;
+        }
+        
+        // 如果验证失败，清除令牌
+        clearAuthToken();
+        return false;
+    })
+    .catch(error => {
+        console.error('令牌验证错误:', error);
+        // 出错时不要立即清除令牌，可能是网络问题
+        return false;
+    });
 }
 
 /**
@@ -735,9 +852,10 @@ function showMessage(message) {
             }
             .nexus-message-header {
                 padding: 12px 15px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
             .nexus-message-header span {
                 color: rgba(255, 255, 255, 0.8);
@@ -847,17 +965,12 @@ function updateNavigation() {
             </div>
         `;
         
-        // 绑定退出事件
-        document.getElementById('logout-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            logout();
-        });
+        // 绑定事件
+        const closeButton = userMenuContainer.querySelector('.user-avatar');
+        const userDropdown = userMenuContainer.querySelector('.user-dropdown');
         
-        // 绑定下拉菜单切换
-        const userAvatar = document.querySelector('.user-avatar');
-        const userDropdown = document.querySelector('.user-dropdown');
-        
-        userAvatar.addEventListener('click', function(e) {
+        // 关闭按钮
+        closeButton.addEventListener('click', function(e) {
             e.stopPropagation();
             userDropdown.classList.toggle('active');
         });
@@ -865,6 +978,12 @@ function updateNavigation() {
         // 点击其他地方关闭下拉菜单
         document.addEventListener('click', function() {
             userDropdown.classList.remove('active');
+        });
+        
+        // 绑定退出事件
+        document.getElementById('logout-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
         });
     } else {
         // 未登录，显示登录/注册链接

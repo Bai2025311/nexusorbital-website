@@ -1,0 +1,32 @@
+{
+  "name": "nexusorbital-auth-server",
+  "version": "1.0.0",
+  "description": "NexusOrbital 网站认证服务器",
+  "main": "auth-server.js",
+  "scripts": {
+    "start": "node auth-server.js",
+    "dev": "nodemon auth-server.js",
+    "test": "node test/api-test.js",
+    "test:api": "node test/api-test.js"
+  },
+  "keywords": [
+    "authentication",
+    "jwt",
+    "nexusorbital"
+  ],
+  "author": "NexusOrbital Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "axios": "^1.3.6",
+    "chalk": "^4.1.2",
+    "nodemon": "^2.0.22"
+  }
+}
