@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     // 发送短信验证码请求
                     sendVerificationCode(countryCode.value, phoneInput.value);
                 } else {
-                    alert('请输入有效的手机号码');
+                    showMessage('请输入有效的手机号码');
                 }
             });
         });
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (email && password) {
                     loginWithEmail(email, password);
                 } else {
-                    alert('请填写所有必填字段');
+                    showMessage('请填写所有必填字段');
                 }
             } else if (activeTab.id === 'phone-tab') {
                 // 手机号登录
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (countryCode && phone && code) {
                     loginWithPhone(countryCode, phone, code);
                 } else {
-                    alert('请填写所有必填字段');
+                    showMessage('请填写所有必填字段');
                 }
             }
         });
@@ -114,10 +114,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (password === confirmPassword) {
                         registerWithEmail(username, email, password);
                     } else {
-                        alert('两次输入的密码不一致');
+                        showMessage('两次输入的密码不一致');
                     }
                 } else {
-                    alert('请填写所有必填字段');
+                    showMessage('请填写所有必填字段');
                 }
             } else if (activeTab.id === 'phone-tab') {
                 // 手机号注册
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (username && countryCode && phone && code && password) {
                     registerWithPhone(username, countryCode, phone, code, password);
                 } else {
-                    alert('请填写所有必填字段');
+                    showMessage('请填写所有必填字段');
                 }
             } else if (activeTab.id === 'social-tab') {
                 // 社交媒体注册
@@ -170,7 +170,13 @@ document.addEventListener("DOMContentLoaded", function() {
 function sendVerificationCode(countryCode, phone) {
     // 验证手机号格式
     if (!phone || phone.length < 5) {
-        alert('请输入有效的手机号码');
+        showMessage('请输入有效的手机号码');
+        return;
+    }
+    
+    // 判断是否是中国手机号 (以1开头的11位数字)
+    if (countryCode === '+86' && !/^1\d{10}$/.test(phone)) {
+        showMessage('请输入有效的手机号码');
         return;
     }
     
@@ -181,7 +187,27 @@ function sendVerificationCode(countryCode, phone) {
     sessionStorage.setItem(`verification_code_${countryCode}${phone}`, verificationCode);
     
     // 显示验证码（在实际应用中应通过短信发送，这里为了测试方便直接显示）
-    alert(`测试用验证码：${verificationCode}，已发送到 ${countryCode}${phone}`);
+    showMessage(`测试用验证码：${verificationCode}，已发送到 ${countryCode}${phone}`);
+    
+    // 添加倒计时效果
+    const btnVerificationCode = document.querySelector('.btn-verification-code');
+    if (btnVerificationCode) {
+        let countdown = 60;
+        btnVerificationCode.disabled = true;
+        btnVerificationCode.style.backgroundColor = 'rgba(125, 125, 125, 0.5)';
+        
+        const timer = setInterval(() => {
+            btnVerificationCode.textContent = `重新获取(${countdown}s)`;
+            countdown--;
+            
+            if (countdown < 0) {
+                clearInterval(timer);
+                btnVerificationCode.disabled = false;
+                btnVerificationCode.textContent = '获取验证码';
+                btnVerificationCode.style.backgroundColor = '';
+            }
+        }, 1000);
+    }
     
     console.log(`验证码 ${verificationCode} 已发送到 ${countryCode}${phone}`);
 }
@@ -210,10 +236,10 @@ function loginWithEmail(email, password) {
         const token = generateFakeJWT(user.username);
         storeAuthToken(token);
         
-        alert('登录成功！');
+        showMessage('登录成功！');
         window.location.href = '/community.html';
     } else {
-        alert('邮箱或密码错误');
+        showMessage('邮箱或密码错误');
     }
 }
 
@@ -234,7 +260,7 @@ function loginWithPhone(countryCode, phone, code) {
     // 简单验证验证码
     const storedCode = sessionStorage.getItem(`verification_code_${phoneNumber}`);
     if (code !== storedCode) { 
-        alert('验证码错误');
+        showMessage('验证码错误');
         return;
     }
     
@@ -250,10 +276,10 @@ function loginWithPhone(countryCode, phone, code) {
         const token = generateFakeJWT(user.username);
         storeAuthToken(token);
         
-        alert('登录成功！');
+        showMessage('登录成功！');
         window.location.href = '/community.html';
     } else {
-        alert('手机号未注册');
+        showMessage('手机号未注册');
     }
 }
 
@@ -272,216 +298,218 @@ function loginWithSocial(socialType) {
     // 模拟社交登录过程
     console.log('社交登录', socialType);
     
-    // 创建一个模拟的社交登录弹窗
-    const socialLoginModal = document.createElement('div');
-    socialLoginModal.className = 'social-login-modal';
-    socialLoginModal.innerHTML = `
-        <div class="social-login-content">
-            <div class="social-login-header">
-                <h3>${socialNameMap[socialType]}授权登录</h3>
-                <button class="social-login-close">&times;</button>
+    if (socialType === 'weixin') {
+        // 微信登录特殊处理 - 显示二维码
+        showWeixinQrCodeLogin();
+    } else {
+        // 创建一个模拟的社交登录弹窗
+        const socialLoginModal = document.createElement('div');
+        socialLoginModal.className = 'social-login-modal';
+        socialLoginModal.innerHTML = `
+            <div class="social-login-content">
+                <div class="social-login-header">
+                    <h3>${socialNameMap[socialType]}授权登录</h3>
+                    <button class="social-login-close">&times;</button>
+                </div>
+                <div class="social-login-body">
+                    <div class="social-icon ${socialType}">
+                        <i class="fab fa-${socialType === 'weibo' ? 'weibo' : 'book'}"></i>
+                    </div>
+                    <p>正在打开${socialNameMap[socialType]}授权页面...</p>
+                    <div class="social-login-loading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <div class="social-login-buttons" style="display:none;">
+                        <button class="btn-confirm">确认授权</button>
+                        <button class="btn-cancel">取消</button>
+                    </div>
+                </div>
             </div>
-            <div class="social-login-body">
-                <div class="social-icon ${socialType}">
-                    <i class="fab fa-${socialType === 'weixin' ? 'weixin' : socialType === 'weibo' ? 'weibo' : 'book'}"></i>
-                </div>
-                <p>正在打开${socialNameMap[socialType]}授权页面...</p>
-                <div class="social-login-loading">
-                    <div class="loading-spinner"></div>
-                </div>
-                <div class="social-login-buttons" style="display:none;">
-                    <button class="btn-confirm">确认授权</button>
-                    <button class="btn-cancel">取消</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // 添加样式
-    const style = document.createElement('style');
-    style.textContent = `
-        .social-login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .social-login-content {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-radius: 10px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-        }
-        .social-login-header {
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .social-login-header h3 {
-            margin: 0;
-            color: white;
-            font-weight: 500;
-        }
-        .social-login-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        .social-login-close:hover {
-            color: white;
-        }
-        .social-login-body {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .social-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 40px;
-        }
-        .social-icon.weixin {
-            color: #07C160;
-        }
-        .social-icon.weibo {
-            color: #E6162D;
-        }
-        .social-icon.xiaohongshu {
-            color: #FF2741;
-        }
-        .social-login-body p {
-            color: white;
-            margin: 15px 0;
-        }
-        .social-login-loading {
-            margin: 20px 0;
-        }
-        .loading-spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top: 3px solid #3498db;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .social-login-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .social-login-buttons button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn-confirm {
-            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-            color: white;
-        }
-        .btn-cancel {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        .btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-        .btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-    `;
-    
-    // 添加到页面
-    document.head.appendChild(style);
-    document.body.appendChild(socialLoginModal);
-    
-    // 模拟登录过程
-    setTimeout(() => {
-        // 隐藏加载动画，显示按钮
-        const loadingElement = socialLoginModal.querySelector('.social-login-loading');
-        const buttonsElement = socialLoginModal.querySelector('.social-login-buttons');
+        `;
         
-        loadingElement.style.display = 'none';
-        buttonsElement.style.display = 'flex';
+        // 添加样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .social-login-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .social-login-content {
+                background: linear-gradient(135deg, #1e293b, #0f172a);
+                border-radius: 10px;
+                width: 400px;
+                max-width: 90%;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+                overflow: hidden;
+            }
+            .social-login-header {
+                padding: 15px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .social-login-header h3 {
+                margin: 0;
+                color: white;
+                font-weight: 500;
+            }
+            .social-login-close {
+                background: none;
+                border: none;
+                font-size: 24px;
+                color: rgba(255, 255, 255, 0.6);
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+            .social-login-close:hover {
+                color: white;
+            }
+            .social-login-body {
+                padding: 30px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .social-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.1);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 20px;
+                font-size: 40px;
+            }
+            .social-icon.weibo {
+                color: #E6162D;
+            }
+            .social-icon.xiaohongshu {
+                color: #FF2741;
+            }
+            .social-login-body p {
+                color: white;
+                margin: 15px 0;
+            }
+            .social-login-loading {
+                margin: 20px 0;
+            }
+            .loading-spinner {
+                border: 3px solid rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                border-top: 3px solid #3498db;
+                width: 30px;
+                height: 30px;
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .social-login-buttons {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            .social-login-buttons button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .btn-confirm {
+                background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+                color: white;
+            }
+            .btn-cancel {
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
+            .btn-confirm:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            }
+            .btn-cancel:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        `;
         
-        // 更新消息
-        const messageElement = socialLoginModal.querySelector('p');
-        messageElement.textContent = `请确认授权登录到 NexusOrbital`;
-    }, 2000);
-    
-    // 绑定事件
-    const closeButton = socialLoginModal.querySelector('.social-login-close');
-    const confirmButton = socialLoginModal.querySelector('.btn-confirm');
-    const cancelButton = socialLoginModal.querySelector('.btn-cancel');
-    
-    // 关闭按钮
-    closeButton.addEventListener('click', () => {
-        document.body.removeChild(socialLoginModal);
-        document.head.removeChild(style);
-    });
-    
-    // 取消按钮
-    cancelButton.addEventListener('click', () => {
-        document.body.removeChild(socialLoginModal);
-        document.head.removeChild(style);
-    });
-    
-    // 确认按钮
-    confirmButton.addEventListener('click', () => {
-        // 创建随机用户
-        const randomId = Math.floor(Math.random() * 10000);
-        const socialUser = {
-            id: generateUUID(),
-            username: `${socialType}_user_${randomId}`,
-            socialType: socialType,
-            createdAt: new Date().toISOString(),
-            lastLogin: new Date().toISOString()
-        };
+        // 添加到页面
+        document.head.appendChild(style);
+        document.body.appendChild(socialLoginModal);
         
-        // 保存用户
-        let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
-        users.push(socialUser);
-        localStorage.setItem('nexus_users', JSON.stringify(users));
+        // 模拟登录过程
+        setTimeout(() => {
+            // 隐藏加载动画，显示按钮
+            const loadingElement = socialLoginModal.querySelector('.social-login-loading');
+            const buttonsElement = socialLoginModal.querySelector('.social-login-buttons');
+            
+            loadingElement.style.display = 'none';
+            buttonsElement.style.display = 'flex';
+            
+            // 更新消息
+            const messageElement = socialLoginModal.querySelector('p');
+            messageElement.textContent = `请确认授权登录到 NexusOrbital`;
+        }, 2000);
         
-        // 生成令牌
-        const token = generateFakeJWT(socialUser.username);
-        storeAuthToken(token);
+        // 绑定事件
+        const closeButton = socialLoginModal.querySelector('.social-login-close');
+        const confirmButton = socialLoginModal.querySelector('.btn-confirm');
+        const cancelButton = socialLoginModal.querySelector('.btn-cancel');
         
-        // 删除模态框
-        document.body.removeChild(socialLoginModal);
-        document.head.removeChild(style);
+        // 关闭按钮
+        closeButton.addEventListener('click', () => {
+            document.body.removeChild(socialLoginModal);
+            document.head.removeChild(style);
+        });
         
-        // 提示成功并跳转
-        alert(`${socialNameMap[socialType]}授权登录成功！`);
-        window.location.href = '/community.html';
-    });
+        // 取消按钮
+        cancelButton.addEventListener('click', () => {
+            document.body.removeChild(socialLoginModal);
+            document.head.removeChild(style);
+        });
+        
+        // 确认按钮
+        confirmButton.addEventListener('click', () => {
+            // 创建随机用户
+            const randomId = Math.floor(Math.random() * 10000);
+            const socialUser = {
+                id: generateUUID(),
+                username: `${socialType}_user_${randomId}`,
+                socialType: socialType,
+                createdAt: new Date().toISOString(),
+                lastLogin: new Date().toISOString()
+            };
+            
+            // 保存用户
+            let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
+            users.push(socialUser);
+            localStorage.setItem('nexus_users', JSON.stringify(users));
+            
+            // 生成令牌
+            const token = generateFakeJWT(socialUser.username);
+            storeAuthToken(token);
+            
+            // 删除模态框
+            document.body.removeChild(socialLoginModal);
+            document.head.removeChild(style);
+            
+            // 提示成功并跳转
+            showMessage(`${socialNameMap[socialType]}授权登录成功！`);
+            window.location.href = '/community.html';
+        });
+    }
 }
 
 /**
@@ -509,7 +537,7 @@ function registerWithEmail(username, email, password) {
     // 检查用户名或邮箱是否已存在
     const userExists = users.some(user => user.username === username || user.email === email);
     if (userExists) {
-        alert('用户名或邮箱已经被注册');
+        showMessage('用户名或邮箱已经被注册');
         return;
     }
     
@@ -527,7 +555,7 @@ function registerWithEmail(username, email, password) {
     localStorage.setItem('nexus_users', JSON.stringify(users));
     
     // 注册成功
-    alert('注册成功，请登录');
+    showMessage('注册成功，请登录');
     window.location.href = '/login.html';
 }
 
@@ -546,7 +574,7 @@ function registerWithPhone(username, countryCode, phone, code, password) {
     // 简单验证验证码
     const storedCode = sessionStorage.getItem(`verification_code_${countryCode}${phone}`);
     if (code !== storedCode) { 
-        alert('验证码错误');
+        showMessage('验证码错误');
         return;
     }
     
@@ -561,7 +589,7 @@ function registerWithPhone(username, countryCode, phone, code, password) {
     );
     
     if (userExists) {
-        alert('用户名或手机号已经被注册');
+        showMessage('用户名或手机号已经被注册');
         return;
     }
     
@@ -579,7 +607,7 @@ function registerWithPhone(username, countryCode, phone, code, password) {
     localStorage.setItem('nexus_users', JSON.stringify(users));
     
     // 注册成功
-    alert('注册成功，请登录');
+    showMessage('注册成功，请登录');
     window.location.href = '/login.html';
 }
 
@@ -650,6 +678,115 @@ function clearAuthToken() {
 function logout() {
     clearAuthToken();
     window.location.href = '/login.html';
+}
+
+/**
+ * 显示自定义消息
+ * @param {string} message 消息内容
+ */
+function showMessage(message) {
+    // 检查是否已存在消息框
+    let messageBox = document.querySelector('.nexus-message-box');
+    
+    if (!messageBox) {
+        // 创建消息框
+        messageBox = document.createElement('div');
+        messageBox.className = 'nexus-message-box';
+        messageBox.innerHTML = `
+            <div class="nexus-message-content">
+                <div class="nexus-message-header">
+                    <span>nexusorbital.com 提示</span>
+                </div>
+                <div class="nexus-message-body">
+                    <p></p>
+                </div>
+                <div class="nexus-message-footer">
+                    <button class="nexus-btn-confirm">确定</button>
+                </div>
+            </div>
+        `;
+        
+        // 添加样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .nexus-message-box {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.2s ease;
+            }
+            .nexus-message-content {
+                background: linear-gradient(135deg, #1e293b, #0f172a);
+                border-radius: 10px;
+                width: 300px;
+                max-width: 90%;
+                overflow: hidden;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            }
+            .nexus-message-header {
+                padding: 12px 15px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                display: flex;
+                justify-content: space-between;
+            }
+            .nexus-message-header span {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 14px;
+            }
+            .nexus-message-body {
+                padding: 20px;
+                color: white;
+                text-align: center;
+            }
+            .nexus-message-body p {
+                margin: 0;
+                line-height: 1.5;
+            }
+            .nexus-message-footer {
+                padding: 10px 15px 15px;
+                display: flex;
+                justify-content: center;
+            }
+            .nexus-btn-confirm {
+                background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+                border: none;
+                border-radius: 5px;
+                color: white;
+                padding: 8px 20px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .nexus-btn-confirm:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(messageBox);
+        
+        // 绑定事件
+        const confirmBtn = messageBox.querySelector('.nexus-btn-confirm');
+        confirmBtn.addEventListener('click', function() {
+            messageBox.remove();
+            if (document.querySelectorAll('.nexus-message-box').length === 0) {
+                document.head.removeChild(style);
+            }
+        });
+    }
+    
+    // 更新消息内容
+    messageBox.querySelector('.nexus-message-body p').textContent = message;
 }
 
 // 页面加载时检查登录状态
@@ -733,4 +870,158 @@ function updateNavigation() {
             </div>
         `;
     }
+}
+
+/**
+ * 显示微信二维码登录界面
+ */
+function showWeixinQrCodeLogin() {
+    // 创建微信二维码登录窗口
+    const weixinQrModal = document.createElement('div');
+    weixinQrModal.className = 'weixin-qr-modal';
+    weixinQrModal.innerHTML = `
+        <div class="weixin-qr-content">
+            <div class="weixin-qr-header">
+                <h3>微信扫码登录</h3>
+                <button class="weixin-qr-close">&times;</button>
+            </div>
+            <div class="weixin-qr-body">
+                <div class="weixin-logo">
+                    <i class="fab fa-weixin"></i>
+                </div>
+                <p>请使用微信扫描二维码登录</p>
+                <div class="weixin-qrcode">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://nexusorbital.com/weixin-login?id=${generateUUID()}" alt="微信登录二维码">
+                </div>
+                <p class="weixin-qr-tips">扫码后请在微信中确认登录</p>
+            </div>
+        </div>
+    `;
+    
+    // 添加样式
+    const style = document.createElement('style');
+    style.textContent = `
+        .weixin-qr-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .weixin-qr-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 10px;
+            width: 350px;
+            max-width: 90%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .weixin-qr-header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .weixin-qr-header h3 {
+            margin: 0;
+            color: white;
+            font-weight: 500;
+        }
+        .weixin-qr-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .weixin-qr-close:hover {
+            color: white;
+        }
+        .weixin-qr-body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .weixin-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #07C160;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 30px;
+            color: white;
+        }
+        .weixin-qr-body p {
+            color: white;
+            margin: 10px 0;
+        }
+        .weixin-qrcode {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .weixin-qrcode img {
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+        .weixin-qr-tips {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 14px;
+        }
+    `;
+    
+    // 添加到页面
+    document.head.appendChild(style);
+    document.body.appendChild(weixinQrModal);
+    
+    // 绑定关闭事件
+    const closeButton = weixinQrModal.querySelector('.weixin-qr-close');
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(weixinQrModal);
+        document.head.removeChild(style);
+    });
+    
+    // 模拟扫码成功
+    setTimeout(() => {
+        // 创建随机用户
+        const randomId = Math.floor(Math.random() * 10000);
+        const weixinUser = {
+            id: generateUUID(),
+            username: `weixin_user_${randomId}`,
+            socialType: 'weixin',
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+        };
+        
+        // 保存用户
+        let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
+        users.push(weixinUser);
+        localStorage.setItem('nexus_users', JSON.stringify(users));
+        
+        // 生成令牌
+        const token = generateFakeJWT(weixinUser.username);
+        storeAuthToken(token);
+        
+        // 删除模态框
+        document.body.removeChild(weixinQrModal);
+        document.head.removeChild(style);
+        
+        // 提示成功并跳转
+        showMessage('微信扫码登录成功！');
+        window.location.href = '/community.html';
+    }, 8000); // 8秒后模拟扫码成功
 }
