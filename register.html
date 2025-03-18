@@ -778,7 +778,8 @@
         });
     </script>
     
-    <!-- 加载认证相关的JavaScript文件 -->
+    <!-- 加载配置和认证相关的JavaScript文件 -->
+    <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     
     <!-- 添加注册表单提交事件 -->
@@ -815,7 +816,13 @@
                                 console.log('开始注册请求');
                                 
                                 const xhr = new XMLHttpRequest();
-                                xhr.open('POST', 'http://localhost:3050/api/register', true);
+                                // 使用全局配置中的API地址
+                                const apiUrl = window.NexusConfig ? 
+                                    window.NexusConfig.API_BASE_URL + '/register' : 
+                                    'http://localhost:3060/api/register';
+                                    
+                                console.log('使用API地址:', apiUrl);
+                                xhr.open('POST', apiUrl, true);
                                 xhr.setRequestHeader('Content-Type', 'application/json');
                                 
                                 xhr.onload = function() {

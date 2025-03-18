@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital 邮箱注册测试</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #e0e0e0;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background: white;
+            border-top: 3px solid #3498db;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        #response {
+            background: #f8f8f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .status.success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        .status.info {
+            background-color: #e2f0fb;
+            border-left: 4px solid #17a2b8;
+        }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>NexusOrbital 邮箱注册测试工具</h1>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="register">注册</div>
+        <div class="tab" data-tab="verify">验证</div>
+        <div class="tab" data-tab="config">配置</div>
+    </div>
+    
+    <div id="register" class="tab-content card active">
+        <h2>用户注册</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">用户名:</label>
+                <input type="text" id="username" required placeholder="输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="email">邮箱:</label>
+                <input type="email" id="email" required placeholder="输入邮箱">
+            </div>
+            <div class="form-group">
+                <label for="password">密码:</label>
+                <input type="password" id="password" required placeholder="输入密码 (至少8个字符)">
+            </div>
+            <button type="submit">注册 <span id="registerLoader" class="loader"></span></button>
+        </form>
+    </div>
+    
+    <div id="verify" class="tab-content card">
+        <h2>邮箱验证</h2>
+        <form id="verifyForm">
+            <div class="form-group">
+                <label for="verifyEmail">邮箱:</label>
+                <input type="email" id="verifyEmail" required placeholder="输入注册邮箱">
+            </div>
+            <div class="form-group">
+                <label for="verificationCode">验证码:</label>
+                <input type="text" id="verificationCode" required placeholder="输入验证码">
+            </div>
+            <button type="submit">验证 <span id="verifyLoader" class="loader"></span></button>
+        </form>
+    </div>
+    
+    <div id="config" class="tab-content card">
+        <h2>API配置</h2>
+        <form id="configForm">
+            <div class="form-group">
+                <label for="apiBaseUrl">API基础URL:</label>
+                <input type="text" id="apiBaseUrl" placeholder="http://localhost:3060/api">
+            </div>
+            <button type="submit">保存配置</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h2>响应结果</h2>
+        <div id="status" class="status info">
+            等待操作...
+        </div>
+        <div id="response"></div>
+    </div>
+    
+    <script>
+        // 全局配置
+        let apiBaseUrl = 'http://localhost:3060/api';
+        
+        // 获取已保存的配置
+        if (localStorage.getItem('apiBaseUrl')) {
+            apiBaseUrl = localStorage.getItem('apiBaseUrl');
+            document.getElementById('apiBaseUrl').value = apiBaseUrl;
+        } else {
+            document.getElementById('apiBaseUrl').value = apiBaseUrl;
+        }
+        
+        // 标签切换
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动标签
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加活动标签
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // 状态更新函数
+        function updateStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status ' + type;
+        }
+        
+        // 响应显示函数
+        function showResponse(data) {
+            document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+        }
+        
+        // 注册表单提交
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // 显示加载器
+            document.getElementById('registerLoader').style.display = 'inline-block';
+            updateStatus('正在发送注册请求...', 'info');
+            
+            try {
+                const response = await fetch(`${apiBaseUrl}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+                
+                const data = await response.json();
+                showResponse(data);
+                
+                if (response.ok) {
+                    updateStatus('注册成功！请检查邮箱获取验证码', 'success');
+                    // 自动填充验证表单的邮箱
+                    document.getElementById('verifyEmail').value = email;
+                    // 切换到验证标签页
+                    document.querySelector('.tab[data-tab="verify"]').click();
+                } else {
+                    updateStatus(`注册失败: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                updateStatus(`请求错误: ${error.message}`, 'error');
+                showResponse({ error: error.message });
+            } finally {
+                // 隐藏加载器
+                document.getElementById('registerLoader').style.display = 'none';
+            }
+        });
+        
+        // 验证表单提交
+        document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('verifyEmail').value;
+            const code = document.getElementById('verificationCode').value;
+            
+            // 显示加载器
+            document.getElementById('verifyLoader').style.display = 'inline-block';
+            updateStatus('正在发送验证请求...', 'info');
+            
+            try {
+                const response = await fetch(`${apiBaseUrl}/verify/email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, code })
+                });
+                
+                const data = await response.json();
+                showResponse(data);
+                
+                if (response.ok) {
+                    updateStatus('邮箱验证成功！', 'success');
+                } else {
+                    updateStatus(`验证失败: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                updateStatus(`请求错误: ${error.message}`, 'error');
+                showResponse({ error: error.message });
+            } finally {
+                // 隐藏加载器
+                document.getElementById('verifyLoader').style.display = 'none';
+            }
+        });
+        
+        // 配置表单提交
+        document.getElementById('configForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newApiBaseUrl = document.getElementById('apiBaseUrl').value;
+            apiBaseUrl = newApiBaseUrl;
+            localStorage.setItem('apiBaseUrl', apiBaseUrl);
+            updateStatus('API配置已保存', 'success');
+        });
+    </script>
+</body>
+</html>

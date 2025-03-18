@@ -3,8 +3,12 @@
  * 包括登录、注册、验证码、JWT处理等功能
  */
 
-// API基本URL
-const API_BASE_URL = 'http://localhost:3050/api';
+// 使用全局配置中的API基本URL
+const API_BASE_URL = window.NexusConfig ? window.NexusConfig.API_BASE_URL : 'http://localhost:3060/api';
+
+// 在开发控制台输出当前使用的API地址
+console.log('auth.js脚本已加载');
+console.log('当前API基础URL:', API_BASE_URL);
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log('auth.js脚本已加载');
