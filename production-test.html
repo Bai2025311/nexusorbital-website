@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital生产环境测试</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #1a2f6c;
+            border-bottom: 2px solid #3a7bd5;
+            padding-bottom: 10px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2a5db0;
+        }
+        .result {
+            background-color: #eaeaea;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .log-container {
+            background-color: #333;
+            color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+        }
+        .tab-nav {
+            display: flex;
+            margin-bottom: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .tab-btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #ddd;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab-btn.active {
+            background-color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>NexusOrbital API测试工具</h1>
+    
+    <div class="card">
+        <h2>环境设置</h2>
+        <div class="form-group">
+            <label for="api-base">API基础URL</label>
+            <input type="text" id="api-base" value="https://api.nexusorbital.com/api">
+        </div>
+    </div>
+    
+    <div class="card">
+        <ul class="tab-nav">
+            <li class="tab-btn active" data-tab="register-tab">注册测试</li>
+            <li class="tab-btn" data-tab="login-tab">登录测试</li>
+            <li class="tab-btn" data-tab="reset-tab">密码重置测试</li>
+        </ul>
+        
+        <div id="register-tab" class="tab-content active">
+            <h2>邮箱注册测试</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">邮箱</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">确认密码</label>
+                    <input type="password" id="confirm-password" required>
+                </div>
+                <button type="submit" id="register-btn">提交注册</button>
+            </form>
+        </div>
+        
+        <div id="login-tab" class="tab-content">
+            <h2>邮箱登录测试</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">邮箱</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">密码</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" id="login-btn">登录</button>
+            </form>
+        </div>
+        
+        <div id="reset-tab" class="tab-content">
+            <h2>密码重置测试</h2>
+            <form id="reset-form">
+                <div class="form-group">
+                    <label for="reset-email">邮箱</label>
+                    <input type="email" id="reset-email" required>
+                </div>
+                <button type="submit" id="reset-btn">请求重置</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>响应结果</h2>
+        <div id="result" class="result">等待操作...</div>
+    </div>
+    
+    <div class="card">
+        <h2>日志记录</h2>
+        <div id="log" class="log-container"></div>
+    </div>
+    
+    <script>
+        // 日志记录函数
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const logItem = document.createElement('div');
+            logItem.classList.add(type);
+            logItem.textContent = `[${time}] ${message}`;
+            logElement.appendChild(logItem);
+            logElement.scrollTop = logElement.scrollHeight;
+            
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // 显示结果
+        function showResult(data, success = true) {
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = typeof data === 'object' 
+                ? JSON.stringify(data, null, 2) 
+                : data;
+            resultElement.className = 'result ' + (success ? 'success' : 'error');
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('页面已加载，API测试工具准备就绪');
+            
+            // 选项卡切换
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有激活状态
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // 添加激活状态
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // 注册表单提交
+            const registerForm = document.getElementById('register-form');
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const apiBase = document.getElementById('api-base').value;
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                // 验证表单
+                if (password !== confirmPassword) {
+                    showResult('两次输入的密码不一致', false);
+                    return;
+                }
+                
+                // 禁用按钮
+                const registerBtn = document.getElementById('register-btn');
+                registerBtn.disabled = true;
+                registerBtn.textContent = '注册中...';
+                
+                const url = `${apiBase}/register`;
+                log(`发送注册请求到: ${url}`);
+                log(`注册数据: ${JSON.stringify({username, email, password: '***'})}`);
+                
+                // 发送请求
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                })
+                .then(response => {
+                    log(`收到响应状态码: ${response.status}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP错误: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    log(`响应数据: ${JSON.stringify(data)}`, data.success ? 'success' : 'error');
+                    showResult(data, data.success);
+                })
+                .catch(error => {
+                    log(`错误: ${error.message}`, 'error');
+                    showResult(error.message, false);
+                })
+                .finally(() => {
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = '提交注册';
+                });
+            });
+            
+            // 登录表单提交
+            const loginForm = document.getElementById('login-form');
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const apiBase = document.getElementById('api-base').value;
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                // 禁用按钮
+                const loginBtn = document.getElementById('login-btn');
+                loginBtn.disabled = true;
+                loginBtn.textContent = '登录中...';
+                
+                const url = `${apiBase}/login`;
+                log(`发送登录请求到: ${url}`);
+                
+                // 发送请求
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    body: JSON.stringify({ email, password })
+                })
+                .then(response => {
+                    log(`收到响应状态码: ${response.status}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP错误: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    log(`响应数据: ${JSON.stringify(data)}`, data.success ? 'success' : 'error');
+                    showResult(data, data.success);
+                })
+                .catch(error => {
+                    log(`错误: ${error.message}`, 'error');
+                    showResult(error.message, false);
+                })
+                .finally(() => {
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = '登录';
+                });
+            });
+            
+            // 密码重置表单提交
+            const resetForm = document.getElementById('reset-form');
+            resetForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const apiBase = document.getElementById('api-base').value;
+                const email = document.getElementById('reset-email').value;
+                
+                // 禁用按钮
+                const resetBtn = document.getElementById('reset-btn');
+                resetBtn.disabled = true;
+                resetBtn.textContent = '提交中...';
+                
+                const url = `${apiBase}/reset-password`;
+                log(`发送密码重置请求到: ${url}`);
+                
+                // 发送请求
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    },
+                    body: JSON.stringify({ email })
+                })
+                .then(response => {
+                    log(`收到响应状态码: ${response.status}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP错误: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    log(`响应数据: ${JSON.stringify(data)}`, data.success ? 'success' : 'error');
+                    showResult(data, data.success);
+                })
+                .catch(error => {
+                    log(`错误: ${error.message}`, 'error');
+                    showResult(error.message, false);
+                })
+                .finally(() => {
+                    resetBtn.disabled = false;
+                    resetBtn.textContent = '请求重置';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

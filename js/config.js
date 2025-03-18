@@ -52,7 +52,7 @@ const CONFIG = {
         AUTH_TOKEN_NAME: 'nexus_auth_token',
         USER_DATA_NAME: 'nexus_user',
         DEBUG: false,
-        JWT_LIFESPAN: '30d',
+        JWT_LIFESPAN: '7d',
         VERIFICATION_CODE_EXPIRE: 300 // 5分钟
     }
 };

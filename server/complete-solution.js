@@ -14,7 +14,7 @@ const createPasswordResetService = require('./password-reset');
 // 默认配置
 const defaultConfig = {
     port: 3090,
-    corsOrigin: '*',
+    corsOrigin: '*', // 允许所有来源的请求
     dbPath: path.join(__dirname, '../data/users.json'),
     emailService: null,
     logLevel: 'info'
@@ -60,9 +60,9 @@ app.use(express.static(path.join(__dirname, '..')));
 
 // CORS配置
 app.use(cors({
-    origin: defaultConfig.corsOrigin,
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // 存储用户数据（测试用，实际应使用数据库）
@@ -319,7 +319,7 @@ function startServer(customConfig = {}) {
     app.use(cors({
         origin: config.corsOrigin,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization']
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
     }));
     
     // 如果没有配置邮件传输，创建一个控制台传输

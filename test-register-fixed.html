@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试注册修复 - NexusOrbital</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #eaeaea;
+        }
+        #consoleOutput {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            font-family: monospace;
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>测试固定的注册功能</h1>
+    
+    <form id="registerForm">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirmPassword">确认密码</label>
+            <input type="password" id="confirmPassword" required>
+        </div>
+        
+        <button type="submit" id="submitBtn">提交注册</button>
+    </form>
+    
+    <div class="status">
+        <h3>状态信息</h3>
+        <div id="status">尚未提交</div>
+    </div>
+    
+    <div id="consoleOutput"></div>
+    
+    <script>
+        // 自定义日志函数
+        function log(message, type = 'info') {
+            const output = document.getElementById('consoleOutput');
+            const time = new Date().toLocaleTimeString();
+            const msgClass = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            
+            output.innerHTML += `<div class="${msgClass}">[${time}] ${message}</div>`;
+            output.scrollTop = output.scrollHeight;
+            
+            // 同时输出到控制台
+            if (type === 'error') {
+                console.error(message);
+            } else if (type === 'success') {
+                console.log('%c' + message, 'color: green');
+            } else {
+                console.log(message);
+            }
+        }
+        
+        // 设置状态信息
+        function setStatus(message, isError = false) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.style.color = isError ? 'red' : 'black';
+        }
+        
+        // 页面加载时执行
+        document.addEventListener('DOMContentLoaded', function() {
+            log('页面已加载');
+            
+            // 获取测试环境URL
+            const API_URL = window.location.hostname === 'localhost' 
+                          ? 'http://localhost:3090/api/register'
+                          : 'https://api.nexusorbital.com/api/register';
+            
+            log(`API接口设置为: ${API_URL}`);
+            
+            // 添加表单提交处理程序
+            const form = document.getElementById('registerForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                log('表单提交事件已触发');
+                
+                // 获取表单数据
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // 验证数据
+                if (!username || !email || !password || !confirmPassword) {
+                    log('请填写所有字段', 'error');
+                    setStatus('请填写所有字段', true);
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    log('两次输入的密码不一致', 'error');
+                    setStatus('两次输入的密码不一致', true);
+                    return;
+                }
+                
+                // 禁用提交按钮防止重复提交
+                document.getElementById('submitBtn').disabled = true;
+                setStatus('正在提交...');
+                
+                // 构建请求数据
+                const requestData = {
+                    username,
+                    email,
+                    password
+                };
+                
+                log(`准备发送数据: ${JSON.stringify({...requestData, password: '***'})}`);
+                
+                // 发送请求
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => {
+                    log(`收到HTTP响应，状态码: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    log(`解析响应数据: ${JSON.stringify(data)}`, data.success ? 'success' : 'error');
+                    
+                    if (data.success) {
+                        setStatus('注册成功，验证邮件已发送');
+                    } else {
+                        setStatus(data.message || '注册失败', true);
+                    }
+                })
+                .catch(error => {
+                    log(`发生错误: ${error.message}`, 'error');
+                    setStatus('提交过程中发生错误: ' + error.message, true);
+                })
+                .finally(() => {
+                    // 重新启用提交按钮
+                    document.getElementById('submitBtn').disabled = false;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

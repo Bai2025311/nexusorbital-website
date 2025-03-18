@@ -791,7 +791,14 @@
             const registerForm = document.querySelector('.auth-form');
             if (registerForm) {
                 console.log('找到注册表单，添加提交事件');
-                registerForm.addEventListener('submit', function(e) {
+                
+                // 移除可能存在的重复事件监听器
+                const clonedForm = registerForm.cloneNode(true);
+                registerForm.parentNode.replaceChild(clonedForm, registerForm);
+                
+                // 重新获取新复制的表单并添加事件监听器
+                const newRegisterForm = document.querySelector('.auth-form');
+                newRegisterForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     console.log('表单提交被触发');
                     
@@ -808,62 +815,60 @@
                         
                         if (username && email && password && confirmPassword) {
                             if (password === confirmPassword) {
-                                // 直接发送API请求，不使用registerWithEmail函数
+                                // 禁用注册按钮
                                 const registerButton = document.querySelector('button[type="submit"]');
                                 registerButton.disabled = true;
                                 registerButton.textContent = '注册中...';
                                 
                                 console.log('开始注册请求');
                                 
-                                const xhr = new XMLHttpRequest();
-                                // 使用全局配置中的API地址
-                                const apiUrl = window.NexusConfig ? 
-                                    window.NexusConfig.API_BASE_URL + '/register' : 
-                                    'http://localhost:3060/api/register';
-                                    
-                                console.log('使用API地址:', apiUrl);
-                                xhr.open('POST', apiUrl, true);
-                                xhr.setRequestHeader('Content-Type', 'application/json');
+                                // 直接使用fetch代替XMLHttpRequest，更现代的方式
+                                // 确定API地址，优先使用配置值，否则尝试localhost
+                                let apiUrl = 'http://localhost:3090/api/register';
                                 
-                                xhr.onload = function() {
-                                    console.log('注册响应状态:', xhr.status);
-                                    if (xhr.status >= 200 && xhr.status < 300) {
-                                        try {
-                                            const data = JSON.parse(xhr.responseText);
-                                            console.log('注册响应数据:', data);
-                                            
-                                            if (data.success) {
-                                                alert('注册成功，请登录');
-                                                window.location.href = '/login.html';
-                                            } else {
-                                                alert(data.message || '注册失败，请稍后重试');
-                                                registerButton.disabled = false;
-                                                registerButton.textContent = '立即注册';
-                                            }
-                                        } catch (error) {
-                                            console.error('解析响应数据失败:', error);
-                                            alert('处理响应失败，请稍后重试');
-                                            registerButton.disabled = false;
-                                            registerButton.textContent = '立即注册';
-                                        }
+                                if (window.NexusConfig && window.NexusConfig.API_BASE_URL) {
+                                    apiUrl = window.NexusConfig.API_BASE_URL + '/register';
+                                    console.log('使用配置的API地址:', apiUrl);
+                                } else {
+                                    // 根据当前主机名采用不同的API地址
+                                    if (window.location.hostname !== 'localhost' && 
+                                        window.location.hostname !== '127.0.0.1') {
+                                        apiUrl = 'https://api.nexusorbital.com/api/register';
+                                    }
+                                    console.log('使用默认API地址:', apiUrl);
+                                }
+                                
+                                // 发送请求
+                                fetch(apiUrl, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Cache-Control': 'no-cache'
+                                    },
+                                    body: JSON.stringify({ username, email, password })
+                                })
+                                .then(response => {
+                                    console.log('注册响应状态:', response.status);
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    console.log('注册响应数据:', data);
+                                    
+                                    if (data.success) {
+                                        alert('注册成功，请登录');
+                                        window.location.href = '/login.html';
                                     } else {
-                                        console.error('注册请求失败:', xhr.status, xhr.statusText);
-                                        alert('注册失败，请稍后重试');
+                                        alert(data.message || '注册失败，请稍后重试');
                                         registerButton.disabled = false;
                                         registerButton.textContent = '立即注册';
                                     }
-                                };
-                                
-                                xhr.onerror = function() {
-                                    console.error('网络错误');
-                                    alert('网络错误，请稍后再试');
+                                })
+                                .catch(error => {
+                                    console.error('注册请求失败:', error);
+                                    alert('注册失败，请稍后重试');
                                     registerButton.disabled = false;
                                     registerButton.textContent = '立即注册';
-                                };
-                                
-                                // 发送请求
-                                console.log('发送注册数据:', { username, email, password: '***' });
-                                xhr.send(JSON.stringify({ username, email, password }));
+                                });
                             } else {
                                 alert('两次输入的密码不一致');
                             }

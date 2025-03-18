@@ -29,11 +29,31 @@ if %errorlevel% neq 0 (
     npm install express body-parser cors nodemailer node-fetch@2 --no-save
 )
 
-:: 启动服务器
+:: 提示用户选择服务器类型
 echo.
-echo 启动NexusOrbital身份验证系统服务器...
+echo 请选择要启动的服务器:
+echo 1. 标准服务器 (完整功能)
+echo 2. 修复版服务器 (仅修复注册问题)
 echo.
-node server/complete-solution.js
+set /p choice="请输入选项 (1/2): "
+
+:: 根据用户选择启动不同服务器
+if "%choice%"=="1" (
+    echo.
+    echo 启动标准NexusOrbital身份验证系统服务器...
+    echo.
+    node server/complete-solution.js
+) else if "%choice%"=="2" (
+    echo.
+    echo 启动修复版服务器 (仅修复注册问题)...
+    echo.
+    node server/fix-cors.js
+) else (
+    echo.
+    echo 无效选项，默认启动标准服务器...
+    echo.
+    node server/complete-solution.js
+)
 
 echo.
 echo 服务器已停止运行。
