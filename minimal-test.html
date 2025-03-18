@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>极简测试页面</title>
+    <style>
+        body { padding: 20px; font-family: Arial; }
+        button { padding: 10px; margin: 10px 0; }
+        #result { padding: 10px; border: 1px solid #ccc; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>极简注册测试</h1>
+    
+    <button id="test-api">测试API连接</button>
+    <button id="test-register">测试注册功能</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        // 显示结果函数
+        function showResult(data) {
+            const resultEl = document.getElementById('result');
+            resultEl.style.display = 'block';
+            resultEl.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        // 测试API连接
+        document.getElementById('test-api').addEventListener('click', function() {
+            fetch('http://localhost:3040/api/test')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('API测试响应:', data);
+                    showResult(data);
+                })
+                .catch(error => {
+                    console.error('API测试错误:', error);
+                    showResult({ error: error.message });
+                });
+        });
+        
+        // 测试注册功能
+        document.getElementById('test-register').addEventListener('click', function() {
+            const userData = {
+                username: 'testuser',
+                email: 'test@example.com',
+                password: 'password123'
+            };
+            
+            console.log('发送注册请求:', userData);
+            
+            fetch('http://localhost:3040/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => {
+                console.log('注册响应状态:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('注册响应数据:', data);
+                showResult(data);
+            })
+            .catch(error => {
+                console.error('注册错误:', error);
+                showResult({ error: error.message });
+            });
+        });
+    </script>
+</body>
+</html>

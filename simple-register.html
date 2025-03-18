@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简化版注册页面 - NexusOrbital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #3a7bd5;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        #message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>注册账号</h1>
+    
+    <form id="register-form">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirm-password">确认密码</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+        </div>
+        
+        <button type="submit" id="register-btn">立即注册</button>
+    </form>
+    
+    <div id="message"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('register-form');
+            const messageDiv = document.getElementById('message');
+            const registerBtn = document.getElementById('register-btn');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                // 简单的前端验证
+                if (!username || !email || !password || !confirmPassword) {
+                    showMessage('请填写所有字段', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showMessage('两次输入的密码不一致', 'error');
+                    return;
+                }
+                
+                // 禁用按钮防止重复提交
+                registerBtn.disabled = true;
+                registerBtn.textContent = '注册中...';
+                
+                // 准备要发送的数据
+                const userData = {
+                    username: username,
+                    email: email,
+                    password: password
+                };
+                
+                console.log('开始发送注册请求:', userData);
+                
+                try {
+                    // 发送注册请求
+                    fetch('http://localhost:3040/api/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(userData)
+                    })
+                    .then(response => {
+                        console.log('注册响应状态:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('注册响应数据:', data);
+                        
+                        if (data.success) {
+                            showMessage('注册成功！即将跳转到登录页面...', 'success');
+                            setTimeout(function() {
+                                window.location.href = '/login.html';
+                            }, 2000);
+                        } else {
+                            showMessage(data.message || '注册失败，请稍后重试', 'error');
+                            registerBtn.disabled = false;
+                            registerBtn.textContent = '立即注册';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('注册响应处理错误:', error);
+                        showMessage('处理响应时出错，请稍后再试', 'error');
+                        registerBtn.disabled = false;
+                        registerBtn.textContent = '立即注册';
+                    });
+                } catch (error) {
+                    console.error('发送请求时发生错误:', error);
+                    showMessage('发送请求时出错，请稍后再试', 'error');
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = '立即注册';
+                }
+            });
+            
+            function showMessage(text, type) {
+                messageDiv.textContent = text;
+                messageDiv.className = type;
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调试版注册页面 - NexusOrbital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #3a7bd5;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        #message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        #logs {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .log-item {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .info { color: #0c5460; }
+        .warn { color: #856404; }
+        .error-log { color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>调试版注册页面</h1>
+    
+    <form id="register-form">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" name="username" value="testuser" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" id="email" name="email" value="test@example.com" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" name="password" value="password123" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirm-password">确认密码</label>
+            <input type="password" id="confirm-password" name="confirm-password" value="password123" required>
+        </div>
+        
+        <button type="submit" id="register-btn">注册</button>
+        <button type="button" id="test-btn">API测试</button>
+        <button type="button" id="clear-logs">清除日志</button>
+    </form>
+    
+    <div id="message"></div>
+    
+    <h2>调试日志</h2>
+    <div id="logs"></div>
+    
+    <script>
+        // 获取DOM元素
+        const form = document.getElementById('register-form');
+        const messageDiv = document.getElementById('message');
+        const registerBtn = document.getElementById('register-btn');
+        const testBtn = document.getElementById('test-btn');
+        const clearLogsBtn = document.getElementById('clear-logs');
+        const logsDiv = document.getElementById('logs');
+        
+        // 自定义日志函数
+        function log(message, type = 'info') {
+            const now = new Date();
+            const timestamp = now.toISOString();
+            const logItem = document.createElement('div');
+            logItem.className = `log-item ${type}`;
+            logItem.textContent = `[${timestamp}] ${message}`;
+            logsDiv.appendChild(logItem);
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+            console.log(`[${type}] ${message}`);
+        }
+        
+        // 显示消息函数
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = type;
+            messageDiv.style.display = 'block';
+            log(`显示消息: ${text} (类型: ${type})`, type === 'error' ? 'error-log' : 'info');
+        }
+        
+        // 测试API连接
+        testBtn.addEventListener('click', function() {
+            log('点击了API测试按钮');
+            
+            fetch('http://localhost:3040/api/test')
+                .then(response => {
+                    log(`API测试响应状态: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    log(`API测试响应数据: ${JSON.stringify(data)}`);
+                    showMessage(`API测试成功: ${data.message}`, 'success');
+                })
+                .catch(error => {
+                    log(`API测试错误: ${error.message}`, 'error-log');
+                    showMessage(`API测试失败: ${error.message}`, 'error');
+                });
+        });
+        
+        // 清除日志
+        clearLogsBtn.addEventListener('click', function() {
+            logsDiv.innerHTML = '';
+            log('日志已清除');
+        });
+        
+        // 注册表单提交
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            log('注册表单提交被触发');
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            log(`表单数据: username=${username}, email=${email}, password=******`);
+            
+            // 简单的前端验证
+            if (!username || !email || !password || !confirmPassword) {
+                log('验证失败: 字段不完整', 'warn');
+                showMessage('请填写所有字段', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                log('验证失败: 密码不匹配', 'warn');
+                showMessage('两次输入的密码不一致', 'error');
+                return;
+            }
+            
+            // 禁用按钮防止重复提交
+            registerBtn.disabled = true;
+            registerBtn.textContent = '注册中...';
+            log('禁用注册按钮，开始发送请求');
+            
+            // 准备要发送的数据
+            const userData = {
+                username: username,
+                email: email,
+                password: password
+            };
+            
+            log(`准备发送数据: ${JSON.stringify(userData).replace(password, '******')}`);
+            
+            // 使用XMLHttpRequest，更容易调试
+            const xhr = new XMLHttpRequest();
+            
+            xhr.onreadystatechange = function() {
+                log(`XHR状态变化: readyState=${xhr.readyState}, status=${xhr.status}`);
+                
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            log(`注册响应数据: ${JSON.stringify(data)}`);
+                            
+                            if (data.success) {
+                                showMessage('注册成功！即将跳转到登录页面...', 'success');
+                                setTimeout(function() {
+                                    window.location.href = '/login.html';
+                                }, 2000);
+                            } else {
+                                showMessage(data.message || '注册失败，请稍后重试', 'error');
+                                registerBtn.disabled = false;
+                                registerBtn.textContent = '注册';
+                            }
+                        } catch (error) {
+                            log(`解析响应JSON失败: ${error.message}`, 'error-log');
+                            showMessage('处理响应时出错，请稍后再试', 'error');
+                            registerBtn.disabled = false;
+                            registerBtn.textContent = '注册';
+                        }
+                    } else {
+                        log(`请求失败: status=${xhr.status}`, 'error-log');
+                        showMessage(`请求失败: ${xhr.status} ${xhr.statusText}`, 'error');
+                        registerBtn.disabled = false;
+                        registerBtn.textContent = '注册';
+                    }
+                }
+            };
+            
+            xhr.onerror = function(error) {
+                log(`XHR错误: ${error}`, 'error-log');
+                showMessage('网络错误，请稍后再试', 'error');
+                registerBtn.disabled = false;
+                registerBtn.textContent = '注册';
+            };
+            
+            try {
+                log('打开XHR连接: POST http://localhost:3040/api/register');
+                xhr.open('POST', 'http://localhost:3040/api/register', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                log('发送XHR请求');
+                xhr.send(JSON.stringify(userData));
+            } catch (error) {
+                log(`发送XHR请求失败: ${error.message}`, 'error-log');
+                showMessage(`发送请求失败: ${error.message}`, 'error');
+                registerBtn.disabled = false;
+                registerBtn.textContent = '注册';
+            }
+        });
+        
+        // 页面加载完成
+        window.addEventListener('load', function() {
+            log('页面加载完成');
+        });
+    </script>
+</body>
+</html>

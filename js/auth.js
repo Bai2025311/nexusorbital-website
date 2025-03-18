@@ -3,10 +3,16 @@
  * 包括登录、注册、验证码、JWT处理等功能
  */
 
-// API基础URL，生产环境应该使用相对路径或HTTPS
-const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
+// API基本URL
+const API_BASE_URL = 'http://localhost:3050/api';
 
 document.addEventListener("DOMContentLoaded", function() {
+    console.log('auth.js脚本已加载');
+    
+    // 输出页面URL，确认页面类型
+    console.log('当前页面URL:', window.location.href);
+    console.log('是否是注册页面:', window.location.href.includes('register.html'));
+    
     // 处理登录/注册选项卡切换
     const tabButtons = document.querySelectorAll('.tab-btn');
     if (tabButtons.length > 0) {
@@ -47,7 +53,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // 处理登录表单提交
     const loginForm = document.querySelector('.auth-form');
-    if (loginForm && window.location.href.includes('login.html')) {
+    console.log('登录表单元素:', loginForm);
+    const isLoginForm = window.location.href.includes('login.html');
+    if (loginForm && isLoginForm) {
+        console.log('添加登录表单事件监听器');
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -80,12 +89,18 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     // 处理注册表单提交
-    if (loginForm && window.location.href.includes('register.html')) {
-        loginForm.addEventListener('submit', function(e) {
+    const registerForm = document.querySelector('.auth-form');
+    console.log('注册表单元素:', registerForm);
+    const isRegisterForm = window.location.href.includes('register.html');
+    if (registerForm && isRegisterForm) {
+        console.log('添加注册表单事件监听器');
+        registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('表单提交事件触发');
             
             // 判断当前活动的注册选项卡
             const activeTab = document.querySelector('.tab-content.active');
+            console.log('当前活动选项卡:', activeTab.id);
             
             if (activeTab.id === 'email-tab') {
                 // 邮箱注册
@@ -545,59 +560,73 @@ function registerWithSocial(socialType) {
 }
 
 /**
- * 邮箱注册
+ * 通过邮箱注册
  * @param {string} username 用户名
  * @param {string} email 邮箱
  * @param {string} password 密码
  */
-function registerWithEmail(username, email, password) {
-    // 显示加载状态
-    const registerButton = document.querySelector('#email-register-form button[type="submit"]');
-    if (registerButton) {
-        const originalText = registerButton.textContent;
-        registerButton.disabled = true;
-        registerButton.textContent = '注册中...';
-        
-        // 调用API注册
-        fetch(`${API_BASE_URL}/register/email`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, email, password })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showMessage('注册成功，请登录');
-                
-                // 如果是在注册页面，跳转到登录页
-                if (window.location.pathname.includes('register.html')) {
-                    window.location.href = '/login.html';
-                } else {
-                    // 如果是在登录页的注册选项卡，切换到登录选项卡
-                    const loginTab = document.querySelector('[data-tab="login"]');
-                    if (loginTab) {
-                        loginTab.click();
-                    }
-                    
-                    // 重置表单
-                    const form = document.getElementById('email-register-form');
-                    if (form) form.reset();
-                }
-            } else {
-                showMessage(data.message || '注册失败，请稍后重试');
-                registerButton.disabled = false;
-                registerButton.textContent = originalText;
-            }
-        })
-        .catch(error => {
-            console.error('注册错误:', error);
-            showMessage('网络错误，请稍后再试');
-            registerButton.disabled = false;
-            registerButton.textContent = originalText;
-        });
+// 将函数暴露为全局函数，便于外部调用
+window.registerWithEmail = function(username, email, password) {
+    console.log('registerWithEmail函数被调用');
+    
+    // 获取注册按钮元素
+    const registerButton = document.querySelector('button[type="submit"]');
+    if (!registerButton) {
+        console.error('未找到注册按钮元素');
+        return;
     }
+    
+    console.log('已找到注册按钮:', registerButton);
+    
+    // 禁用按钮，防止重复提交
+    registerButton.disabled = true;
+    registerButton.textContent = '注册中...';
+    
+    console.log('开始注册请求，URL:', `${API_BASE_URL}/register`);
+    console.log('注册数据:', { username, email, password: '***' });
+    
+    // 调用API注册
+    fetch(`${API_BASE_URL}/register`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, email, password })
+    })
+    .then(response => {
+        console.log('注册响应状态:', response.status, response.statusText);
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showMessage('注册成功，请登录');
+            
+            // 如果是在注册页面，跳转到登录页
+            if (window.location.pathname.includes('register.html')) {
+                window.location.href = '/login.html';
+            } else {
+                // 如果是在登录页的注册选项卡，切换到登录选项卡
+                const loginTab = document.querySelector('[data-tab="login"]');
+                if (loginTab) {
+                    loginTab.click();
+                }
+                
+                // 重置表单
+                const form = document.getElementById('email-register-form');
+                if (form) form.reset();
+            }
+        } else {
+            showMessage(data.message || '注册失败，请稍后重试');
+            registerButton.disabled = false;
+            registerButton.textContent = '注册';
+        }
+    })
+    .catch(error => {
+        console.error('注册错误:', error);
+        showMessage('网络错误，请稍后再试');
+        registerButton.disabled = false;
+        registerButton.textContent = '注册';
+    });
 }
 
 /**
@@ -725,8 +754,8 @@ function isLoggedIn() {
         }
         
         return true;
-    } catch (error) {
-        console.error('验证令牌出错', error);
+    } catch (e) {
+        console.error('验证令牌出错', e);
         clearAuthToken();
         return false;
     }

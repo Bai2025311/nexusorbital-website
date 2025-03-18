@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>基础注册测试</title>
+    <style>
+        body { margin: 20px; font-family: sans-serif; }
+        input, button { margin: 5px; padding: 8px; }
+        #result { margin-top: 10px; padding: 10px; border: 1px solid #ccc; display: none; }
+    </style>
+</head>
+<body>
+    <h2>基础注册测试</h2>
+    
+    <div>
+        <input type="text" id="username" placeholder="用户名" value="testuser"><br>
+        <input type="email" id="email" placeholder="邮箱" value="test@example.com"><br>
+        <input type="password" id="password" placeholder="密码" value="password123"><br>
+        <button id="register-btn">注册</button>
+        <button id="test-btn">测试API</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <script>
+        // 显示结果
+        function showResult(message) {
+            var resultEl = document.getElementById('result');
+            resultEl.textContent = message;
+            resultEl.style.display = 'block';
+        }
+        
+        // 测试API按钮
+        document.getElementById('test-btn').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:3040/api/test', true);
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        showResult('API测试成功: ' + JSON.stringify(data));
+                    } catch (e) {
+                        showResult('解析响应失败: ' + e);
+                    }
+                } else {
+                    showResult('API测试失败: ' + xhr.status);
+                }
+            };
+            
+            xhr.onerror = function() {
+                showResult('网络错误');
+            };
+            
+            xhr.send();
+        });
+        
+        // 注册按钮
+        document.getElementById('register-btn').addEventListener('click', function() {
+            var username = document.getElementById('username').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3040/api/register', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            
+            xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        showResult('注册成功: ' + JSON.stringify(data));
+                    } catch (e) {
+                        showResult('解析响应失败: ' + e);
+                    }
+                } else {
+                    showResult('注册失败: ' + xhr.status);
+                }
+            };
+            
+            xhr.onerror = function() {
+                showResult('网络错误');
+            };
+            
+            var data = JSON.stringify({
+                username: username,
+                email: email,
+                password: password
+            });
+            
+            xhr.send(data);
+        });
+    </script>
+</body>
+</html>

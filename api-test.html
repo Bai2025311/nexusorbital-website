@@ -138,7 +138,7 @@
         <!-- 注册相关API -->
         <div class="tab-content active" id="register-tab">
             <div class="card">
-                <h2>邮箱注册 <span class="endpoint">POST /api/register/email</span></h2>
+                <h2>邮箱注册 <span class="endpoint">POST /api/register</span></h2>
                 
                 <div class="form-group">
                     <label for="reg-email-username">用户名</label>
@@ -296,7 +296,7 @@
     
     <script>
         // API基础URL
-        const API_BASE_URL = 'http://localhost:3000/api';
+        const API_BASE_URL = 'http://localhost:3050/api';
         
         // 切换选项卡
         document.querySelectorAll('.tab').forEach(tab => {
@@ -357,7 +357,7 @@
                 return;
             }
             
-            const data = await apiRequest('/register/email', 'POST', { username, email, password });
+            const data = await apiRequest('/register', 'POST', { username, email, password });
             showResponse('reg-email-response', data, !data.success);
             
             // 如果成功，自动填充到验证部分

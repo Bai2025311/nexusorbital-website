@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直接打开测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #3a7bd5;
+        }
+        button {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>独立HTML测试页</h1>
+    <p>此页面可以直接从文件系统打开，不需要通过服务器访问</p>
+    
+    <div>
+        <button id="get-btn">测试GET请求</button>
+        <button id="post-btn">测试POST请求</button>
+    </div>
+    
+    <h3>结果：</h3>
+    <pre id="result">点击上方按钮开始测试...</pre>
+    
+    <script>
+        // 获取元素
+        const getBtn = document.getElementById('get-btn');
+        const postBtn = document.getElementById('post-btn');
+        const resultEl = document.getElementById('result');
+        
+        // 显示结果
+        function showResult(text) {
+            resultEl.textContent = text;
+        }
+        
+        // 添加时间戳
+        function getTimestamp() {
+            return new Date().toISOString();
+        }
+        
+        // 测试GET请求
+        getBtn.addEventListener('click', function() {
+            showResult(`[${getTimestamp()}] 正在发送GET请求到 http://localhost:3040/api/test...`);
+            
+            fetch('http://localhost:3040/api/test')
+                .then(response => {
+                    showResult(`[${getTimestamp()}] 收到响应，状态：${response.status}\n正在解析响应...`);
+                    return response.json();
+                })
+                .then(data => {
+                    showResult(`[${getTimestamp()}] GET测试成功！\n\n响应数据：\n${JSON.stringify(data, null, 2)}`);
+                })
+                .catch(error => {
+                    showResult(`[${getTimestamp()}] GET测试失败：${error.message}`);
+                });
+        });
+        
+        // 测试POST请求
+        postBtn.addEventListener('click', function() {
+            const testData = {
+                username: 'directtest',
+                email: 'direct@test.com',
+                password: 'password123'
+            };
+            
+            showResult(`[${getTimestamp()}] 正在发送POST请求到 http://localhost:3040/api/register...\n\n请求数据：\n${JSON.stringify(testData, null, 2)}`);
+            
+            fetch('http://localhost:3040/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(testData)
+            })
+            .then(response => {
+                showResult(`[${getTimestamp()}] 收到响应，状态：${response.status}\n正在解析响应...`);
+                return response.json();
+            })
+            .then(data => {
+                showResult(`[${getTimestamp()}] POST测试成功！\n\n响应数据：\n${JSON.stringify(data, null, 2)}`);
+            })
+            .catch(error => {
+                showResult(`[${getTimestamp()}] POST测试失败：${error.message}`);
+            });
+        });
+    </script>
+</body>
+</html>

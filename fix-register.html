@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复版注册页面 - NexusOrbital</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #3a7bd5;
+            border-bottom: 2px solid #3a7bd5;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2a6ac5;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>NexusOrbital注册</h1>
+    
+    <form id="register-form">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" id="username" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" id="password" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirm-password">确认密码</label>
+            <input type="password" id="confirm-password" required>
+        </div>
+        
+        <button type="submit" id="submit-btn">立即注册</button>
+    </form>
+    
+    <div id="status" class="status"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('register-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const statusEl = document.getElementById('status');
+            const API_URL = 'http://localhost:3050/api/register';
+            
+            // 显示状态信息
+            function showStatus(message, isSuccess) {
+                statusEl.textContent = message;
+                statusEl.className = isSuccess ? 'status success' : 'status error';
+                statusEl.style.display = 'block';
+            }
+            
+            // 表单提交处理
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 获取表单数据
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                // 基本验证
+                if (!username || !email || !password || !confirmPassword) {
+                    showStatus('请填写所有字段', false);
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showStatus('两次输入的密码不一致', false);
+                    return;
+                }
+                
+                // 禁用提交按钮
+                submitBtn.disabled = true;
+                submitBtn.textContent = '注册中...';
+                
+                // 准备数据
+                const userData = {
+                    username: username,
+                    email: email,
+                    password: password
+                };
+                
+                console.log('发送注册请求到:', API_URL);
+                console.log('请求数据:', userData);
+                
+                // 发送请求
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                })
+                .then(response => {
+                    console.log('收到响应:', response.status, response.statusText);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('响应数据:', data);
+                    
+                    if (data.success) {
+                        showStatus('注册成功！即将跳转到登录页面...', true);
+                        setTimeout(() => {
+                            window.location.href = '/login.html';
+                        }, 2000);
+                    } else {
+                        showStatus(data.message || '注册失败，请稍后重试', false);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = '立即注册';
+                    }
+                })
+                .catch(error => {
+                    console.error('请求出错:', error);
+                    showStatus('网络错误，请稍后再试', false);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '立即注册';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>最简注册测试</title>
+    <script>
+        async function testAPI() {
+            const result = document.getElementById('result');
+            
+            try {
+                result.textContent = "测试API连接中...";
+                const testResponse = await fetch('http://localhost:3050/api/test');
+                const testData = await testResponse.json();
+                result.textContent = `API测试成功: ${JSON.stringify(testData)}`;
+            } catch (error) {
+                result.textContent = `API测试失败: ${error.message}`;
+                return;
+            }
+            
+            try {
+                result.textContent += "\n\n正在测试注册功能...";
+                
+                const userData = {
+                    username: "simpletest",
+                    email: "simple@test.com",
+                    password: "simple123"
+                };
+                
+                const registerResponse = await fetch('http://localhost:3050/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const registerData = await registerResponse.json();
+                result.textContent += `\n注册结果: ${JSON.stringify(registerData)}`;
+            } catch (error) {
+                result.textContent += `\n注册测试失败: ${error.message}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>最简注册测试</h1>
+    <button onclick="testAPI()">测试API和注册</button>
+    <pre id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></pre>
+</body>
+</html>
