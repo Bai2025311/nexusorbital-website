@@ -3,6 +3,9 @@
  * 包括登录、注册、验证码、JWT处理等功能
  */
 
+// API基础URL，生产环境应该使用相对路径或HTTPS
+const API_BASE_URL = 'http://localhost:3000/api';
+
 document.addEventListener("DOMContentLoaded", function() {
     // 处理登录/注册选项卡切换
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -772,6 +775,8 @@ function showMessage(message) {
                 to { opacity: 1; }
             }
         `;
+        
+        // 添加到页面
         document.head.appendChild(style);
         document.body.appendChild(messageBox);
         
@@ -890,10 +895,12 @@ function showWeixinQrCodeLogin() {
                     <i class="fab fa-weixin"></i>
                 </div>
                 <p>请使用微信扫描二维码登录</p>
-                <div class="weixin-qrcode">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://nexusorbital.com/weixin-login?id=${generateUUID()}" alt="微信登录二维码">
+                <div class="weixin-qrcode" id="wechat-qr-container">
+                    <!-- 二维码将在这里显示 -->
                 </div>
                 <p class="weixin-qr-tips">扫码后请在微信中确认登录</p>
+                <p class="weixin-qr-note">注意：这是模拟演示，完整功能需接入微信开放平台</p>
+                <a href="docs/wechat-integration-guide.md" class="weixin-docs-link" target="_blank">查看完整微信接入指南 →</a>
             </div>
         </div>
     `;
@@ -972,6 +979,11 @@ function showWeixinQrCodeLogin() {
             padding: 10px;
             background-color: white;
             border-radius: 5px;
+            width: 220px;
+            height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .weixin-qrcode img {
             width: 200px;
@@ -982,6 +994,22 @@ function showWeixinQrCodeLogin() {
             color: rgba(255, 255, 255, 0.7) !important;
             font-size: 14px;
         }
+        .weixin-qr-note {
+            color: rgba(255, 255, 255, 0.5) !important;
+            font-size: 12px;
+            margin-top: 20px !important;
+        }
+        .weixin-docs-link {
+            margin-top: 15px;
+            color: #3a7bd5;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .weixin-docs-link:hover {
+            color: #00d2ff;
+            text-decoration: underline;
+        }
     `;
     
     // 添加到页面
@@ -991,37 +1019,63 @@ function showWeixinQrCodeLogin() {
     // 绑定关闭事件
     const closeButton = weixinQrModal.querySelector('.weixin-qr-close');
     closeButton.addEventListener('click', () => {
+        qrLoginController.stop();
         document.body.removeChild(weixinQrModal);
         document.head.removeChild(style);
     });
     
-    // 模拟扫码成功
-    setTimeout(() => {
-        // 创建随机用户
-        const randomId = Math.floor(Math.random() * 10000);
-        const weixinUser = {
-            id: generateUUID(),
-            username: `weixin_user_${randomId}`,
-            socialType: 'weixin',
-            createdAt: new Date().toISOString(),
-            lastLogin: new Date().toISOString()
+    // 加载微信登录模块
+    if (!window.WechatQrLogin) {
+        const script = document.createElement('script');
+        script.src = 'js/wechat-login.js';
+        script.onload = () => {
+            initWechatQrLogin();
         };
+        document.head.appendChild(script);
+    } else {
+        initWechatQrLogin();
+    }
+    
+    // 初始化微信登录
+    function initWechatQrLogin() {
+        const qrContainer = document.getElementById('wechat-qr-container');
         
-        // 保存用户
-        let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
-        users.push(weixinUser);
-        localStorage.setItem('nexus_users', JSON.stringify(users));
-        
-        // 生成令牌
-        const token = generateFakeJWT(weixinUser.username);
-        storeAuthToken(token);
-        
-        // 删除模态框
-        document.body.removeChild(weixinQrModal);
-        document.head.removeChild(style);
-        
-        // 提示成功并跳转
-        showMessage('微信扫码登录成功！');
-        window.location.href = '/community.html';
-    }, 8000); // 8秒后模拟扫码成功
+        const qrLoginController = window.WechatQrLogin.start(
+            qrContainer, 
+            // 登录成功回调
+            (loginData) => {
+                // 创建随机用户
+                const randomId = Math.floor(Math.random() * 10000);
+                const weixinUser = {
+                    id: generateUUID(),
+                    username: loginData.userInfo?.nickname || `weixin_user_${randomId}`,
+                    socialType: 'weixin',
+                    avatar: loginData.userInfo?.avatar,
+                    createdAt: new Date().toISOString(),
+                    lastLogin: new Date().toISOString()
+                };
+                
+                // 保存用户
+                let users = JSON.parse(localStorage.getItem('nexus_users') || '[]');
+                users.push(weixinUser);
+                localStorage.setItem('nexus_users', JSON.stringify(users));
+                
+                // 保存后端返回的令牌（如果有实际后端）或生成本地令牌
+                const token = loginData.token || generateFakeJWT(weixinUser.username);
+                storeAuthToken(token);
+                
+                // 删除模态框
+                document.body.removeChild(weixinQrModal);
+                document.head.removeChild(style);
+                
+                // 提示成功并跳转
+                showMessage('微信扫码登录成功！');
+                window.location.href = '/community.html';
+            },
+            // 状态变化回调
+            (status) => {
+                console.log('微信登录状态:', status);
+            }
+        );
+    }
 }
