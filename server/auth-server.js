@@ -15,6 +15,10 @@ const config = require('./config');
 const { errorMiddleware, asyncHandler, ErrorTypes } = require('./error-handler');
 const socialAuth = require('./social-auth');
 
+// 导入服务模块
+const smsService = require('./services/sms-service');
+const emailService = require('./services/email-service');
+
 // 创建Express应用
 const app = express();
 
@@ -61,7 +65,7 @@ const apiRouter = express.Router();
 
 /**
  * @api {post} /register/email 用户注册 - 邮箱
- * @apiDescription 注册新用户账号（基于邮箱和密码）
+ * @apiDescription 通过邮箱和密码注册新用户
  */
 apiRouter.post('/register/email', asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
@@ -77,29 +81,28 @@ apiRouter.post('/register/email', asyncHandler(async (req, res) => {
     throw ErrorTypes.BAD_REQUEST('邮箱格式不正确');
   }
   
-  // 验证密码长度
-  if (password.length < config.get('security.passwordMinLength')) {
-    throw ErrorTypes.BAD_REQUEST(`密码长度至少为${config.get('security.passwordMinLength')}个字符`);
+  // 验证密码强度
+  if (password.length < 8) {
+    throw ErrorTypes.BAD_REQUEST('密码长度不能少于8个字符');
   }
   
-  // 检查邮箱是否已注册
+  // 检查邮箱是否已被注册
   if (db.users.find(u => u.email === email)) {
-    throw ErrorTypes.CONFLICT('邮箱已注册');
+    throw ErrorTypes.CONFLICT('该邮箱已被注册');
   }
-  
-  // 哈希密码
-  const hashedPassword = await bcrypt.hash(password, config.get('security.bcryptSaltRounds'));
   
   // 创建新用户
-  const newUser = { 
-    id: uuidv4(), 
-    username, 
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  
+  const newUser = {
+    id: uuidv4(),
+    username,
     email, 
     password: hashedPassword,
     createdAt: new Date().toISOString()
   };
   
-  // 保存用户到数据库
   db.users.push(newUser);
   
   // 生成JWT令牌
@@ -109,16 +112,23 @@ apiRouter.post('/register/email', asyncHandler(async (req, res) => {
     { expiresIn: TOKEN_EXPIRY }
   );
   
-  // 返回成功响应
+  // 发送欢迎邮件
+  try {
+    await emailService.sendWelcomeEmail(email, username);
+  } catch (error) {
+    console.warn('发送欢迎邮件失败:', error);
+    // 不中断注册流程
+  }
+  
+  // 返回用户信息和令牌
   res.status(201).json({
     success: true,
-    message: '注册成功',
-    token,
     user: {
       id: newUser.id,
       username: newUser.username,
       email: newUser.email
-    }
+    },
+    token
   });
 }));
 
@@ -181,11 +191,11 @@ apiRouter.post('/send-sms', asyncHandler(async (req, res) => {
   }
   
   // 生成验证码（开发环境使用固定验证码，生产环境随机生成）
-  const code = config.get('server.isDevelopment') 
+  const code = config.get('server.isDevelopment')
     ? config.get('sms.defaultDevCode')
     : Math.floor(100000 + Math.random() * 900000).toString();
   
-  // 计算过期时间
+  // 设置过期时间（默认10分钟）
   const expiresAt = new Date();
   expiresAt.setSeconds(expiresAt.getSeconds() + config.get('sms.codeExpirySeconds'));
   
@@ -209,22 +219,99 @@ apiRouter.post('/send-sms', asyncHandler(async (req, res) => {
   // 添加新的验证码
   db.verificationCodes.push(verificationData);
   
-  // 在实际生产环境中，这里应该调用SMS服务发送验证码
-  // 为了开发和测试方便，这里直接返回验证码
+  // 发送短信验证码
+  try {
+    const smsResult = await smsService.sendSMS(phone, code, countryCode);
+    
+    res.json({
+      success: true,
+      message: '验证码已发送',
+      expiresIn: config.get('sms.codeExpirySeconds')
+    });
+    
+    // 只在开发环境返回验证码
+    if (config.get('server.isDevelopment')) {
+      res.json({
+        success: true,
+        message: '验证码已发送',
+        expiresIn: config.get('sms.codeExpirySeconds'),
+        debug: { code }
+      });
+    }
+  } catch (error) {
+    throw ErrorTypes.EXTERNAL_SERVICE_ERROR('发送验证码失败，请稍后重试');
+  }
+}));
+
+/**
+ * @api {post} /send-email-code 发送邮箱验证码
+ * @apiDescription 向指定邮箱发送验证码
+ */
+apiRouter.post('/send-email-code', asyncHandler(async (req, res) => {
+  const { email } = req.body;
   
-  const responseData = {
-    success: true,
-    message: '验证码已发送',
-    expiresIn: config.get('sms.codeExpirySeconds')
-  };
-  
-  // 只在开发环境返回验证码
-  if (config.get('server.isDevelopment')) {
-    responseData.code = code;
+  // 验证请求参数
+  if (!email) {
+    throw ErrorTypes.BAD_REQUEST('请提供邮箱地址');
   }
   
-  // 返回成功响应
-  res.json(responseData);
+  // 验证邮箱格式
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw ErrorTypes.BAD_REQUEST('邮箱格式不正确');
+  }
+  
+  // 生成验证码
+  const code = config.get('server.isDevelopment')
+    ? '123456'
+    : Math.floor(100000 + Math.random() * 900000).toString();
+  
+  // 设置过期时间（默认10分钟）
+  const expiresAt = new Date();
+  expiresAt.setSeconds(expiresAt.getSeconds() + 600);
+  
+  // 保存验证码
+  const verificationData = {
+    email,
+    code,
+    expiresAt: expiresAt.toISOString(),
+    type: 'email'
+  };
+  
+  // 删除之前的验证码
+  const existingIndex = db.verificationCodes.findIndex(v => 
+    v.email === email && v.type === 'email'
+  );
+  
+  if (existingIndex !== -1) {
+    db.verificationCodes.splice(existingIndex, 1);
+  }
+  
+  // 添加新的验证码
+  db.verificationCodes.push(verificationData);
+  
+  // 发送邮件验证码
+  try {
+    const emailResult = await emailService.sendVerificationEmail(email, code);
+    
+    res.json({
+      success: true,
+      message: '验证码已发送至邮箱',
+      expiresIn: 600
+    });
+    
+    // 只在开发环境返回验证码
+    if (config.get('server.isDevelopment')) {
+      res.json({
+        success: true,
+        message: '验证码已发送至邮箱',
+        expiresIn: 600,
+        debug: { code }
+      });
+    }
+  } catch (error) {
+    throw ErrorTypes.EXTERNAL_SERVICE_ERROR('发送验证码失败，请稍后重试');
+  }
 }));
 
 /**

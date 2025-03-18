@@ -25,11 +25,39 @@ const config = {
   
   // 短信服务配置
   sms: {
-    apiKey: process.env.SMS_API_KEY || 'development-key',
+    // 阿里云短信配置
+    accessKeyId: process.env.ALIYUN_ACCESS_KEY_ID,
+    accessKeySecret: process.env.ALIYUN_ACCESS_KEY_SECRET,
+    signName: process.env.ALIYUN_SMS_SIGN_NAME || 'NexusOrbital',
+    templateCode: process.env.ALIYUN_SMS_TEMPLATE_CODE,
     // 在开发环境中，验证码永远是123456
     defaultDevCode: '123456',
     // 验证码过期时间（秒）
     codeExpirySeconds: 300
+  },
+  
+  // 邮件服务配置
+  email: {
+    // 邮件提供商: 'smtp' 或 'sendgrid'
+    provider: process.env.EMAIL_PROVIDER || 'sendgrid',
+    // 默认发件人
+    defaultFrom: process.env.EMAIL_FROM || 'noreply@nexusorbital.com',
+    // 是否在开发环境使用模拟发送
+    useMock: process.env.NODE_ENV !== 'production',
+    // SendGrid配置
+    sendgrid: {
+      apiKey: process.env.SENDGRID_API_KEY
+    },
+    // SMTP配置
+    smtp: {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT || 587,
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      }
+    }
   },
   
   // 社交登录配置
