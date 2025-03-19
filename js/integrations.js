@@ -164,6 +164,12 @@ NexusOrbital.Integrations = (function() {
 
   // 整合社区功能与权限
   function integrateCommunity() {
+    // 如果当前页面设置了禁用登录检查标志，则不添加事件监听器
+    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+      console.log('社区页面：禁用社区功能集成中的登录检查');
+      return; // 不添加任何事件监听
+    }
+    
     // 可以在这里添加对社区功能的权限检查
     // 例如，在发帖前检查是否有发帖权限
     document.addEventListener('click', function(e) {
@@ -222,6 +228,12 @@ NexusOrbital.Integrations = (function() {
   
   // 整合会员系统
   function integrateMembership() {
+    // 如果当前页面设置了禁用登录检查标志，则不进行会员功能集成
+    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+      console.log('社区页面：禁用会员功能集成');
+      return; // 不执行会员功能集成
+    }
+    
     if (!NexusOrbital.Membership) return;
     
     // 添加会员选择事件跟踪
@@ -246,6 +258,12 @@ NexusOrbital.Integrations = (function() {
   
   // 整合探索者模式
   function integrateExplorerMode() {
+    // 如果当前页面设置了禁用登录检查标志，则不进行探索者模式集成
+    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+      console.log('社区页面：禁用探索者模式集成');
+      return; // 不执行探索者模式集成
+    }
+    
     if (!NexusOrbital.ExplorerMode) return;
     
     // 更新UI元素基于探索者状态
@@ -372,18 +390,12 @@ NexusOrbital.Integrations = (function() {
   
   // 显示登录或探索者模式提示，仅用于发帖功能
   function showLoginOrExplorerPrompt(featureName) {
-    // 如果当前页面设置了禁用登录检查标志，则不显示任何提示
-    if (window.disableCommunityLoginCheck && 
-        (window.location.pathname.includes('community.html') || 
-         featureName.includes('社区') || 
-         featureName.includes('内容'))) {
-      console.log('社区页面：禁用登录提示');
-      return;
-    }
-    
-    // 对于社区页面浏览功能，不显示任何提示
-    if (featureName === '社区内容' || featureName === '浏览内容' || 
-        featureName === '社区页面' || featureName === '查看内容') {
+    // 如果是社区页面，则不显示任何登录/探索者提示，以改善用户体验
+    if (window.disableCommunityLoginCheck || 
+        window.location.pathname.includes('community.html') || 
+        featureName.includes('社区') || 
+        featureName.includes('内容')) {
+      console.log('禁用登录或探索者模式提示：' + featureName);
       return;
     }
     

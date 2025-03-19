@@ -111,11 +111,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * 显示发帖模态框，如果未登录则显示登录提示
+ * 显示发帖模态框
  */
 function showPostModal() {
     // 检查是否登录
     if (!isLoggedIn()) {
+        // 使用我们已更新的友好提示，而不是重定向
         showLoginRequiredMessage();
         return;
     }
