@@ -264,3 +264,6 @@ function handleResponsiveChanges() {
         document.body.style.paddingBottom = '0';
     }
 }
+
+// 更新于2025-03-20：修复了社区页面中的移动端登录弹窗问题
+// 更新者：Cascade AI助手
