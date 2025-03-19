@@ -788,6 +788,76 @@
         window.addEventListener('load', function() {
             console.log('页面完全加载，添加表单提交事件');
             
+            // 添加诊断信息弹窗功能
+            function showDebugModal(title, message, details) {
+                // 创建诊断弹窗
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.top = '50%';
+                modal.style.left = '50%';
+                modal.style.transform = 'translate(-50%, -50%)';
+                modal.style.backgroundColor = 'white';
+                modal.style.padding = '20px';
+                modal.style.borderRadius = '5px';
+                modal.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+                modal.style.zIndex = '9999';
+                modal.style.maxWidth = '80%';
+                modal.style.maxHeight = '80vh';
+                modal.style.overflow = 'auto';
+
+                // 添加标题
+                const titleEl = document.createElement('h3');
+                titleEl.textContent = title;
+                titleEl.style.marginTop = '0';
+                modal.appendChild(titleEl);
+
+                // 添加消息
+                const messageEl = document.createElement('p');
+                messageEl.textContent = message;
+                modal.appendChild(messageEl);
+
+                // 添加详情
+                if (details) {
+                    const detailsEl = document.createElement('pre');
+                    detailsEl.textContent = typeof details === 'object' ? JSON.stringify(details, null, 2) : details;
+                    detailsEl.style.backgroundColor = '#f5f5f5';
+                    detailsEl.style.padding = '10px';
+                    detailsEl.style.overflow = 'auto';
+                    detailsEl.style.maxHeight = '200px';
+                    modal.appendChild(detailsEl);
+                }
+
+                // 添加关闭按钮
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = '关闭';
+                closeBtn.style.marginTop = '10px';
+                closeBtn.style.padding = '5px 10px';
+                closeBtn.style.backgroundColor = '#3a7bd5';
+                closeBtn.style.color = 'white';
+                closeBtn.style.border = 'none';
+                closeBtn.style.borderRadius = '3px';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.onclick = function() {
+                    document.body.removeChild(modal);
+                    document.body.removeChild(overlay);
+                };
+                modal.appendChild(closeBtn);
+
+                // 创建遮罩层
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                overlay.style.zIndex = '9998';
+
+                // 添加到页面
+                document.body.appendChild(overlay);
+                document.body.appendChild(modal);
+            }
+            
             const registerForm = document.querySelector('.auth-form');
             if (registerForm) {
                 console.log('找到注册表单，添加提交事件');
@@ -825,18 +895,36 @@
                                 // 直接使用fetch代替XMLHttpRequest，更现代的方式
                                 // 确定API地址，优先使用配置值，否则尝试localhost
                                 let apiUrl = 'http://localhost:3090/api/register';
+                                let configInfo = '未找到配置';
                                 
                                 if (window.NexusConfig && window.NexusConfig.API_BASE_URL) {
                                     apiUrl = window.NexusConfig.API_BASE_URL + '/register';
+                                    configInfo = `从配置获取: ${window.NexusConfig.ENV} 环境`;
                                     console.log('使用配置的API地址:', apiUrl);
                                 } else {
                                     // 根据当前主机名采用不同的API地址
                                     if (window.location.hostname !== 'localhost' && 
                                         window.location.hostname !== '127.0.0.1') {
                                         apiUrl = 'https://api.nexusorbital.com/api/register';
+                                        configInfo = '从主机名判断使用线上API';
+                                    } else {
+                                        configInfo = '使用本地开发服务器';
                                     }
                                     console.log('使用默认API地址:', apiUrl);
                                 }
+                                
+                                // 显示当前请求信息
+                                showDebugModal(
+                                    '注册请求信息', 
+                                    `正在向 ${apiUrl} 发送注册请求`,
+                                    {
+                                        '配置来源': configInfo,
+                                        '主机名': window.location.hostname,
+                                        '用户名': username,
+                                        '邮箱': email,
+                                        'NexusConfig': window.NexusConfig ? JSON.stringify(window.NexusConfig) : '未定义'
+                                    }
+                                );
                                 
                                 // 发送请求
                                 fetch(apiUrl, {
@@ -845,27 +933,47 @@
                                         'Content-Type': 'application/json',
                                         'Cache-Control': 'no-cache'
                                     },
-                                    body: JSON.stringify({ username, email, password })
+                                    body: JSON.stringify({ username, email, password }),
+                                    // 添加这个选项以包含凭据（cookies等）
+                                    credentials: 'include'
                                 })
                                 .then(response => {
                                     console.log('注册响应状态:', response.status);
+                                    // 检查响应状态
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP错误: ${response.status}`);
+                                    }
                                     return response.json();
                                 })
                                 .then(data => {
                                     console.log('注册响应数据:', data);
                                     
                                     if (data.success) {
-                                        alert('注册成功，请登录');
-                                        window.location.href = '/login.html';
+                                        showDebugModal('注册成功', '您的账户已创建成功！', data);
+                                        setTimeout(() => {
+                                            window.location.href = '/login.html';
+                                        }, 2000);
                                     } else {
-                                        alert(data.message || '注册失败，请稍后重试');
+                                        showDebugModal('注册失败', data.message || '注册失败，请稍后重试', data);
                                         registerButton.disabled = false;
                                         registerButton.textContent = '立即注册';
                                     }
                                 })
                                 .catch(error => {
                                     console.error('注册请求失败:', error);
-                                    alert('注册失败，请稍后重试');
+                                    showDebugModal(
+                                        '注册请求失败', 
+                                        `无法连接到服务器 ${apiUrl}`, 
+                                        {
+                                            '错误信息': error.message,
+                                            '可能原因': [
+                                                'API服务器未运行',
+                                                'CORS配置错误',
+                                                '网络连接问题',
+                                                'API地址配置错误'
+                                            ].join('\n')
+                                        }
+                                    );
                                     registerButton.disabled = false;
                                     registerButton.textContent = '立即注册';
                                 });

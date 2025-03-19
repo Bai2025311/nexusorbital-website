@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直接注册测试 - NexusOrbital</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #1a2f6c;
+            border-bottom: 2px solid #3a7bd5;
+            padding-bottom: 10px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3a7bd5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2a5db0;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .log {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>NexusOrbital 直接注册测试</h1>
+    
+    <div class="container">
+        <h2>注册测试</h2>
+        <p>这个页面使用最简单的方式测试注册API，不依赖任何外部JavaScript文件。</p>
+        
+        <form id="register-form">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">邮箱</label>
+                <input type="email" id="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm-password">确认密码</label>
+                <input type="password" id="confirm-password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="api-url">API地址</label>
+                <input type="text" id="api-url" value="https://api.nexusorbital.com/api/register">
+            </div>
+            
+            <button type="submit">提交注册</button>
+        </form>
+        
+        <div id="result" class="result hidden"></div>
+        
+        <div class="log">
+            <h3>日志</h3>
+            <div id="log"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 简单的日志函数
+        function log(message) {
+            const logElement = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            logElement.innerHTML += `<div>[${time}] ${message}</div>`;
+            console.log(`[${time}] ${message}`);
+        }
+        
+        // 显示结果
+        function showResult(message, success) {
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = message;
+            resultElement.className = 'result ' + (success ? 'success' : 'error');
+            resultElement.classList.remove('hidden');
+        }
+        
+        // 注册表单提交处理
+        document.getElementById('register-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            log('表单提交开始');
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const apiUrl = document.getElementById('api-url').value;
+            
+            if (!username || !email || !password || !confirmPassword) {
+                showResult('请填写所有必填字段', false);
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showResult('两次输入的密码不一致', false);
+                return;
+            }
+            
+            log(`准备向 ${apiUrl} 发送注册请求`);
+            log(`用户名: ${username}, 邮箱: ${email}`);
+            
+            // 禁用提交按钮
+            const submitButton = this.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = '注册中...';
+            
+            // 发送请求
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache'
+                },
+                body: JSON.stringify({ username, email, password }),
+                credentials: 'include'
+            })
+            .then(response => {
+                log(`收到响应状态码: ${response.status}`);
+                return response.json().catch(() => {
+                    throw new Error('无法解析JSON响应');
+                });
+            })
+            .then(data => {
+                log(`响应数据: ${JSON.stringify(data)}`);
+                
+                if (data.success) {
+                    showResult('注册成功！', true);
+                } else {
+                    showResult(data.message || '注册失败，请稍后重试', false);
+                }
+            })
+            .catch(error => {
+                log(`错误: ${error.message}`);
+                showResult(`注册请求失败: ${error.message}`, false);
+            })
+            .finally(() => {
+                // 恢复提交按钮
+                submitButton.disabled = false;
+                submitButton.textContent = '提交注册';
+            });
+        });
+        
+        // 初始日志
+        log('页面已加载，等待提交注册表单');
+    </script>
+</body>
+</html>

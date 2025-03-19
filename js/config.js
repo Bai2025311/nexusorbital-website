@@ -25,7 +25,7 @@ const ENV = (function() {
 const CONFIG = {
     // 开发环境
     development: {
-        API_BASE_URL: 'http://localhost:3060/api',
+        API_BASE_URL: 'http://localhost:3099/api',
         ASSETS_URL: '/assets',
         AUTH_TOKEN_NAME: 'nexus_auth_token',
         USER_DATA_NAME: 'nexus_user',

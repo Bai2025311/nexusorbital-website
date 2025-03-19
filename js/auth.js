@@ -97,55 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('注册表单元素:', registerForm);
     const isRegisterForm = window.location.href.includes('register.html');
     if (registerForm && isRegisterForm) {
-        console.log('添加注册表单事件监听器');
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('表单提交事件触发');
-            
-            // 判断当前活动的注册选项卡
-            const activeTab = document.querySelector('.tab-content.active');
-            console.log('当前活动选项卡:', activeTab.id);
-            
-            if (activeTab.id === 'email-tab') {
-                // 邮箱注册
-                const username = document.getElementById('username').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirm-password').value;
-                
-                if (username && email && password && confirmPassword) {
-                    if (password === confirmPassword) {
-                        registerWithEmail(username, email, password);
-                    } else {
-                        showMessage('两次输入的密码不一致');
-                    }
-                } else {
-                    showMessage('请填写所有必填字段');
-                }
-            } else if (activeTab.id === 'phone-tab') {
-                // 手机号注册
-                const username = document.getElementById('phone-username').value;
-                const countryCode = document.getElementById('country-code').value;
-                const phone = document.getElementById('phone').value;
-                const code = document.getElementById('verification-code').value;
-                const password = document.getElementById('phone-password').value;
-                
-                if (username && countryCode && phone && code && password) {
-                    registerWithPhone(username, countryCode, phone, code, password);
-                } else {
-                    showMessage('请填写所有必填字段');
-                }
-            } else if (activeTab.id === 'social-tab') {
-                // 社交媒体注册
-                const socialType = document.querySelector('.btn-social.active').classList.contains('weixin') ? 'weixin' : 
-                                   document.querySelector('.btn-social.active').classList.contains('weibo') ? 'weibo' : 
-                                   document.querySelector('.btn-social.active').classList.contains('xiaohongshu') ? 'xiaohongshu' : '';
-                
-                if (socialType) {
-                    registerWithSocial(socialType);
-                }
-            }
-        });
+        console.log('在auth.js中找到注册表单 - 但我们不再在这里添加事件，因为register.html已经有了自己的提交逻辑');
+        // 不再添加事件监听器，避免冲突
     }
     
     // 处理社交登录按钮

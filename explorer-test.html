@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital 探索者模式测试</title>
+    <link rel="stylesheet" href="css/mvp-unified.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .test-description {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        .test-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .test-result {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            min-height: 100px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #357ac7;
+        }
+        .success {
+            color: green;
+        }
+        .failure {
+            color: red;
+        }
+        .debug-info {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>NexusOrbital 探索者模式测试</h1>
+    <p>本页面用于测试探索者模式功能和集成状态</p>
+
+    <div class="test-section">
+        <div class="test-title">测试1: 探索者模式激活</div>
+        <div class="test-description">测试激活和停用探索者模式功能</div>
+        <div class="test-actions">
+            <button id="activateExplorer">激活探索者模式</button>
+            <button id="deactivateExplorer">停用探索者模式</button>
+            <button id="checkExplorerStatus">检查状态</button>
+        </div>
+        <div class="test-result" id="explorerModeResult">结果显示在这里...</div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">测试2: 权限检查</div>
+        <div class="test-description">测试探索者模式下的权限检查功能</div>
+        <div class="test-actions">
+            <button id="checkViewPermission">检查浏览权限</button>
+            <button id="checkReadPermission">检查阅读权限</button>
+            <button id="checkPostPermission">检查发布权限</button>
+            <button id="checkToolPermission">检查设计工具权限</button>
+        </div>
+        <div class="test-result" id="permissionResult">结果显示在这里...</div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">测试3: 事件系统</div>
+        <div class="test-description">测试探索者模式事件监听功能</div>
+        <div class="test-actions">
+            <button id="setupEventListener">设置事件监听</button>
+            <button id="triggerActivateEvent">触发激活事件</button>
+            <button id="triggerDeactivateEvent">触发停用事件</button>
+        </div>
+        <div class="test-result" id="eventResult">结果显示在这里...</div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">测试4: 集成测试</div>
+        <div class="test-description">测试与其他模块的集成</div>
+        <div class="test-actions">
+            <button id="testIntegrationInit">测试集成初始化</button>
+            <button id="testCommunityIntegration">测试社区集成</button>
+            <button id="testDesignToolIntegration">测试设计工具集成</button>
+        </div>
+        <div class="test-result" id="integrationResult">结果显示在这里...</div>
+    </div>
+
+    <div class="debug-info">
+        <h3>调试信息</h3>
+        <div id="debugInfo">
+            <p>加载模块:</p>
+            <ul id="loadedModules"></ul>
+        </div>
+    </div>
+
+    <!-- 加载必要的脚本 -->
+    <script src="js/config.js"></script>
+    <script src="js/error-handler.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/explorer-mode.js"></script>
+    <script src="js/community.js"></script>
+    <script src="js/design-tool.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/integrations.js"></script>
+    <script src="js/mvp.js"></script>
+
+    <!-- 测试脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 显示已加载模块
+            const loadedModulesList = document.getElementById('loadedModules');
+            const modules = ['Auth', 'ExplorerMode', 'Community', 'DesignTool', 'Analytics', 'Integrations'];
+            
+            modules.forEach(moduleName => {
+                const li = document.createElement('li');
+                if (window.NexusOrbital && window.NexusOrbital[moduleName]) {
+                    li.textContent = `${moduleName}: 已加载`;
+                    li.className = 'success';
+                } else {
+                    li.textContent = `${moduleName}: 未加载`;
+                    li.className = 'failure';
+                }
+                loadedModulesList.appendChild(li);
+            });
+
+            // 测试1: 探索者模式激活
+            document.getElementById('activateExplorer').addEventListener('click', function() {
+                const resultElem = document.getElementById('explorerModeResult');
+                resultElem.innerHTML = '';
+                
+                try {
+                    if (window.NexusOrbital && window.NexusOrbital.ExplorerMode) {
+                        const result = window.NexusOrbital.ExplorerMode.activate();
+                        resultElem.innerHTML = `<p>探索者模式激活${result ? '成功' : '失败'}</p>`;
+                        if (result) {
+                            resultElem.innerHTML += `<p class="success">当前状态: 已激活</p>`;
+                        }
+                    } else {
+                        resultElem.innerHTML = `<p class="failure">错误: ExplorerMode 模块未加载</p>`;
+                    }
+                } catch (error) {
+                    resultElem.innerHTML = `<p class="failure">错误: ${error.message}</p>`;
+                }
+            });
+
+            document.getElementById('deactivateExplorer').addEventListener('click', function() {
+                const resultElem = document.getElementById('explorerModeResult');
+                resultElem.innerHTML = '';
+                
+                try {
+                    if (window.NexusOrbital && window.NexusOrbital.ExplorerMode) {
+                        const result = window.NexusOrbital.ExplorerMode.deactivate();
+                        resultElem.innerHTML = `<p>探索者模式停用${result ? '成功' : '失败'}</p>`;
+                        if (result) {
+                            resultElem.innerHTML += `<p class="success">当前状态: 已停用</p>`;
+                        }
+                    } else {
+                        resultElem.innerHTML = `<p class="failure">错误: ExplorerMode 模块未加载</p>`;
+                    }
+                } catch (error) {
+                    resultElem.innerHTML = `<p class="failure">错误: ${error.message}</p>`;
+                }
+            });
+
+            document.getElementById('checkExplorerStatus').addEventListener('click', function() {
+                const resultElem = document.getElementById('explorerModeResult');
+                resultElem.innerHTML = '';
+                
+                try {
+                    if (window.NexusOrbital && window.NexusOrbital.ExplorerMode) {
+                        const isActive = window.NexusOrbital.ExplorerMode.isActive();
+                        resultElem.innerHTML = `<p>探索者模式当前状态: <span class="${isActive ? 'success' : 'failure'}">${isActive ? '已激活' : '未激活'}</span></p>`;
+                        
+                        // 如果活跃，显示探索者信息
+                        if (isActive) {
+                            const info = window.NexusOrbital.ExplorerMode.getExplorerInfo();
+                            if (info) {
+                                resultElem.innerHTML += `
+                                    <p>探索者ID: ${info.id}</p>
+                                    <p>角色: ${info.role}</p>
+                                    <p>权限: ${info.permissions.join(', ')}</p>
+                                    <p>创建时间: ${info.created.toLocaleString()}</p>
+                                    <p>过期时间: ${info.expiresAt.toLocaleString()}</p>
+                                `;
+                            }
+                        }
+                    } else {
+                        resultElem.innerHTML = `<p class="failure">错误: ExplorerMode 模块未加载</p>`;
+                    }
+                } catch (error) {
+                    resultElem.innerHTML = `<p class="failure">错误: ${error.message}</p>`;
+                }
+            });
+
+            // 测试2: 权限检查
+            const permissionsToCheck = {
+                'checkViewPermission': 'community_view',
+                'checkReadPermission': 'community_read',
+                'checkPostPermission': 'community_post_basic',
+                'checkToolPermission': 'design_tool_basic'
+            };
+            
+            Object.keys(permissionsToCheck).forEach(buttonId => {
+                document.getElementById(buttonId).addEventListener('click', function() {
+                    const resultElem = document.getElementById('permissionResult');
+                    const permission = permissionsToCheck[buttonId];
+                    
+                    try {
+                        if (window.NexusOrbital && window.NexusOrbital.Integrations) {
+                            const hasPermission = window.NexusOrbital.Integrations.checkPermission(permission);
+                            resultElem.innerHTML = `<p>权限 <strong>${permission}</strong>: <span class="${hasPermission ? 'success' : 'failure'}">${hasPermission ? '允许' : '拒绝'}</span></p>`;
+                            
+                            // 检查探索者模式状态
+                            if (window.NexusOrbital.ExplorerMode) {
+                                const isExplorer = window.NexusOrbital.ExplorerMode.isActive();
+                                resultElem.innerHTML += `<p>探索者模式: <span class="${isExplorer ? 'success' : 'failure'}">${isExplorer ? '已激活' : '未激活'}</span></p>`;
+                            }
+                            
+                            // 检查登录状态
+                            if (window.NexusOrbital.Auth) {
+                                const isLoggedIn = window.NexusOrbital.Auth.isLoggedIn();
+                                resultElem.innerHTML += `<p>登录状态: <span class="${isLoggedIn ? 'success' : 'failure'}">${isLoggedIn ? '已登录' : '未登录'}</span></p>`;
+                            }
+                        } else {
+                            resultElem.innerHTML = `<p class="failure">错误: Integrations 模块未加载</p>`;
+                        }
+                    } catch (error) {
+                        resultElem.innerHTML = `<p class="failure">错误: ${error.message}</p>`;
+                    }
+                });
+            });
+
+            // 测试3: 事件系统
+            document.getElementById('setupEventListener').addEventListener('click', function() {
+                const resultElem = document.getElementById('eventResult');
+                resultElem.innerHTML = '';
+                
+                try {
+                    if (window.NexusOrbital && window.NexusOrbital.ExplorerMode) {
+                        // 设置激活事件监听
+                        window.NexusOrbital.ExplorerMode.addEventListener('activated', function(event) {
+                            const eventDisplay = document.createElement('p');
+                            eventDisplay.innerHTML = `<span class="success">探索者模式激活事件触发</span> - 时间: ${new Date().toLocaleTimeString()}`;
+                            resultElem.appendChild(eventDisplay);
+                        });
+                        
+                        // 设置停用事件监听
+                        window.NexusOrbital.ExplorerMode.addEventListener('deactivated', function(event) {
+                            const eventDisplay = document.createElement('p');
+                            eventDisplay.innerHTML = `<span class="success">探索者模式停用事件触发</span> - 时间: ${new Date().toLocaleTimeString()}`;
+                            resultElem.appendChild(eventDisplay);
+                        });
+                        
+                        resultElem.innerHTML = `<p class="success">事件监听器设置成功</p>`;
+                    } else {
+                        resultElem.innerHTML = `<p class="failure">错误: ExplorerMode 模块未加载</p>`;
+                    }
+                } catch (error) {
+                    resultElem.innerHTML = `<p class="failure">错误: ${error.message}</p>`;
+                }
+            });
+
+            document.getElementById('triggerActivateEvent').addEventListener('click', function() {
+                if (window.NexusOrbital && window.NexusOrbital.ExplorerMode) {
+                    window.NexusOrbital.ExplorerMode.activate();
+                }
+            });
+
+            document.getElementById('triggerDeactivateEvent').addEventListener('click', function() {
+                if (window.NexusOrbital && window.NexusOrbital.ExplorerMode) {
+                    window.NexusOrbital.ExplorerMode.deactivate();
+                }
+            });
+
+            // 测试4: 集成测试
+            document.getElementById('testIntegrationInit').addEventListener('click', function() {
+                const resultElem = document.getElementById('integrationResult');
+                resultElem.innerHTML = '';
+                
+                try {
+                    if (window.NexusOrbital && window.NexusOrbital.Integrations) {
+                        // 重新初始化集成模块
+                        window.NexusOrbital.Integrations.init({
+                            onPermissionDenied: function(feature, permission) {
+                                const eventDisplay = document.createElement('p');
+                                eventDisplay.innerHTML = `<span class="success">权限拒绝回调触发</span> - 功能: ${feature}, 需要权限: ${permission}`;
+                                resultElem.appendChild(eventDisplay);
+                            },
+                            onExplorerActivated: function() {
+                                const eventDisplay = document.createElement('p');
+                                eventDisplay.innerHTML = `<span class="success">探索者模式激活回调触发</span> - 时间: ${new Date().toLocaleTimeString()}`;
+                                resultElem.appendChild(eventDisplay);
+                            },
+                            onExplorerDeactivated: function() {
+                                const eventDisplay = document.createElement('p');
+                                eventDisplay.innerHTML = `<span class="success">探索者模式停用回调触发</span> - 时间: ${new Date().toLocaleTimeString()}`;
+                                resultElem.appendChild(eventDisplay);
+                            }
+                        });
+                        
+                        resultElem.innerHTML = `<p class="success">集成模块初始化成功</p>`;
+                    } else {
+                        resultElem.innerHTML = `<p class="failure">错误: Integrations 模块未加载</p>`;
+                    }
+                } catch (error) {
+                    resultElem.innerHTML = `<p class="failure">错误: ${error.message}</p>`;
+                }
+            });
+
+            document.getElementById('testCommunityIntegration').addEventListener('click', function() {
+                const resultElem = document.getElementById('integrationResult');
+                
+                try {
+                    if (window.NexusOrbital && window.NexusOrbital.Integrations && window.NexusOrbital.Community) {
+                        // 测试社区集成
+                        window.NexusOrbital.Integrations.integrateCommunity();
+                        resultElem.innerHTML += `<p class="success">社区模块集成成功</p>`;
+                    } else {
+                        resultElem.innerHTML += `<p class="failure">错误: 所需模块未加载</p>`;
+                    }
+                } catch (error) {
+                    resultElem.innerHTML += `<p class="failure">错误: ${error.message}</p>`;
+                }
+            });
+
+            document.getElementById('testDesignToolIntegration').addEventListener('click', function() {
+                const resultElem = document.getElementById('integrationResult');
+                
+                try {
+                    if (window.NexusOrbital && window.NexusOrbital.Integrations && window.NexusOrbital.DesignTool) {
+                        // 测试设计工具集成
+                        window.NexusOrbital.Integrations.integrateDesignTool();
+                        resultElem.innerHTML += `<p class="success">设计工具模块集成成功</p>`;
+                    } else {
+                        resultElem.innerHTML += `<p class="failure">错误: 所需模块未加载</p>`;
+                    }
+                } catch (error) {
+                    resultElem.innerHTML += `<p class="failure">错误: ${error.message}</p>`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
