@@ -99,12 +99,15 @@ document.addEventListener('DOMContentLoaded', function() {
  * 显示发帖模态框
  */
 function showPostModal() {
+    // 注释掉登录检查，允许未登录用户查看社区内容
+    /*
     // 检查是否已登录
     if (!isLoggedIn()) {
         // 未登录时提示并跳转到登录页
         showLoginRequiredMessage();
         return;
     }
+    */
 
     const modalOverlay = document.getElementById('post-modal-overlay');
     if (modalOverlay) {
@@ -571,7 +574,7 @@ function showLoginRequiredMessage() {
         messageElement.classList.remove('show');
         setTimeout(() => {
             document.body.removeChild(messageElement);
-            window.location.href = 'login.html';
+            window.location.href = 'new-login.html'; // 更新为新登录页
         }, 300);
     }, 2000);
 }

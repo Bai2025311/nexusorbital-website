@@ -560,7 +560,7 @@ window.registerWithEmail = function(username, email, password) {
             
             // 如果是在注册页面，跳转到登录页
             if (window.location.pathname.includes('register.html')) {
-                window.location.href = '/login.html';
+                window.location.href = '/new-login.html';
             } else {
                 // 如果是在登录页的注册选项卡，切换到登录选项卡
                 const loginTab = document.querySelector('[data-tab="login"]');
@@ -617,7 +617,7 @@ function registerWithPhone(username, countryCode, phone, code, password) {
                 
                 // 如果是在注册页面，跳转到登录页
                 if (window.location.pathname.includes('register.html')) {
-                    window.location.href = '/login.html';
+                    window.location.href = '/new-login.html';
                 } else {
                     // 如果是在登录页的注册选项卡，切换到登录选项卡
                     const loginTab = document.querySelector('[data-tab="login"]');
@@ -732,7 +732,7 @@ function clearAuthToken() {
 function logout() {
     clearAuthToken();
     showMessage('已退出登录');
-    window.location.href = '/login.html';
+    window.location.href = '/new-login.html';
 }
 
 /**
@@ -902,7 +902,7 @@ function showMessage(message) {
 document.addEventListener('DOMContentLoaded', function() {
     // 在需要登录的页面检查登录状态
     const requiresAuth = [
-        '/community.html',
+        // '/community.html', // 不再需要强制登录
         '/profile.html',
         '/dashboard.html'
     ];
@@ -911,7 +911,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (requiresAuth.some(path => currentPath.endsWith(path)) && !isLoggedIn()) {
         // 未登录，重定向到登录页
-        window.location.href = '/login.html';
+        window.location.href = '/new-login.html'; // 更新为新登录页路径
     }
     
     // 更新导航UI，显示用户信息或登录/注册链接
@@ -975,7 +975,7 @@ function updateNavigation() {
         // 未登录，显示登录/注册链接
         userMenuContainer.innerHTML = `
             <div class="auth-links">
-                <a href="/login.html" class="btn-login">登录</a>
+                <a href="/new-login.html" class="btn-login">登录</a>
                 <a href="/register.html" class="btn-register">注册</a>
             </div>
         `;
