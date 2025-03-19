@@ -1,0 +1,311 @@
+/* 
+ * 星际人居技术平台 - 穹顶式控制舱仪表盘
+ * 版本: 1.0.0
+ * 日期: 2025-03-19
+ */
+
+:root {
+  /* 基础颜色 */
+  --dome-bg-start: #2D033B;
+  --dome-bg-end: #0F4C75;
+  --data-item-bg: rgba(15, 76, 117, 0.3);
+  --data-border: rgba(100, 233, 238, 0.3);
+  --data-text: #ffffff;
+  --progress-bg: rgba(255, 255, 255, 0.1);
+  --progress-fill: rgba(100, 233, 238, 0.7);
+  
+  /* 尺寸 */
+  --dome-height: 180px;
+  --data-item-height: 70px;
+  --data-item-margin: 10px;
+  --data-padding: 12px;
+  --border-radius: 12px;
+}
+
+/* 穹顶式头部容器 */
+.dome-dashboard {
+  display: none; /* 默认隐藏，在小屏幕上显示 */
+  width: 100%;
+  height: var(--dome-height);
+  background: linear-gradient(180deg, var(--dome-bg-start) 0%, var(--dome-bg-end) 100%);
+  border-bottom-left-radius: 50% 20%;
+  border-bottom-right-radius: 50% 20%;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  transition: transform 0.5s ease, height 0.5s ease;
+}
+
+/* 仪表盘切换按钮 */
+.data-dashboard-toggle {
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 75px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--dome-bg-start), var(--dome-bg-end));
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.data-dashboard-toggle:active {
+  transform: scale(0.95);
+}
+
+.data-dashboard-toggle i {
+  font-size: 20px;
+}
+
+/* 星星背景效果 */
+.star-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  animation: twinkle 4s infinite;
+}
+
+/* 数据指标容器 */
+.data-container {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  width: 100%;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 数据条目 */
+.data-item {
+  background: var(--data-item-bg);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid var(--data-border);
+  border-radius: var(--border-radius);
+  padding: var(--data-padding);
+  flex: 1;
+  margin: 0 var(--data-item-margin);
+  height: var(--data-item-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--data-text);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.data-item:first-child {
+  margin-left: 0;
+}
+
+.data-item:last-child {
+  margin-right: 0;
+}
+
+.data-item:active {
+  transform: scale(0.98);
+}
+
+/* 数据标签 */
+.data-label {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  opacity: 0.8;
+}
+
+/* 数据值 */
+.data-value {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+/* 数据变化指标 - 增长 */
+.data-change.positive {
+  color: #4CAF50;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+/* 数据变化指标 - 减少 */
+.data-change.negative {
+  color: #F44336;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+/* 进度条容器 */
+.progress-container {
+  width: 100%;
+  height: 4px;
+  background: var(--progress-bg);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+/* 进度条填充 */
+.progress-bar {
+  height: 100%;
+  background: var(--progress-fill);
+  border-radius: 2px;
+  transition: width 1s ease-in-out;
+}
+
+/* 脉动指示器 */
+.pulse-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--progress-fill);
+  margin-left: 5px;
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+/* 轨道线条装饰 */
+.orbit-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(100,233,238,0) 0%, rgba(100,233,238,0.5) 50%, rgba(100,233,238,0) 100%);
+  width: 80%;
+  left: 10%;
+  bottom: 15px;
+}
+
+/* 动画定义 */
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.1; }
+}
+
+/* 指标名称旋转效果 - 太空舱风格 */
+.data-label {
+  position: relative;
+  padding-left: 12px;
+}
+
+.data-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 1px;
+  background-color: var(--data-border);
+}
+
+/* 收起状态 */
+.dome-dashboard.collapsed {
+  height: 0;
+  overflow: hidden;
+}
+
+/* 收起状态图标旋转 */
+.data-dashboard-toggle.active i {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+/* 移动版登录按钮 */
+.mobile-login-btn {
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 140px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2D033B, #810CA8);
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.mobile-login-btn a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: white;
+  text-decoration: none;
+}
+
+.mobile-login-btn i {
+  font-size: 20px;
+}
+
+.mobile-login-btn:active {
+  transform: scale(0.95);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .dome-dashboard {
+    display: block;
+  }
+  
+  .data-dashboard-toggle {
+    display: flex;
+  }
+  
+  .mobile-login-btn {
+    display: block;
+  }
+  
+  .data-item {
+    height: auto;
+    min-height: 60px;
+    padding: 8px;
+  }
+  
+  .data-value {
+    font-size: 16px;
+  }
+}
+
+/* 特小屏幕优化 */
+@media (max-width: 350px) {
+  .data-item {
+    padding: 6px;
+    height: 50px;
+    margin: 0 3px;
+  }
+  
+  .data-label {
+    font-size: 9px;
+    margin-bottom: 2px;
+  }
+  
+  .data-value {
+    font-size: 14px;
+  }
+}

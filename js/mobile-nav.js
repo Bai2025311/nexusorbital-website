@@ -1,0 +1,234 @@
+/**
+ * NexusOrbital 移动导航系统
+ * 版本: 1.0.0
+ * 描述: 为星际人居技术平台提供移动端导航交互功能
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始化移动导航系统
+    initMobileNavigation();
+    
+    // 监听窗口大小变化，动态调整UI
+    window.addEventListener('resize', handleResponsiveChanges);
+});
+
+/**
+ * 初始化移动导航系统
+ */
+function initMobileNavigation() {
+    // 检查DOM是否已注入导航结构，如果没有则添加
+    if (!document.querySelector('.stellar-nav-container')) {
+        createMobileNavigationDOM();
+    }
+    
+    // 设置当前页面活跃状态
+    setActiveNavItem();
+    
+    // 添加导航点击事件
+    addNavigationEventListeners();
+    
+    // 初始状态检查
+    handleResponsiveChanges();
+}
+
+/**
+ * 创建移动导航DOM结构
+ */
+function createMobileNavigationDOM() {
+    const navHTML = `
+    <div class="stellar-nav-container">
+        <nav class="stellar-navbar">
+            <a href="index.html" class="nav-item" data-page="home">
+                <div class="icon-container">
+                    <div class="nav-icon dashboard-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">控制舱</span>
+            </a>
+            
+            <a href="#" class="nav-item" data-page="funding">
+                <div class="icon-container">
+                    <div class="nav-icon funding-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">众筹</span>
+            </a>
+            
+            <a href="community.html" class="nav-item" data-page="community">
+                <div class="icon-container">
+                    <div class="nav-icon community-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">社区</span>
+            </a>
+            
+            <a href="#" class="nav-item" data-page="tech">
+                <div class="icon-container">
+                    <div class="nav-icon tech-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">技术库</span>
+            </a>
+            
+            <a href="#" class="nav-item" data-page="profile">
+                <div class="icon-container">
+                    <div class="nav-icon profile-icon"></div>
+                    <div class="orbit-animation"></div>
+                    <div class="notification-pulse" id="profile-notification" style="display:none;"></div>
+                </div>
+                <span class="nav-label">我的</span>
+            </a>
+        </nav>
+    </div>
+    `;
+    
+    // 添加到文档末尾
+    document.body.insertAdjacentHTML('beforeend', navHTML);
+}
+
+/**
+ * 设置当前页面导航项的活跃状态
+ */
+function setActiveNavItem() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const currentPath = window.location.pathname;
+    
+    // 清除所有活跃状态
+    navItems.forEach(item => item.classList.remove('active'));
+    
+    // 根据当前页面路径设置活跃项
+    if (currentPath.includes('index.html') || currentPath.endsWith('/')) {
+        document.querySelector('[data-page="home"]').classList.add('active');
+    } else if (currentPath.includes('community.html')) {
+        document.querySelector('[data-page="community"]').classList.add('active');
+    } else if (currentPath.includes('funding.html')) {
+        document.querySelector('[data-page="funding"]').classList.add('active');
+    } else if (currentPath.includes('tech.html')) {
+        document.querySelector('[data-page="tech"]').classList.add('active');
+    } else if (currentPath.includes('profile.html')) {
+        document.querySelector('[data-page="profile"]').classList.add('active');
+    }
+}
+
+/**
+ * 添加导航交互事件监听
+ */
+function addNavigationEventListeners() {
+    // 获取所有导航项
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    // 为尚未实现的页面添加点击事件
+    navItems.forEach(item => {
+        const page = item.getAttribute('data-page');
+        
+        // 对于尚未实现的页面，阻止默认行为并显示信息
+        if (item.getAttribute('href') === '#') {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                showFeatureComingSoon(page);
+            });
+        }
+    });
+    
+    // 添加探索者模式按钮到移动导航上下文菜单
+    addExplorerModeToMenu();
+}
+
+/**
+ * 显示功能即将推出提示
+ * @param {string} feature - 功能名称
+ */
+function showFeatureComingSoon(feature) {
+    // 创建提示元素
+    const toast = document.createElement('div');
+    toast.className = 'feature-toast';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <div class="toast-icon">🚀</div>
+            <div class="toast-message">
+                <strong>${getFeatureLabel(feature)}</strong> 功能即将发布
+                <div class="toast-submessage">目前处于开发阶段，敬请期待</div>
+            </div>
+        </div>
+    `;
+    
+    // 添加样式
+    toast.style.position = 'fixed';
+    toast.style.bottom = '75px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = 'rgba(15, 76, 117, 0.9)';
+    toast.style.color = 'white';
+    toast.style.padding = '12px 20px';
+    toast.style.borderRadius = '8px';
+    toast.style.zIndex = '2000';
+    toast.style.maxWidth = '80%';
+    toast.style.backdropFilter = 'blur(10px)';
+    toast.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+    
+    // 添加到文档
+    document.body.appendChild(toast);
+    
+    // 3秒后自动消失
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
+}
+
+/**
+ * 获取功能的中文标签
+ * @param {string} feature - 功能代码
+ * @return {string} 功能的用户友好名称
+ */
+function getFeatureLabel(feature) {
+    const labels = {
+        'funding': '技术众筹',
+        'tech': '技术资产库',
+        'profile': '个人中心'
+    };
+    
+    return labels[feature] || feature;
+}
+
+/**
+ * 添加探索者模式到上下文菜单
+ */
+function addExplorerModeToMenu() {
+    // 检查是否已有探索者模式功能
+    if (window.toggleExplorerMode) {
+        // 创建一个探索者模式入口点
+        const profileItem = document.querySelector('[data-page="profile"]');
+        
+        if (profileItem) {
+            profileItem.addEventListener('long-press', function(e) {
+                // 显示探索者模式切换选项
+                toggleExplorerMode();
+            });
+            
+            // 检查探索者模式状态并显示通知提示
+            const isExplorerMode = localStorage.getItem('explorerMode') === 'true';
+            if (isExplorerMode) {
+                document.getElementById('profile-notification').style.display = 'block';
+            }
+        }
+    }
+}
+
+/**
+ * 处理响应式UI变化
+ */
+function handleResponsiveChanges() {
+    const mobileNav = document.querySelector('.stellar-nav-container');
+    if (!mobileNav) return;
+    
+    // 根据窗口宽度控制导航显示
+    if (window.innerWidth <= 768) {
+        mobileNav.style.display = 'block';
+        document.body.style.paddingBottom = 'var(--nav-height)';
+    } else {
+        mobileNav.style.display = 'none';
+        document.body.style.paddingBottom = '0';
+    }
+}

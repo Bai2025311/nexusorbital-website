@@ -1,0 +1,331 @@
+/* 
+ * NexusOrbital - 三维身份矩阵系统
+ * 版本: 1.0.0
+ * 日期: 2025-03-19
+ */
+
+:root {
+  /* 专业领域颜色映射 */
+  --domain-materials: #4CAF50;     /* 材料学 - 绿色 */
+  --domain-energy: #FF9800;        /* 能源系统 - 橙色 */
+  --domain-biology: #00BCD4;       /* 生物学 - 青色 */
+  --domain-propulsion: #F44336;    /* 推进系统 - 红色 */
+  --domain-communication: #9C27B0; /* 通信 - 紫色 */
+  --domain-habitat: #3F51B5;       /* 人居环境 - 靛蓝色 */
+  --domain-default: #607D8B;       /* 未指定领域 - 蓝灰色 */
+  
+  /* 等级颜色 */
+  --level-novice: #B0BEC5;        /* 新手 - 淡灰色 */
+  --level-apprentice: #78909C;    /* 学徒 - 中灰色 */
+  --level-engineer: #455A64;      /* 工程师 - 深灰色 */
+  --level-expert: #263238;        /* 专家 - 近黑色 */
+  --level-pioneer: #0F4C75;       /* 先驱 - 星空蓝 */
+  
+  /* 基础尺寸 */
+  --avatar-size-sm: 32px;
+  --avatar-size-md: 50px;
+  --avatar-size-lg: 80px;
+  --frame-width: 3px;
+  --docking-ring-width: 3px;
+  --docking-animation-duration: 3s;
+}
+
+/* 用户头像基础样式 */
+.user-avatar {
+  position: relative;
+  display: inline-block;
+}
+
+/* 专业领域边框形状映射 */
+.avatar-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* 头像图片基础样式 */
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%; /* 默认圆形，会被特定形状覆盖 */
+}
+
+/* 六边形 - 材料学 */
+.avatar-frame.hexagon {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: var(--frame-width) solid var(--domain-materials);
+}
+
+.avatar-frame.hexagon + .avatar-image {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* 三角形 - 能源系统 */
+.avatar-frame.triangle {
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  border: var(--frame-width) solid var(--domain-energy);
+}
+
+.avatar-frame.triangle + .avatar-image {
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+/* 圆形 - 生物学 */
+.avatar-frame.circle {
+  border-radius: 50%;
+  border: var(--frame-width) solid var(--domain-biology);
+}
+
+/* 五边形 - 推进系统 */
+.avatar-frame.pentagon {
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  border: var(--frame-width) solid var(--domain-propulsion);
+}
+
+.avatar-frame.pentagon + .avatar-image {
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+/* 菱形 - 通信 */
+.avatar-frame.diamond {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  border: var(--frame-width) solid var(--domain-communication);
+}
+
+.avatar-frame.diamond + .avatar-image {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* 方形 - 人居环境 */
+.avatar-frame.square {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  border: var(--frame-width) solid var(--domain-habitat);
+}
+
+.avatar-frame.square + .avatar-image {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  border-radius: 0;
+}
+
+/* 对接环 - 用于显示在线状态 */
+.docking-ring {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  border: var(--docking-ring-width) solid transparent;
+  z-index: 9;
+  pointer-events: none;
+}
+
+/* 在线状态 */
+.docking-ring.connected {
+  border-color: rgba(100, 233, 238, 0.7);
+  animation: docking-pulse var(--docking-animation-duration) infinite ease-in-out;
+}
+
+/* 离线状态 */
+.docking-ring.disconnected {
+  border-color: rgba(150, 150, 150, 0.3);
+}
+
+/* 贡献等级光晕 */
+.level-aura {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border-radius: 50%;
+  opacity: 0.7;
+  z-index: 8;
+  pointer-events: none;
+}
+
+/* 等级光晕颜色 */
+.level-aura.novice {
+  box-shadow: 0 0 10px 2px var(--level-novice);
+}
+
+.level-aura.apprentice {
+  box-shadow: 0 0 15px 3px var(--level-apprentice);
+}
+
+.level-aura.engineer {
+  box-shadow: 0 0 20px 4px var(--level-engineer);
+}
+
+.level-aura.expert {
+  box-shadow: 0 0 25px 5px var(--level-expert);
+}
+
+.level-aura.pioneer {
+  box-shadow: 0 0 30px 6px var(--level-pioneer);
+}
+
+/* 头像尺寸类 */
+.avatar-sm {
+  width: var(--avatar-size-sm);
+  height: var(--avatar-size-sm);
+}
+
+.avatar-md {
+  width: var(--avatar-size-md);
+  height: var(--avatar-size-md);
+}
+
+.avatar-lg {
+  width: var(--avatar-size-lg);
+  height: var(--avatar-size-lg);
+}
+
+/* 身份标签 */
+.identity-label {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  color: white;
+  background: rgba(15, 76, 117, 0.7);
+  padding: 2px 8px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.user-avatar:hover .identity-label {
+  opacity: 1;
+}
+
+/* 贡献徽章 */
+.contribution-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--level-pioneer);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  z-index: 15;
+  border: 1px solid white;
+}
+
+/* 用户身份矩阵容器 - 用于列表展示 */
+.identity-matrix-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 15px;
+}
+
+/* 用户身份卡片 */
+.identity-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(15, 76, 117, 0.2);
+  backdrop-filter: blur(5px);
+  padding: 15px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(100, 233, 238, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.identity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.identity-card .user-info {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.identity-card .user-name {
+  font-weight: bold;
+  color: white;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.identity-card .user-role {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+/* 身份过滤工具栏 */
+.identity-filter-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background: rgba(15, 76, 117, 0.3);
+  border-radius: 8px;
+}
+
+.identity-filter {
+  padding: 5px 10px;
+  background: rgba(27, 39, 53, 0.8);
+  border: 1px solid rgba(100, 233, 238, 0.3);
+  border-radius: 15px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.identity-filter.active {
+  background: rgba(100, 233, 238, 0.3);
+  color: white;
+}
+
+/* 动画定义 */
+@keyframes docking-pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+  .identity-matrix-container {
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  .identity-card {
+    padding: 10px 8px;
+  }
+  
+  .identity-filter-toolbar {
+    justify-content: center;
+  }
+}
+
+/* 特小屏幕优化 */
+@media (max-width: 320px) {
+  .identity-matrix-container {
+    gap: 10px;
+  }
+  
+  .avatar-md {
+    width: 40px;
+    height: 40px;
+  }
+}

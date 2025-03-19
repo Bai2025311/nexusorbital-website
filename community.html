@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>共创社区 - 寰宇脉络 (NexusOrbital)</title>
     <link rel="canonical" href="https://nexusorbital.com/community.html" />
-    <meta name="description" content="寰宇脉络共创社区是分享太空居住创意的平台，汇集地球人居、太空人居和黑科技三大主题，用户可与AI智能体互动并获取专业反馈。">
+    <meta name="description" content="寰宇脉络共创社区是分享太空居住创意的平台，汇集地球人居和太空人居和黑科技三大主题，用户可与AI智能体互动并获取专业反馈。">
     <meta property="og:title" content="共创社区 - 寰宇脉络 (NexusOrbital)">
     <meta property="og:description" content="探索星际人居的共创社区，分享创意并获取AI智能体专业反馈。">
     <meta property="og:url" content="https://nexusorbital.com/community.html">
@@ -18,6 +18,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="stylesheet" href="css/explorer-mode.css">
+    <link rel="stylesheet" href="css/mobile-nav.css">
+    <link rel="stylesheet" href="css/dome-dashboard.css">
     <style>
         /* 导航栏样式覆盖 */
         header {
@@ -525,18 +528,18 @@
     
     <!-- 探索者模式对话框 -->
     <div id="explorer-mode-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-        <div style="background-color: #121836; margin: 15% auto; padding: 20px; border: 1px solid #3a7bd5; width: 80%; max-width: 500px; border-radius: 10px; color: white; box-shadow: 0 0 20px rgba(58, 123, 213, 0.5);">
-            <h2 style="color: #3a7bd5; text-align: center;">激活探索者模式</h2>
-            <p style="margin: 20px 0; line-height: 1.6;">欢迎使用NexusOrbital探索者模式！在此模式下，您将体验到更丰富的功能：</p>
-            <ul style="list-style-type: none; padding-left: 20px; margin-bottom: 20px;">
+        <div style="background-color: #121836; margin: 15% auto; padding: 20px; border: 1px solid #3a7bd5; width: 85%; max-width: 500px; border-radius: 10px; color: white; box-shadow: 0 0 20px rgba(58, 123, 213, 0.5);">
+            <h2 style="color: #3a7bd5; text-align: center; font-size: clamp(18px, 5vw, 24px);">激活探索者模式</h2>
+            <p style="margin: 20px 0; line-height: 1.6; font-size: clamp(14px, 4vw, 16px);">欢迎使用NexusOrbital探索者模式！在此模式下，您将体验到更丰富的功能和界面元素，让您获得更丰富的社区交互体验。</p>
+            <ul style="list-style-type: none; padding-left: 20px; margin-bottom: 20px; font-size: clamp(14px, 4vw, 16px);">
                 <li style="margin-bottom: 10px;">✨ 个性化空间站规划</li>
                 <li style="margin-bottom: 10px;">🔍 高级资源探索</li>
                 <li style="margin-bottom: 10px;">🌐 星际社区互动</li>
                 <li style="margin-bottom: 10px;">📊 实时数据分析</li>
             </ul>
-            <div style="text-align: center; margin-top: 30px;">
-                <button id="close-explorer-mode" style="background-color: transparent; color: #ccc; border: 1px solid #ccc; padding: 8px 20px; margin-right: 10px; cursor: pointer; border-radius: 5px;">取消</button>
-                <button id="confirm-explorer-mode" style="background-color: #3a7bd5; color: white; border: none; padding: 10px 25px; cursor: pointer; border-radius: 5px;">开始探索</button>
+            <div style="text-align: center; margin-top: 30px; display: flex; flex-direction: column-reverse; gap: 10px;">
+                <button id="close-explorer-mode" style="background-color: transparent; color: #ccc; border: 1px solid #ccc; padding: 12px 20px; margin: 0 auto; cursor: pointer; border-radius: 5px; width: 100%; max-width: 200px; font-size: clamp(14px, 4vw, 16px);">取消</button>
+                <button id="confirm-explorer-mode" style="background-color: #3a7bd5; color: white; border: none; padding: 12px 25px; margin: 0 auto; cursor: pointer; border-radius: 5px; width: 100%; max-width: 200px; font-size: clamp(14px, 4vw, 16px);">开始探索</button>
             </div>
         </div>
     </div>
@@ -558,5 +561,19 @@
         }
     }
     </script>
+    <div id="explorer-mode-dialog" class="explorer-mode-dialog" style="display: none;">
+        <div class="explorer-mode-content">
+            <h2>探索者模式</h2>
+            <p>欢迎启用探索者模式，这将为您解锁额外的功能和界面元素，让您获得更丰富的社区交互体验。</p>
+            <div class="explorer-mode-buttons">
+                <button id="start-exploring">开始探索</button>
+                <button id="close-explorer-dialog">稍后再说</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/explorer-mode.js"></script>
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/dome-dashboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术矩阵 - NexusOrbital跨星球人居技术中枢</title>
+    <link rel="canonical" href="https://nexusorbital.com/technology.html" />
+    <meta name="description" content="NexusOrbital技术矩阵包含跨星球人居的核心技术模块，从地球到太空的无缝技术过渡方案。">
+    <meta property="og:title" content="技术矩阵 - NexusOrbital跨星球人居技术中枢">
+    <meta property="og:description" content="NexusOrbital技术矩阵包含跨星球人居的核心技术模块，从地球到太空的无缝技术过渡方案。">
+    <meta property="og:url" content="https://nexusorbital.com/technology.html">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="stylesheet" href="css/explorer-mode.css">
+    <link rel="stylesheet" href="css/mobile-nav.css">
+    <link rel="stylesheet" href="css/dome-dashboard.css">
+    <style>
+        :root {
+            --primary-color: #0F4C75;
+            --primary-hover: #2D033B;
+            --secondary-color: #64E9EE;
+            --dark-bg: #1B2735;
+            --card-bg: #2a3950;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.7);
+            --border-color: rgba(100,233,238,0.3);
+        }
+        
+        .tech-header {
+            text-align: center;
+            padding: 120px 0 50px;
+            background: linear-gradient(180deg, var(--dark-bg) 0%, rgba(27, 39, 53, 0.8) 100%);
+        }
+        
+        .tech-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tech-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tech-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tech-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .tech-label {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .earth-tech {
+            background: rgba(58, 123, 213, 0.2);
+            border: 1px solid rgba(58, 123, 213, 0.5);
+        }
+        
+        .space-tech {
+            background: rgba(100, 233, 238, 0.2);
+            border: 1px solid rgba(100, 233, 238, 0.5);
+        }
+        
+        .timeline {
+            margin-top: 80px;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        
+        .timeline h2 {
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+        
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .tech-header {
+                padding: 80px 0 30px;
+            }
+            
+            .tech-header h1 {
+                font-size: 2rem;
+            }
+            
+            .timeline-container::after {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 20px;
+            }
+            
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面切换动画 -->
+    <div class="page-transition"></div>
+    <div class="stars-bg"></div>
+    
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="index.html">
+                        <h1>NexusOrbital</h1>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html#about">关于我们</a></li>
+                    <li><a href="community.html">共创社区</a></li>
+                    <li><a href="design-studio.html">AI设计工坊</a></li>
+                    <li><a href="marketplace.html">众筹商城</a></li>
+                    <li><a href="technology.html" class="active">技术矩阵</a></li>
+                    <li><a href="#" id="explorer-mode-btn">探索者模式</a></li>
+                    <li><a href="new-login.html" class="btn-primary">登录 / 注册</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="tech-header">
+            <div class="container">
+                <h1>跨星球人居技术矩阵</h1>
+                <p>从地球到星际的无缝技术过渡</p>
+            </div>
+        </section>
+        
+        <!-- 技术矩阵 -->
+        <section class="tech-matrix">
+            <!-- 地球层技术 -->
+            <div class="tech-card">
+                <span class="tech-label earth-tech">地球层</span>
+                <h3>零能耗建筑模块</h3>
+                <p>自给自足的模块化建筑单元，整合太阳能、雨水收集和生物降解循环系统，能耗自平衡，适用于地球极端环境。</p>
+                <div class="tech-readiness">
+                    <span class="tech-status">技术就绪度: 9/10</span>
+                </div>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-label earth-tech">地球层</span>
+                <h3>智能材料构造系统</h3>
+                <p>采用自修复纳米复合材料构建的结构系统，可自动感知环境变化并做出响应，延长建筑寿命，减少维护成本。</p>
+                <div class="tech-readiness">
+                    <span class="tech-status">技术就绪度: 7/10</span>
+                </div>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-label earth-tech">地球层</span>
+                <h3>生物打印构件</h3>
+                <p>利用本地生物材料进行3D打印的建筑构件，降低碳足迹，提高可持续性，适应不同气候条件。</p>
+                <div class="tech-readiness">
+                    <span class="tech-status">技术就绪度: 8/10</span>
+                </div>
+            </div>
+            
+            <!-- 星际层技术 -->
+            <div class="tech-card">
+                <span class="tech-label space-tech">星际层</span>
+                <h3>辐射屏蔽薄膜</h3>
+                <p>采用纳米涂层技术的多层复合屏蔽材料，可有效阻挡太空辐射，保护居住者免受高能粒子伤害。</p>
+                <div class="tech-readiness">
+                    <span class="tech-status">技术就绪度: 6/10</span>
+                </div>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-label space-tech">星际层</span>
+                <h3>人工重力系统</h3>
+                <p>基于转动式结构设计的人工重力生成装置，可在太空环境中模拟地球重力，防止肌肉萎缩和骨质疏松。</p>
+                <div class="tech-readiness">
+                    <span class="tech-status">技术就绪度: 5/10</span>
+                </div>
+            </div>
+            
+            <div class="tech-card">
+                <span class="tech-label space-tech">星际层</span>
+                <h3>原位资源利用</h3>
+                <p>利用火星或月球表面材料就地取材的建造技术，减少从地球运输物资的需求，降低太空殖民成本。</p>
+                <div class="tech-readiness">
+                    <span class="tech-status">技术就绪度: 4/10</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 技术发展时间线 -->
+        <section class="timeline">
+            <div class="container">
+                <h2>技术发展路线图</h2>
+                <div class="timeline-container">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2023-2025</div>
+                            <h3>地球阶段</h3>
+                            <p>验证零能耗技术模块在极端环境中的应用，建立基础数据库，开发人居行为模型和技术转移通道。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2026-2030</div>
+                            <h3>星际阶段</h3>
+                            <p>定义星际人居技术标准，在近地轨道部署首批太空居住原型，测试闭环生命支持系统。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2031-2035</div>
+                            <h3>文明阶段</h3>
+                            <p>建立完整的跨星球生存系统，启动数字诺亚方舟计划，实现人类居住文明的备份与延续。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>NexusOrbital</h2>
+                    <p>连接虚拟与现实，共建星际人居未来</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>导航</h3>
+                        <ul>
+                            <li><a href="index.html">首页</a></li>
+                            <li><a href="community.html">共创社区</a></li>
+                            <li><a href="design-studio.html">AI设计工坊</a></li>
+                            <li><a href="marketplace.html">众筹商城</a></li>
+                            <li><a href="technology.html">技术矩阵</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>法律</h3>
+                        <ul>
+                            <li><a href="#">服务条款</a></li>
+                            <li><a href="#">隐私政策</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>联系我们</h3>
+                        <ul>
+                            <li><a href="mailto:contact@nexusorbital.com">contact@nexusorbital.com</a></li>
+                        </ul>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-discord"></i></a>
+                            <a href="#"><i class="fab fa-telegram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NexusOrbital. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/explorer-mode.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // 页面转换动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const transition = document.querySelector('.page-transition');
+            
+            // 模拟页面加载
+            setTimeout(() => {
+                transition.classList.add('active');
+                setTimeout(() => {
+                    transition.style.transform = 'translateY(-100%)';
+                }, 500);
+            }, 300);
+            
+            // 导航链接点击
+            document.querySelectorAll('a[href^="http"], a[href^="/"], a[href^="./"], a[href^="../"]').forEach(link => {
+                link.addEventListener('click', e => {
+                    const href = link.getAttribute('href');
+                    
+                    // 排除页内锚点链接
+                    if (href.startsWith('#')) return;
+                    
+                    // 排除带有特定类的链接的页面过渡动画
+                    if (link.classList.contains('no-transition')) return;
+                    
+                    e.preventDefault();
+                    
+                    transition.style.transform = 'translateY(0)';
+                    
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 600);
+                });
+            });
+            
+            // 移动端菜单
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

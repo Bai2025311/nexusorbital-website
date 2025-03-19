@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>寰宇脉络 (NexusOrbital) - 探索星际人居的未来</title>
+    <title>NexusOrbital - 跨星球人居技术中枢</title>
     <link rel="canonical" href="https://nexusorbital.com/" />
-    <meta name="description" content="寰宇脉络(NexusOrbital)是探索星际人居未来的创新平台，连接现实需求、技术研发与空间实践，为人类创建第二演化系统。">
-    <meta property="og:title" content="寰宇脉络 (NexusOrbital) - 探索星际人居的未来">
-    <meta property="og:description" content="寰宇脉络是探索星际人居未来的创新平台，连接现实需求、技术研发与空间实践。">
+    <meta name="description" content="NexusOrbital是连接地球与太空人居的技术平台，融合AI设计、众创协作与实体项目落地，为人类创建跨星球生存的操作系统。">
+    <meta property="og:title" content="NexusOrbital - 跨星球人居技术中枢">
+    <meta property="og:description" content="NexusOrbital是连接地球与太空人居的技术平台，融合AI设计、众创协作与实体项目落地，为人类创建跨星球生存的操作系统。">
     <meta property="og:url" content="https://nexusorbital.com/">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="css/style.css">
@@ -17,16 +17,19 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="stylesheet" href="css/explorer-mode.css">
+    <link rel="stylesheet" href="css/mobile-nav.css">
+    <link rel="stylesheet" href="css/dome-dashboard.css">
     <style>
         :root {
-            --primary-color: #3a7bd5;
-            --primary-hover: #2b67c9;
-            --secondary-color: #00d2ff;
-            --dark-bg: #0e1b30;
-            --card-bg: #182a46;
+            --primary-color: #0F4C75;
+            --primary-hover: #2D033B;
+            --secondary-color: #64E9EE;
+            --dark-bg: #1B2735;
+            --card-bg: #2a3950;
             --text-primary: #ffffff;
             --text-secondary: rgba(255,255,255,0.7);
-            --border-color: rgba(255,255,255,0.1);
+            --border-color: rgba(100,233,238,0.3);
         }
         
         * {
@@ -418,12 +421,204 @@
                 font-size: 20px;
             }
         }
+        
+        /* 穹顶式仪表盘样式 */
+        .dome-dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .star-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+            radial-gradient(3px 3px at 170px 240px, #ffffff, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 300px 370px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 500px 500px;
+            animation: stars-move 200s linear infinite;
+        }
+        
+        .data-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+        
+        .data-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-label {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .data-value {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            background: #2a3950;
+            border-radius: 5px;
+            height: 10px;
+            width: 100%;
+        }
+        
+        .progress-fill {
+            background: var(--secondary-color);
+            border-radius: 5px;
+            height: 10px;
+        }
+        
+        /* 移动端登录按钮 */
+        .mobile-login-button {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 动态星星背景生成 */
+        @keyframes stars-move {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-500px);
+            }
+        }
+        
+        /* 仪表盘数据变化过渡 */
+        .data-value {
+            transition: all 0.8s ease;
+        }
+        
+        .progress-fill {
+            transition: width 1s ease-in-out;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-login-button {
+                display: block;
+            }
+            
+            .trinity-nav {
+                width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 10px 5px;
+            }
+            
+            .trinity-nav a {
+                flex: 0 0 auto;
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+            
+            /* 适配更多的导航项 */
+            .trinity-nav a span {
+                display: none;
+            }
+            
+            .trinity-nav a i {
+                margin-right: 0;
+                font-size: 18px;
+            }
+            
+            /* 显示穹顶仪表盘标记 */
+            .data-dashboard-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                z-index: 1001;
+                background: rgba(15, 76, 117, 0.7);
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            }
+        }
     </style>
 </head>
 <body>
     <!-- 页面切换动画 -->
     <div class="page-transition"></div>
     <div class="stars-bg"></div>
+    
+    <!-- 仪表盘切换按钮（移动端显示） -->
+    <div class="data-dashboard-toggle">
+        <i class="fas fa-chart-line"></i>
+    </div>
+    
+    <!-- 移动版登录按钮 -->
+    <div class="mobile-login-btn">
+        <a href="new-login.html">
+            <i class="fas fa-user-astronaut"></i>
+        </a>
+    </div>
+    
+    <!-- 穹顶式仪表盘（移动端显示） -->
+    <div class="dome-dashboard">
+        <div class="star-background"></div>
+        <div class="data-container">
+            <div class="data-item" id="userCountData">
+                <div class="data-label">社区用户</div>
+                <div class="data-value">12,456</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 62%"></div>
+                </div>
+            </div>
+            <div class="data-item" id="projectsData">
+                <div class="data-label">众筹项目</div>
+                <div class="data-value">83</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 83%"></div>
+                </div>
+            </div>
+            <div class="data-item" id="techIndexData">
+                <div class="data-label">技术指数</div>
+                <div class="data-value">87.3</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 87%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <header>
         <div class="container">
             <nav class="navbar">
@@ -437,9 +632,9 @@
                     <li><a href="community.html">共创社区</a></li>
                     <li><a href="design-studio.html">AI设计工坊</a></li>
                     <li><a href="marketplace.html">众筹商城</a></li>
-                    <li><a href="agents.html">智能体系统</a></li>
+                    <li><a href="technology.html">技术矩阵</a></li>
                     <li><a href="#" id="explorer-mode-btn">探索者模式</a></li>
-                    <li><a href="login.html" class="btn-primary">登录 / 注册</a></li>
+                    <li><a href="new-login.html" class="btn-primary">登录 / 注册</a></li>
                 </ul>
                 <div class="hamburger">
                     <span class="bar"></span>
@@ -457,8 +652,8 @@
             <iframe id="spline-viewer" frameborder="0" width="100%" height="100%" src="https://my.spline.design/untitled-b962d0b9cc99a3d4ebeb0f4372e8dcf7/" allowfullscreen></iframe>
             
             <div class="spline-overlay">
-                <h1>探索星际人居的未来</h1>
-                <p>虚实结合，共同创建太空居住解决方案</p>
+                <h1>人类跨星球生存的技术中枢</h1>
+                <p>连接地球与太空，共同设计未来居住解决方案</p>
                 <div class="action-buttons">
                     <a href="community.html" class="btn-primary">加入共创社区</a>
                     <a href="design-studio.html" class="btn-secondary">进入AI设计工坊</a>
@@ -468,7 +663,8 @@
         
         <!-- 三位一体架构导航 -->
         <div class="trinity-nav">
-            <a href="index.html" class="active"><i class="fas fa-home"></i> <span>未来愿景</span></a>
+            <a href="index.html" class="active"><i class="fas fa-globe-americas"></i> <span>地球层</span></a>
+            <a href="technology.html"><i class="fas fa-rocket"></i> <span>星际层</span></a>
             <a href="community.html"><i class="fas fa-users"></i> <span>共创社区</span></a>
             <a href="design-studio.html"><i class="fas fa-pencil-ruler"></i> <span>AI设计工坊</span></a>
             <a href="marketplace.html"><i class="fas fa-store"></i> <span>众筹商城</span></a>
@@ -479,11 +675,11 @@
             <div class="container">
                 <div class="about-content">
                     <div class="section-header">
-                        <h2>「地球与太空人居的神经中枢」</h2>
+                        <h2>「人类跨星球生存的操作系统」</h2>
                     </div>
                     <div class="about-text">
-                        <p>通过AI连接「现实需求-技术研发-空间实践」的完整闭环，既解决当下城市居住痛点，又为星际移民储备技术生态，成为人类居住文明的「第二演化系统」。</p>
-                        <p class="mission-statement">我们的使命：让人类在任何经纬度（无论是北纬30度还是火星乌托邦平原）都能诗意的栖居。</p>
+                        <p>从地球到太空，NexusOrbital提供即插即用的居住技术模块，运营覆盖多行星的生存行为数据库，并制定认证星际人居技术标准。</p>
+                        <p class="mission-statement">我们的使命：让人类在任何坐标上（无论是北纬30度还是火星乌托邦平原）都能可持续地栖居。</p>
                     </div>
                 </div>
             </div>
@@ -597,81 +793,120 @@
                     // 排除页内锚点链接
                     if (href.startsWith('#')) return;
                     
-                    e.preventDefault();
+                    // 排除带有特定类的链接的页面过渡动画
+                    if (link.classList.contains('no-transition')) return;
                     
+                    e.preventDefault();
                     transition.style.transform = 'translateY(0)';
                     
                     setTimeout(() => {
                         window.location.href = href;
-                    }, 500);
+                    }, 600);
                 });
             });
             
-            // 移动端菜单
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('.nav-menu');
+            // 生成随机数据
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
             
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navMenu.classList.toggle('active');
-            });
+            // 移动端数据仪表盘更新
+            function updateDashboardData() {
+                // 用户数量波动
+                let userCount = 12456 + getRandomInt(-50, 100);
+                document.querySelector('#userCountData .data-value').innerText = userCount.toLocaleString();
+                
+                // 项目数量缓慢增长
+                let projectCount = parseInt(document.querySelector('#projectsData .data-value').innerText) || 83;
+                if(Math.random() > 0.7) projectCount += 1;
+                document.querySelector('#projectsData .data-value').innerText = projectCount;
+                
+                // 技术指数波动
+                let techIndex = 87.3 + (Math.random() * 0.4 - 0.2).toFixed(1);
+                document.querySelector('#techIndexData .data-value').innerText = parseFloat(techIndex).toFixed(1);
+                
+                // 更新进度条
+                document.querySelector('#userCountData .progress-fill').style.width = (userCount / 20000 * 100) + '%';
+                document.querySelector('#projectsData .progress-fill').style.width = (projectCount / 100 * 100) + '%';
+                document.querySelector('#techIndexData .progress-fill').style.width = techIndex + '%';
+                
+                // 每30秒更新一次数据
+                setTimeout(updateDashboardData, 30000);
+            }
+            
+            // 初始化数据更新
+            updateDashboardData();
+            
+            // 穹顶式仪表盘模态框控制
+            const dashboardToggle = document.querySelector('.data-dashboard-toggle');
+            const domeDashboard = document.querySelector('.dome-dashboard');
+            
+            if(dashboardToggle && domeDashboard) {
+                dashboardToggle.addEventListener('click', function() {
+                    domeDashboard.style.display = domeDashboard.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // 点击仪表盘外部关闭
+                domeDashboard.addEventListener('click', function(e) {
+                    if(e.target === domeDashboard) {
+                        domeDashboard.style.display = 'none';
+                    }
+                });
+            }
+            
+            // 移动端优化 - 添加底部悬浮登录按钮
+            if(window.innerWidth <= 768) {
+                const loginButton = document.createElement('a');
+                loginButton.href = 'new-login.html';
+                loginButton.className = 'mobile-login-button btn-primary';
+                loginButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登录';
+                document.body.appendChild(loginButton);
+            }
         });
-        
-        // 倒计时功能已移除，替换为Spline体验
         
         // 绑定探索者模式按钮事件
         const explorerBtn = document.getElementById('explorer-mode-btn');
         if (explorerBtn) {
             explorerBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                // 简化版探索者模式 - 直接显示对话框
-                const modal = document.getElementById('explorer-mode-modal');
-                if (modal) {
-                    modal.style.display = 'block';
-                    
-                    // 添加对话框按钮事件
-                    const closeBtn = document.getElementById('close-explorer-mode');
-                    const confirmBtn = document.getElementById('confirm-explorer-mode');
-                    
-                    if (closeBtn) {
-                        closeBtn.addEventListener('click', function() {
-                            modal.style.display = 'none';
-                        });
-                    }
-                    
-                    if (confirmBtn) {
-                        confirmBtn.addEventListener('click', function() {
-                            modal.style.display = 'none';
-                            alert('探索者模式已激活！您现在可以浏览基本功能。');
-                            
-                            // 在页面顶部显示探索者模式标志
-                            const header = document.querySelector('header');
-                            if (header) {
-                                const badge = document.createElement('div');
-                                badge.style.backgroundColor = '#3a7bd5';
-                                badge.style.color = 'white';
-                                badge.style.padding = '5px 10px';
-                                badge.style.position = 'fixed';
-                                badge.style.top = '0';
-                                badge.style.right = '0';
-                                badge.style.zIndex = '1000';
-                                badge.style.borderRadius = '0 0 0 5px';
-                                badge.textContent = '🚀 探索者模式已激活';
-                                document.body.appendChild(badge);
-                            }
-                        });
-                    }
+                document.body.classList.toggle('explorer-mode');
+                
+                // 保存用户偏好
+                if (document.body.classList.contains('explorer-mode')) {
+                    localStorage.setItem('explorerModeActive', 'true');
                 } else {
-                    alert('探索者模式对话框未找到');
+                    localStorage.setItem('explorerModeActive', 'false');
                 }
             });
+        }
+        
+        // 加载时检查是否应该启用探索者模式
+        if (localStorage.getItem('explorerModeActive') === 'true') {
+            document.body.classList.add('explorer-mode');
+        }
+        
+        // 添加悬浮探索者模式指示器
+        if (localStorage.getItem('explorerModeActive') === 'true') {
+            const badge = document.createElement('div');
+            badge.style.backgroundColor = '#2D033B';
+            badge.style.color = '#64E9EE';
+            badge.style.padding = '5px 10px';
+            badge.style.position = 'fixed';
+            badge.style.bottom = '20px';
+            badge.style.right = '20px';
+            badge.style.zIndex = '1000';
+            badge.style.borderRadius = '4px';
+            badge.style.fontSize = '12px';
+            badge.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+            badge.innerHTML = '探索者模式 <span style="margin-left:5px;font-size:8px;">⬤</span>';
+            document.body.appendChild(badge);
         }
     </script>
 
     <!-- MVP集成脚本 -->
     <script src="js/explorer-mode.js"></script>
     <script src="js/integrations.js"></script>
-    <script src="js/mvp.js"></script>
+    <script src="js/auth.js"></script>
     <script>
     // 初始化MVP功能
     document.addEventListener('DOMContentLoaded', function() {
@@ -683,21 +918,25 @@
 
     <!-- 探索者模式对话框 -->
     <div id="explorer-mode-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-        <div style="background-color: #121836; margin: 15% auto; padding: 20px; border: 1px solid #3a7bd5; width: 80%; max-width: 500px; border-radius: 10px; color: white; box-shadow: 0 0 20px rgba(58, 123, 213, 0.5);">
-            <h2 style="color: #3a7bd5; text-align: center;">激活探索者模式</h2>
-            <p style="margin: 20px 0; line-height: 1.6;">欢迎使用NexusOrbital探索者模式！在此模式下，您将体验到更丰富的功能：</p>
-            <ul style="list-style-type: none; padding-left: 20px; margin-bottom: 20px;">
+        <div style="background-color: #121836; margin: 15% auto; padding: 20px; border: 1px solid #3a7bd5; width: 85%; max-width: 500px; border-radius: 10px; color: white; box-shadow: 0 0 20px rgba(58, 123, 213, 0.5);">
+            <h2 style="color: #3a7bd5; text-align: center; font-size: clamp(18px, 5vw, 24px);">激活探索者模式</h2>
+            <p style="margin: 20px 0; line-height: 1.6; font-size: clamp(14px, 4vw, 16px);">欢迎使用NexusOrbital探索者模式！在此模式下，您将体验到更丰富的功能：</p>
+            <ul style="list-style-type: none; padding-left: 20px; margin-bottom: 20px; font-size: clamp(14px, 4vw, 16px);">
                 <li style="margin-bottom: 10px;">✨ 个性化空间站规划</li>
                 <li style="margin-bottom: 10px;">🔍 高级资源探索</li>
                 <li style="margin-bottom: 10px;">🌐 星际社区互动</li>
                 <li style="margin-bottom: 10px;">📊 实时数据分析</li>
             </ul>
-            <div style="text-align: center; margin-top: 30px;">
-                <button id="close-explorer-mode" style="background-color: transparent; color: #ccc; border: 1px solid #ccc; padding: 8px 20px; margin-right: 10px; cursor: pointer; border-radius: 5px;">取消</button>
-                <button id="confirm-explorer-mode" style="background-color: #3a7bd5; color: white; border: none; padding: 10px 25px; cursor: pointer; border-radius: 5px;">开始探索</button>
+            <div style="text-align: center; margin-top: 30px; display: flex; flex-direction: column-reverse; gap: 10px;">
+                <button id="close-explorer-mode" style="background-color: transparent; color: #ccc; border: 1px solid #ccc; padding: 12px 20px; margin: 0 auto; cursor: pointer; border-radius: 5px; width: 100%; max-width: 200px; font-size: clamp(14px, 4vw, 16px);">取消</button>
+                <button id="confirm-explorer-mode" style="background-color: #3a7bd5; color: white; border: none; padding: 12px 25px; margin: 0 auto; cursor: pointer; border-radius: 5px; width: 100%; max-width: 200px; font-size: clamp(14px, 4vw, 16px);">开始探索</button>
             </div>
         </div>
     </div>
 
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/explorer-mode.js"></script>
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/dome-dashboard.js"></script>
 </body>
 </html>
