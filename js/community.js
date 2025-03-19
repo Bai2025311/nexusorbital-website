@@ -111,24 +111,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * 显示发帖模态框
+ * 显示发帖模态框，如果未登录则显示登录提示
  */
 function showPostModal() {
-    // 注释掉登录检查，允许未登录用户查看社区内容
-    /*
-    // 检查是否已登录
+    // 检查是否登录
     if (!isLoggedIn()) {
-        // 未登录时提示并跳转到登录页
         showLoginRequiredMessage();
         return;
     }
-    */
-
-    const modalOverlay = document.getElementById('post-modal-overlay');
-    if (modalOverlay) {
-        modalOverlay.classList.add('active');
-        // 阻止页面滚动
-        document.body.style.overflow = 'hidden';
+    
+    // 已登录，显示发帖模态框
+    const modal = document.getElementById('post-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+        
+        // 重置表单
+        resetPostForm();
     }
 }
 
@@ -568,34 +567,47 @@ function showSuccessMessage() {
 }
 
 /**
- * 显示登录提示消息，但不跳转页面
+ * 显示登录提示消息，但不会强制跳转
  */
 function showLoginRequiredMessage() {
     // 创建消息元素
-    const messageElement = document.createElement('div');
-    messageElement.className = 'toast-message warning';
-    messageElement.innerHTML = '<i class="fas fa-exclamation-circle"></i> 请先登录后再发布内容';
+    const messageContainer = document.createElement('div');
+    messageContainer.className = 'login-message-container';
+    messageContainer.innerHTML = `
+        <div class="login-message">
+            <h3>需要登录</h3>
+            <p>请先登录后再发布内容</p>
+            <div class="message-buttons">
+                <button class="btn-login-now">立即登录</button>
+                <button class="btn-cancel">取消</button>
+            </div>
+        </div>
+    `;
     
     // 添加到页面
-    document.body.appendChild(messageElement);
+    document.body.appendChild(messageContainer);
     
-    // 显示动画
-    setTimeout(() => {
-        messageElement.classList.add('show');
-    }, 100);
+    // 添加事件监听
+    const loginButton = messageContainer.querySelector('.btn-login-now');
+    const cancelButton = messageContainer.querySelector('.btn-cancel');
     
-    // 一段时间后自动隐藏
-    setTimeout(() => {
-        messageElement.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(messageElement);
-            // 不再跳转到登录页面，而是在当前页面尝试打开登录对话框
-            // 如果页面有内置的登录模态框，可以在此处打开
-            if (typeof showLoginModal === 'function') {
-                showLoginModal();
-            }
-        }, 300);
-    }, 2000);
+    loginButton.addEventListener('click', function() {
+        // 不进行直接跳转，而是打开登录模态框
+        const loginUrl = localStorage.getItem('login_url') || '/new-login.html';
+        window.open(loginUrl, '_blank');
+        messageContainer.remove();
+    });
+    
+    cancelButton.addEventListener('click', function() {
+        messageContainer.remove();
+    });
+    
+    // 点击其他区域关闭
+    messageContainer.addEventListener('click', function(e) {
+        if (e.target === messageContainer) {
+            messageContainer.remove();
+        }
+    });
 }
 
 /**
@@ -671,6 +683,7 @@ function filterPosts(filterType) {
  * 检查登录状态并更新UI，但不强制登录
  */
 function checkLoginStatus() {
+    // 登录按钮现在显示为"登录发帖"
     const loginButton = document.querySelector('.nav-menu li a.btn-primary');
     
     if (isLoggedIn()) {
@@ -722,8 +735,12 @@ function checkLoginStatus() {
                 });
             }
         }
+    } else {
+        // 未登录状态，确保按钮显示为"登录发帖"
+        if (loginButton && loginButton.textContent !== '登录发帖') {
+            loginButton.textContent = '登录发帖';
+        }
     }
-    // 移除未登录状态处理逻辑，允许未登录用户浏览
 }
 
 /**

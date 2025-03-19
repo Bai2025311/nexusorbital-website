@@ -372,6 +372,15 @@ NexusOrbital.Integrations = (function() {
   
   // 显示登录或探索者模式提示，仅用于发帖功能
   function showLoginOrExplorerPrompt(featureName) {
+    // 如果当前页面设置了禁用登录检查标志，则不显示任何提示
+    if (window.disableCommunityLoginCheck && 
+        (window.location.pathname.includes('community.html') || 
+         featureName.includes('社区') || 
+         featureName.includes('内容'))) {
+      console.log('社区页面：禁用登录提示');
+      return;
+    }
+    
     // 对于社区页面浏览功能，不显示任何提示
     if (featureName === '社区内容' || featureName === '浏览内容' || 
         featureName === '社区页面' || featureName === '查看内容') {

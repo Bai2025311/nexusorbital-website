@@ -196,6 +196,15 @@ NexusOrbital.MVP = (function() {
   function handlePermissionDenied(featureName, requiredPermission) {
     console.log(`访问 ${featureName} 需要 ${requiredPermission} 权限`);
     
+    // 如果当前页面设置了禁用登录检查标志，并且是社区相关权限，则不显示提示
+    if (window.disableCommunityLoginCheck && 
+        (requiredPermission.startsWith('community_') || 
+         featureName.includes('社区') || 
+         featureName.includes('内容'))) {
+      console.log('社区页面：禁用权限提示');
+      return;
+    }
+    
     // 社区浏览和阅读无需权限检查
     if (requiredPermission === 'community_view' || requiredPermission === 'community_read') {
       return; // 直接返回，不显示任何权限提示

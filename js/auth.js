@@ -691,31 +691,29 @@ function getAuthToken() {
 }
 
 /**
- * 检查是否已登录
+ * 检查用户是否已登录
  * @returns {boolean} 是否已登录
  */
 function isLoggedIn() {
-    const token = getAuthToken();
-    if (!token) return false;
+    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+        console.log('社区页面：登录检查被调用，但由于禁用标志不会影响页面行为');
+    }
     
-    // 验证令牌是否过期
-    try {
-        // 解析JWT令牌，获取过期时间
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const exp = payload.exp;
-        
-        // 如果已过期，清除令牌并返回false
-        if (exp && exp * 1000 < Date.now()) {
-            clearAuthToken();
+    // 从sessionStorage中获取token
+    const token = sessionStorage.getItem('token');
+    
+    // 如果没有token，从localStorage中检查
+    if (!token) {
+        // 尝试从localStorage中获取
+        const storedToken = localStorage.getItem('auth_token');
+        if (!storedToken) {
             return false;
         }
-        
         return true;
-    } catch (e) {
-        console.error('验证令牌出错', e);
-        clearAuthToken();
-        return false;
     }
+    
+    // 存在token则已登录
+    return true;
 }
 
 /**
@@ -900,6 +898,14 @@ function showMessage(message) {
 
 // 页面加载时检查登录状态
 document.addEventListener('DOMContentLoaded', function() {
+    // 如果当前页面设置了禁用登录检查标志，则不执行登录检查
+    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+        console.log('社区页面：禁用自动登录检查');
+        // 仅更新导航UI，不执行登录重定向
+        updateNavigation();
+        return;
+    }
+    
     // 在需要登录的页面检查登录状态
     const requiresAuth = [
         // '/community.html', // 不再需要强制登录

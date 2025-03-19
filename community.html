@@ -474,6 +474,10 @@
     <script>
     // 初始化MVP功能
     document.addEventListener('DOMContentLoaded', function() {
+        // 禁用社区页面的自动登录检查
+        window.disableCommunityLoginCheck = true;
+        console.log('社区页面：已设置禁用登录检查标志');
+        
         if (window.NexusOrbital && window.NexusOrbital.MVP) {
             window.NexusOrbital.MVP.init();
         }
