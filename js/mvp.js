@@ -196,6 +196,11 @@ NexusOrbital.MVP = (function() {
   function handlePermissionDenied(featureName, requiredPermission) {
     console.log(`访问 ${featureName} 需要 ${requiredPermission} 权限`);
     
+    // 社区浏览和阅读无需权限检查
+    if (requiredPermission === 'community_view' || requiredPermission === 'community_read') {
+      return; // 直接返回，不显示任何权限提示
+    }
+    
     // 如果用户已登录但权限不足，显示需要升级的消息
     if (NexusOrbital.Auth && NexusOrbital.Auth.isLoggedIn()) {
       NexusOrbital.Integrations.showFeatureRestrictedMessage(
@@ -510,25 +515,26 @@ NexusOrbital.MVP = (function() {
   function handleNewPostClick(e) {
     e.preventDefault();
     
-    // 检查权限
-    const hasPermission = NexusOrbital.Integrations.checkPermission('community_post_basic');
-    
-    if (!hasPermission) {
-      // 用户没有发帖权限，显示提示
-      NexusOrbital.Integrations.showLoginOrExplorerPrompt('发布内容');
+    // 检查用户是否已登录
+    if (NexusOrbital.Auth && !NexusOrbital.Auth.isLoggedIn()) {
+      // 用户未登录，显示需要登录的提示
+      if (NexusOrbital.Community && NexusOrbital.Community.showLoginRequiredMessage) {
+        NexusOrbital.Community.showLoginRequiredMessage();
+      } else {
+        // 显示默认提示
+        alert('请先登录后再发布内容');
+      }
       return;
     }
     
     // 打开发帖模态框或跳转到发帖页面
     if (NexusOrbital.Community && NexusOrbital.Community.openPostEditor) {
       NexusOrbital.Community.openPostEditor();
+    } else if (NexusOrbital.Community && NexusOrbital.Community.showPostModal) {
+      NexusOrbital.Community.showPostModal();
     } else {
+      // 如果都没有，则默认跳转
       window.location.href = '/community-post.html';
-    }
-    
-    // 记录事件
-    if (NexusOrbital.Analytics) {
-      NexusOrbital.Analytics.trackEvent('new_post_clicked');
     }
   }
   

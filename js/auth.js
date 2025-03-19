@@ -212,7 +212,7 @@ function loginWithEmail(email, password) {
                 }
                 
                 showMessage('登录成功！');
-                window.location.href = '/community.html';
+                window.location.href = '/index.html';
             } else {
                 showMessage(data.message || '邮箱或密码错误');
                 loginButton.disabled = false;
@@ -262,7 +262,7 @@ function loginWithPhone(countryCode, phone, code) {
                 }
                 
                 showMessage('登录成功！');
-                window.location.href = '/community.html';
+                window.location.href = '/index.html';
             } else {
                 showMessage(data.message || '验证码错误或手机号未注册');
                 loginButton.disabled = false;
@@ -502,7 +502,7 @@ function loginWithSocial(socialType) {
             
             // 提示成功并跳转
             showMessage(`${socialNameMap[socialType]}授权登录成功！`);
-            window.location.href = '/community.html';
+            window.location.href = '/index.html';
         });
     }
 }
@@ -1175,7 +1175,7 @@ function showWeixinQrCodeLogin() {
                 
                 // 提示成功并跳转
                 showMessage('微信扫码登录成功！');
-                window.location.href = '/community.html';
+                window.location.href = '/index.html';
             },
             // 状态变化回调
             (status) => {

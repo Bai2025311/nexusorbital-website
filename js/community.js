@@ -3,6 +3,21 @@
  * 包含发帖功能、图片上传预览、社交分享和AI智能体互动
  */
 
+// 确保该模块可以被其他模块调用
+if (!window.NexusOrbital) {
+    window.NexusOrbital = {};
+}
+
+// 创建Community命名空间
+window.NexusOrbital.Community = {
+    showPostModal: showPostModal,
+    hidePostModal: hidePostModal,
+    submitPost: submitPost,
+    showLoginRequiredMessage: showLoginRequiredMessage,
+    isLoggedIn: isLoggedIn,
+    // 可以添加更多需要导出的函数
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // 初始化元素
     const newPostBtn = document.querySelector('.new-post-btn');
@@ -553,7 +568,7 @@ function showSuccessMessage() {
 }
 
 /**
- * 显示登录提示消息
+ * 显示登录提示消息，但不跳转页面
  */
 function showLoginRequiredMessage() {
     // 创建消息元素
@@ -569,12 +584,16 @@ function showLoginRequiredMessage() {
         messageElement.classList.add('show');
     }, 100);
     
-    // 一段时间后自动隐藏并跳转到登录页面
+    // 一段时间后自动隐藏
     setTimeout(() => {
         messageElement.classList.remove('show');
         setTimeout(() => {
             document.body.removeChild(messageElement);
-            window.location.href = 'new-login.html'; // 更新为新登录页
+            // 不再跳转到登录页面，而是在当前页面尝试打开登录对话框
+            // 如果页面有内置的登录模态框，可以在此处打开
+            if (typeof showLoginModal === 'function') {
+                showLoginModal();
+            }
         }, 300);
     }, 2000);
 }
@@ -649,7 +668,7 @@ function filterPosts(filterType) {
 }
 
 /**
- * 检查登录状态并更新UI
+ * 检查登录状态并更新UI，但不强制登录
  */
 function checkLoginStatus() {
     const loginButton = document.querySelector('.nav-menu li a.btn-primary');
@@ -704,6 +723,7 @@ function checkLoginStatus() {
             }
         }
     }
+    // 移除未登录状态处理逻辑，允许未登录用户浏览
 }
 
 /**

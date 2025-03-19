@@ -31,6 +31,11 @@ NexusOrbital.Integrations = (function() {
     const userData = isLoggedIn ? NexusOrbital.Auth.getCurrentUser() : null;
     const isExplorerMode = NexusOrbital.ExplorerMode && NexusOrbital.ExplorerMode.isActive();
     
+    // 社区浏览权限对所有用户开放
+    if (permissionName === 'community_view' || permissionName === 'community_read') {
+      return true;
+    }
+    
     // 匿名用户基础权限
     if (PERMISSION_MAPPINGS.view.includes(permissionName)) {
       return true;
@@ -365,8 +370,14 @@ NexusOrbital.Integrations = (function() {
     });
   }
   
-  // 显示登录或探索者模式提示
+  // 显示登录或探索者模式提示，仅用于发帖功能
   function showLoginOrExplorerPrompt(featureName) {
+    // 对于社区页面浏览功能，不显示任何提示
+    if (featureName === '社区内容' || featureName === '浏览内容' || 
+        featureName === '社区页面' || featureName === '查看内容') {
+      return;
+    }
+    
     const messageElement = document.createElement('div');
     messageElement.className = 'login-explorer-prompt';
     messageElement.innerHTML = `
