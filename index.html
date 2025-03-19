@@ -438,6 +438,7 @@
                     <li><a href="design-studio.html">AI设计工坊</a></li>
                     <li><a href="marketplace.html">众筹商城</a></li>
                     <li><a href="agents.html">智能体系统</a></li>
+                    <li><a href="#" id="explorer-mode-btn">探索者模式</a></li>
                     <li><a href="login.html" class="btn-primary">登录 / 注册</a></li>
                 </ul>
                 <div class="hamburger">
@@ -618,5 +619,52 @@
         
         // 倒计时功能已移除，替换为Spline体验
     </script>
+
+    <!-- MVP集成脚本 -->
+    <script src="js/explorer-mode.js"></script>
+    <script src="js/integrations.js"></script>
+    <script src="js/mvp.js"></script>
+    <script>
+    // 初始化MVP功能
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.NexusOrbital && window.NexusOrbital.MVP) {
+            window.NexusOrbital.MVP.init();
+        }
+        
+        // 绑定探索者模式按钮事件
+        const explorerBtn = document.getElementById('explorer-mode-btn');
+        if (explorerBtn) {
+            explorerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (window.NexusOrbital && window.NexusOrbital.ExplorerMode) {
+                    window.NexusOrbital.ExplorerMode.activate();
+                } else {
+                    alert('探索者模式加载中，请稍后再试！');
+                }
+            });
+        }
+    });
+    </script>
+
+    <!-- 探索者模式对话框 -->
+    <div class="modal" id="explorer-mode-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000;">
+      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #1B2735; padding: 30px; border-radius: 10px; max-width: 450px; width: 100%;">
+        <h3 style="margin-top: 0; color: #fff; font-size: 22px;">欢迎使用探索者模式</h3>
+        <div style="margin: 20px 0;">
+          <p style="color: #ddd; margin-bottom: 15px;">探索者模式让您可以在不注册的情况下体验NexusOrbital的基本功能。</p>
+          <p style="color: #ddd; margin-bottom: 10px;">您将可以:</p>
+          <ul style="color: #ddd; padding-left: 20px; margin-bottom: 15px;">
+            <li>浏览社区内容</li>
+            <li>使用基础设计工具</li>
+            <li>查看教程和指南</li>
+          </ul>
+          <p style="color: #ddd;">注册会员后可解锁更多高级功能!</p>
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+          <button id="close-explorer-mode" style="padding: 8px 15px; background: none; color: #ccc; border: 1px solid #666; border-radius: 4px; margin-right: 10px; cursor: pointer;">关闭</button>
+          <button id="confirm-explorer-mode" style="padding: 8px 15px; background-color: #3a7bd5; color: white; border: none; border-radius: 4px; cursor: pointer;">开始探索</button>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
