@@ -116,9 +116,32 @@ document.addEventListener('DOMContentLoaded', function() {
 function showPostModal() {
     // 检查是否登录
     if (!isLoggedIn()) {
-        // 使用我们已更新的友好提示，而不是重定向
-        showLoginRequiredMessage();
-        return;
+        // 在社区页面上，检查是否禁用登录检查
+        if (window.disableCommunityLoginCheck) {
+            // 显示友好提示而不是登录弹窗
+            const message = document.createElement('div');
+            message.className = 'toast-message info';
+            message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可发布内容';
+            document.body.appendChild(message);
+            
+            // 显示淡入效果
+            setTimeout(() => {
+                message.classList.add('show');
+            }, 10);
+            
+            // 几秒后自动消失
+            setTimeout(() => {
+                message.classList.remove('show');
+                setTimeout(() => {
+                    message.remove();
+                }, 300);
+            }, 3000);
+            return;
+        } else {
+            // 使用默认的登录提示
+            showLoginRequiredMessage();
+            return;
+        }
     }
     
     // 已登录，显示发帖模态框
@@ -617,9 +640,32 @@ function showSuccessMessage() {
 }
 
 /**
- * 显示登录提示消息，但不会强制跳转
+ * 显示需要登录的提示信息
  */
 function showLoginRequiredMessage() {
+    // 如果在社区页面上且设置了禁用登录检查标志，则显示非侵入式提示
+    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+        // 显示友好的toast消息而非模态框
+        const message = document.createElement('div');
+        message.className = 'toast-message info';
+        message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可使用此功能';
+        document.body.appendChild(message);
+        
+        // 显示淡入效果
+        setTimeout(() => {
+            message.classList.add('show');
+        }, 10);
+        
+        // 几秒后自动消失
+        setTimeout(() => {
+            message.classList.remove('show');
+            setTimeout(() => {
+                message.remove();
+            }, 300);
+        }, 3000);
+        return;
+    }
+    
     // 创建消息元素
     const messageContainer = document.createElement('div');
     messageContainer.className = 'login-message-container';
@@ -650,13 +696,6 @@ function showLoginRequiredMessage() {
     
     cancelButton.addEventListener('click', function() {
         messageContainer.remove();
-    });
-    
-    // 点击其他区域关闭
-    messageContainer.addEventListener('click', function(e) {
-        if (e.target === messageContainer) {
-            messageContainer.remove();
-        }
     });
 }
 
@@ -810,3 +849,6 @@ function logout() {
     // 重定向到首页
     window.location.href = 'index.html';
 }
+
+// 更新于2025-03-20：修复了社区页面中的移动端登录弹窗问题
+// 更新者：Cascade AI助手

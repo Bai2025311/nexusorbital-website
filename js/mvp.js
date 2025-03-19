@@ -525,7 +525,27 @@ NexusOrbital.MVP = (function() {
     e.preventDefault();
     
     // 检查用户是否已登录
-    if (NexusOrbital.Auth && !NexusOrbital.Auth.isLoggedIn()) {
+    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+      // 如果在社区页面并且设置了禁用登录检查标志，显示友好提示而不是登录弹窗
+      const message = document.createElement('div');
+      message.className = 'toast-message info';
+      message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可发布内容';
+      document.body.appendChild(message);
+      
+      // 显示淡入效果
+      setTimeout(() => {
+        message.classList.add('show');
+      }, 10);
+      
+      // 几秒后自动消失
+      setTimeout(() => {
+        message.classList.remove('show');
+        setTimeout(() => {
+          message.remove();
+        }, 300);
+      }, 3000);
+      return;
+    } else if (NexusOrbital.Auth && !NexusOrbital.Auth.isLoggedIn()) {
       // 用户未登录，显示需要登录的提示
       if (NexusOrbital.Community && NexusOrbital.Community.showLoginRequiredMessage) {
         NexusOrbital.Community.showLoginRequiredMessage();
