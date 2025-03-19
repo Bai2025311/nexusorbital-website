@@ -525,13 +525,62 @@ function addPostToDOM(title, category, content, images) {
     const postActions = document.createElement('div');
     postActions.className = 'post-actions';
     postActions.innerHTML = `
-        <div class="post-action"><i class="far fa-heart"></i> 0</div>
-        <div class="post-action"><i class="far fa-comment"></i> 0</div>
-        <div class="post-action"><i class="far fa-bookmark"></i> 收藏</div>
-        <div class="post-action"><i class="fas fa-share-alt"></i> 分享</div>
+        <div class="post-action" data-action="like"><i class="far fa-heart"></i> 0</div>
+        <div class="post-action" data-action="comment"><i class="far fa-comment"></i> 0</div>
+        <div class="post-action" data-action="favorite"><i class="far fa-bookmark"></i> 收藏</div>
+        <div class="post-action" data-action="share"><i class="fas fa-share-alt"></i> 分享</div>
     `;
     
     postCard.appendChild(postActions);
+    
+    // 添加事件监听器到帖子操作按钮
+    const actionButtons = postActions.querySelectorAll('.post-action');
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const action = button.getAttribute('data-action');
+            // 检查登录状态并尊重禁用登录检查标志
+            if (!isLoggedIn() && !window.disableCommunityLoginCheck) {
+                showLoginRequiredMessage();
+                return;
+            } else if (!isLoggedIn() && window.disableCommunityLoginCheck) {
+                // 在社区页面上，仅显示提示而不强制登录
+                const message = document.createElement('div');
+                message.className = 'toast-message info';
+                message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可使用此功能';
+                document.body.appendChild(message);
+                
+                // 显示淡入效果
+                setTimeout(() => {
+                    message.classList.add('show');
+                }, 10);
+                
+                // 几秒后自动消失
+                setTimeout(() => {
+                    message.classList.remove('show');
+                    setTimeout(() => {
+                        message.remove();
+                    }, 300);
+                }, 3000);
+                return;
+            }
+            
+            // 处理不同类型的操作
+            switch(action) {
+                case 'like':
+                    console.log("点赞操作");
+                    break;
+                case 'comment':
+                    console.log("评论操作");
+                    break;
+                case 'favorite':
+                    console.log("收藏操作");
+                    break;
+                case 'share':
+                    console.log("分享操作");
+                    break;
+            }
+        });
+    });
     
     // 将新帖子插入到最前面
     if (postContainer.firstChild) {
@@ -684,6 +733,12 @@ function filterPosts(filterType) {
  * 检查登录状态并更新UI，但不强制登录
  */
 function checkLoginStatus() {
+    // 如果设置了禁用标志，跳过登录状态检查
+    if (window.disableCommunityLoginCheck) {
+        console.log('社区页面：登录状态检查被调用，但由于禁用标志不会影响UI');
+        return;
+    }
+
     // 登录按钮现在显示为"登录发帖"
     const loginButton = document.querySelector('.nav-menu li a.btn-primary');
     

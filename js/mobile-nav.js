@@ -121,8 +121,34 @@ function addNavigationEventListeners() {
     navItems.forEach(item => {
         const page = item.getAttribute('data-page');
         
+        // 在社区页面中特殊处理profile点击
+        if (page === 'profile' && window.location.pathname.includes('community.html') && window.disableCommunityLoginCheck) {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 显示友好提示
+                const message = document.createElement('div');
+                message.className = 'toast-message info';
+                message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可访问个人空间';
+                document.body.appendChild(message);
+                
+                // 显示淡入效果
+                setTimeout(() => {
+                    message.classList.add('show');
+                }, 10);
+                
+                // 几秒后自动消失
+                setTimeout(() => {
+                    message.classList.remove('show');
+                    setTimeout(() => {
+                        message.remove();
+                    }, 300);
+                }, 3000);
+            });
+            return; // 仅跳过当前项的后续处理
+        }
         // 对于尚未实现的页面，阻止默认行为并显示信息
-        if (item.getAttribute('href') === '#') {
+        else if (item.getAttribute('href') === '#') {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
                 showFeatureComingSoon(page);
@@ -196,6 +222,12 @@ function getFeatureLabel(feature) {
  * 添加探索者模式到上下文菜单
  */
 function addExplorerModeToMenu() {
+    // 如果当前是社区页面且设置了禁用登录检查标志，则不添加探索者模式
+    if (window.location.pathname.includes('community.html') && window.disableCommunityLoginCheck) {
+        console.log('社区页面移动端：禁用探索者模式菜单');
+        return;
+    }
+
     // 检查是否已有探索者模式功能
     if (window.toggleExplorerMode) {
         // 创建一个探索者模式入口点
