@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>星环会议 - NexusOrbital</title>
+    <title>星际人居社区 - NexusOrbital</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/community-mobile.css">
     <link rel="stylesheet" href="css/gravity-interaction.css">
@@ -32,13 +32,13 @@
     
     <div class="community-mobile-container">
         <div class="header">
-            <h1>星环会议</h1>
-            <button id="postButton" class="post-button"><i class="fas fa-plus"></i> 发表帖子</button>
+            <h1>星际人居社区</h1>
+            <button id="postButton" class="post-button"><i class="fas fa-plus"></i> 创建方案</button>
         </div>
         
         <div class="stats-container">
-            <div class="stat-item" data-stat="oxygen">
-                <div class="stat-label">氧气浓度</div>
+            <div class="stat-item" data-stat="habitat-tech">
+                <div class="stat-label">舱室适应性</div>
                 <div class="stat-value">98.4%</div>
                 <div class="progress-bar">
                     <div class="progress-value" style="width: 98%;"></div>
@@ -51,8 +51,8 @@
                     <div class="progress-value" style="width: 62%;"></div>
                 </div>
             </div>
-            <div class="stat-item" data-stat="community">
-                <div class="stat-label">社区活跃</div>
+            <div class="stat-item" data-stat="collaboration">
+                <div class="stat-label">协作指数</div>
                 <div class="stat-value">89分</div>
                 <div class="progress-bar">
                     <div class="progress-value" style="width: 89%;"></div>
@@ -62,11 +62,11 @@
         
         <div class="filters-container">
             <div class="filter-buttons">
-                <button class="filter-button active">推荐</button>
-                <button class="filter-button">热门</button>
-                <button class="filter-button">最新</button>
+                <button class="filter-button active">推荐方案</button>
+                <button class="filter-button">热门研究</button>
+                <button class="filter-button">最新技术</button>
             </div>
-            <button class="new-post-button">发表帖子</button>
+            <button class="new-post-button">创建方案</button>
         </div>
         
         <div class="content">
@@ -136,33 +136,33 @@
         <div class="modal" id="postModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>创建新帖子</h3>
+                    <h3>创建新技术方案</h3>
                     <button class="close-modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="postTitle">标题</label>
-                        <input type="text" id="postTitle" class="form-control" placeholder="输入帖子标题">
+                        <label for="postTitle">方案标题</label>
+                        <input type="text" id="postTitle" class="form-control" placeholder="输入方案标题">
                     </div>
                     <div class="form-group">
-                        <label for="postCategory">分类</label>
+                        <label for="postCategory">技术领域</label>
                         <select id="postCategory" class="form-control">
-                            <option value="">选择分类</option>
-                            <option value="tech">技术分享</option>
-                            <option value="design">创意设计</option>
-                            <option value="resource">资源共享</option>
-                            <option value="discussion">热门讨论</option>
-                            <option value="question">问题求助</option>
+                            <option value="">选择领域</option>
+                            <option value="tech">技术突破</option>
+                            <option value="design">人居设计</option>
+                            <option value="resource">资源利用</option>
+                            <option value="discussion">行星讨论</option>
+                            <option value="question">技术咨询</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="postContent">内容</label>
-                        <textarea id="postContent" class="form-control" placeholder="输入帖子内容"></textarea>
+                        <label for="postContent">方案内容</label>
+                        <textarea id="postContent" class="form-control" placeholder="描述您的技术方案或研究成果"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn-secondary" id="cancel-post">取消</button>
-                    <button class="btn-primary" id="publish-post">发布</button>
+                    <button class="btn-primary" id="publish-post">发布方案</button>
                 </div>
             </div>
         </div>
@@ -173,7 +173,7 @@
                 <div class="ai-pod-indicator"></div>
                 <div class="ai-pod-inner">
                     <div class="ai-pod-header">
-                        <div class="ai-pod-title">NexusAI助手</div>
+                        <div class="ai-pod-title">NexusAI星际助手</div>
                         <div class="ai-pod-controls">
                             <button class="ai-control-button ai-minimize"><i class="fas fa-minus"></i></button>
                             <button class="ai-control-button ai-close"><i class="fas fa-times"></i></button>
@@ -183,7 +183,7 @@
                         <div class="ai-messages" id="aiMessages">
                             <div class="ai-message ai-assistant">
                                 <div class="ai-message-content">
-                                    欢迎访问星环会议！我是您的NexusAI助手，有什么可以帮助您的吗？
+                                    欢迎访问星际人居社区！我是您的NexusAI助手，有什么可以帮助您的吗？
                                 </div>
                                 <div class="ai-message-time">刚刚</div>
                             </div>
@@ -214,7 +214,7 @@
             </a>
             <a href="community-mobile.html" class="nav-item active">
                 <i class="fas fa-users nav-icon"></i>
-                <span class="nav-label">星环会议</span>
+                <span class="nav-label">星际人居社区</span>
             </a>
             <a href="tech-library.html" class="nav-item">
                 <i class="fas fa-database nav-icon"></i>
