@@ -43,7 +43,7 @@ function createMobileNavigationDOM() {
                     <div class="nav-icon dashboard-icon"></div>
                     <div class="orbit-animation"></div>
                 </div>
-                <span class="nav-label">控制舱</span>
+                <span class="nav-label">指挥中心</span>
             </a>
             
             <a href="#" class="nav-item" data-page="funding">
@@ -62,12 +62,12 @@ function createMobileNavigationDOM() {
                 <span class="nav-label">星环会议</span>
             </a>
             
-            <a href="#" class="nav-item" data-page="tech">
+            <a href="design-studio.html" class="nav-item" data-page="designs">
                 <div class="icon-container">
                     <div class="nav-icon tech-icon"></div>
                     <div class="orbit-animation"></div>
                 </div>
-                <span class="nav-label">技术库</span>
+                <span class="nav-label">智能构建室</span>
             </a>
             
             <a href="#" class="nav-item" data-page="profile">
@@ -107,6 +107,8 @@ function setActiveNavItem() {
         document.querySelector('[data-page="tech"]').classList.add('active');
     } else if (currentPath.includes('profile.html')) {
         document.querySelector('[data-page="profile"]').classList.add('active');
+    } else if (currentPath.includes('design-studio.html')) {
+        document.querySelector('[data-page="designs"]').classList.add('active');
     }
 }
 
@@ -212,7 +214,8 @@ function getFeatureLabel(feature) {
     const labels = {
         'funding': '星海计划',
         'tech': '技术资产库',
-        'profile': '生命印记'
+        'profile': '生命印记',
+        'designs': '智能构建室'
     };
     
     return labels[feature] || feature;
