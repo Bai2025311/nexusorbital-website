@@ -51,7 +51,7 @@ function createMobileNavigationDOM() {
                     <div class="nav-icon funding-icon"></div>
                     <div class="orbit-animation"></div>
                 </div>
-                <span class="nav-label">众筹</span>
+                <span class="nav-label">星海计划</span>
             </a>
             
             <a href="community.html" class="nav-item" data-page="community">
@@ -59,7 +59,7 @@ function createMobileNavigationDOM() {
                     <div class="nav-icon community-icon"></div>
                     <div class="orbit-animation"></div>
                 </div>
-                <span class="nav-label">社区</span>
+                <span class="nav-label">星环会议</span>
             </a>
             
             <a href="#" class="nav-item" data-page="tech">
@@ -210,7 +210,7 @@ function showFeatureComingSoon(feature) {
  */
 function getFeatureLabel(feature) {
     const labels = {
-        'funding': '技术众筹',
+        'funding': '星海计划',
         'tech': '技术资产库',
         'profile': '个人中心'
     };

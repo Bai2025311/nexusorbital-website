@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>星际共创舱 - NexusOrbital跨星球人居技术中枢</title>
+    <title>星环会议 - NexusOrbital跨星球人居技术中枢</title>
     <link rel="canonical" href="https://nexusorbital.com/community.html" />
-    <meta name="description" content="NexusOrbital星际共创舱是分享太空居住创意的平台，汇集地球人居和太空人居技术，用户可与AI智能体互动并获取专业反馈。">
-    <meta property="og:title" content="星际共创舱 - NexusOrbital跨星球人居技术中枢">
-    <meta property="og:description" content="探索星际人居的共创空间，分享创意并获取AI智能体专业反馈。">
+    <meta name="description" content="NexusOrbital星环会议是分享太空居住创意的平台，汇集地球人居和太空人居技术，用户可与AI智能体互动并获取专业反馈。">
+    <meta property="og:title" content="星环会议 - NexusOrbital跨星球人居技术中枢">
+    <meta property="og:description" content="NexusOrbital星环会议是分享太空居住创意的平台，汇集地球人居和太空人居技术，用户可与AI智能体互动并获取专业反馈。">
     <meta property="og:url" content="https://nexusorbital.com/community.html">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="css/style.css">
@@ -110,11 +110,10 @@
                 </a>
                 <ul class="nav-menu">
                     <li><a href="index.html#about">使命宣言</a></li>
-                    <li><a href="community.html" class="active">星际共创舱</a></li>
+                    <li><a href="community.html" class="active">星环会议</a></li>
                     <li><a href="design-studio.html">智能构建室</a></li>
-                    <li><a href="marketplace.html">资源中心站</a></li>
+                    <li><a href="marketplace.html">星海计划</a></li>
                     <li><a href="technology.html">技术矩阵</a></li>
-                    <li><a href="#" id="explorer-mode-btn">探索者模式</a></li>
                     <li><a href="new-login.html" class="btn-primary">登录发帖</a></li>
                 </ul>
                 <div class="hamburger">
@@ -484,73 +483,18 @@
             if (window.NexusOrbital && window.NexusOrbital.MVP) {
                 window.NexusOrbital.MVP.init();
             }
-            
-            // 绑定探索者模式按钮事件 
-            const explorerBtn = document.getElementById('explorer-mode-btn');
-            if (explorerBtn) {
-                explorerBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // 在社区页面，显示探索者模式信息而不是登录提示
-                    const message = document.createElement('div');
-                    message.className = 'toast-message info';
-                    message.innerHTML = '<i class="fas fa-info-circle"></i> 探索者模式让您获得更多功能';
-                    document.body.appendChild(message);
-                    
-                    // 显示淡入效果
-                    setTimeout(() => {
-                        message.classList.add('show');
-                    }, 10);
-                    
-                    // 几秒后自动消失
-                    setTimeout(() => {
-                        message.classList.remove('show');
-                        setTimeout(() => {
-                            message.remove();
-                        }, 300);
-                    }, 3000);
-                });
-            }
-        });
-        
-        // 当页面完全加载后执行，用于确认所有脚本加载完成
-        window.addEventListener('load', function() {
-            console.log('社区页面：页面已完全加载，禁用登录检查状态: ' + (window.disableCommunityLoginCheck ? '已启用' : '未启用'));
-            
-            // 打印所有可能相关的模块是否正确初始化
-            console.log('模块状态检查:');
-            console.log('- NexusOrbital.Auth: ' + (typeof NexusOrbital.Auth !== 'undefined' ? '已加载' : '未加载'));
-            console.log('- NexusOrbital.Community: ' + (typeof NexusOrbital.Community !== 'undefined' ? '已加载' : '未加载'));
-            console.log('- NexusOrbital.Integrations: ' + (typeof NexusOrbital.Integrations !== 'undefined' ? '已加载' : '未加载'));
-            console.log('- NexusOrbital.ExplorerMode: ' + (typeof NexusOrbital.ExplorerMode !== 'undefined' ? '已加载' : '未加载'));
         });
     </script>
     
-    <!-- 探索者模式对话框 -->
-    <div id="explorer-mode-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-        <div style="background-color: #121836; margin: 15% auto; padding: 20px; border: 1px solid #3a7bd5; width: 85%; max-width: 500px; border-radius: 10px; color: white; box-shadow: 0 0 20px rgba(58, 123, 213, 0.5);">
-            <h2 style="color: #3a7bd5; text-align: center; font-size: clamp(18px, 5vw, 24px);">激活探索者模式</h2>
-            <p style="margin: 20px 0; line-height: 1.6; font-size: clamp(14px, 4vw, 16px);">欢迎使用NexusOrbital探索者模式！在此模式下，您将体验到更丰富的功能和界面元素，让您获得更丰富的社区交互体验。</p>
-            <ul style="list-style-type: none; padding-left: 20px; margin-bottom: 20px; font-size: clamp(14px, 4vw, 16px);">
-                <li style="margin-bottom: 10px;">个性化空间站规划</li>
-                <li style="margin-bottom: 10px;">高级资源探索</li>
-                <li style="margin-bottom: 10px;">星际社区互动</li>
-                <li style="margin-bottom: 10px;">实时数据分析</li>
-            </ul>
-            <div style="text-align: center; margin-top: 30px; display: flex; flex-direction: column-reverse; gap: 10px;">
-                <button id="close-explorer-mode" style="background-color: transparent; color: #ccc; border: 1px solid #ccc; padding: 12px 20px; margin: 0 auto; cursor: pointer; border-radius: 5px; width: 100%; max-width: 200px; font-size: clamp(14px, 4vw, 16px);">取消</button>
-                <button id="confirm-explorer-mode" style="background-color: #3a7bd5; color: white; border: none; padding: 12px 25px; margin: 0 auto; cursor: pointer; border-radius: 5px; width: 100%; max-width: 200px; font-size: clamp(14px, 4vw, 16px);">开始探索</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 添加结构化数据，有助于SEO -->
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/dome-dashboard.js"></script>
+    
     <script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "WebPage",
-        "name": "星际共创舱 - NexusOrbital跨星球人居技术中枢",
-        "description": "NexusOrbital星际共创舱是分享太空居住创意的平台，汇集地球人居和太空人居技术，用户可与AI智能体互动并获取专业反馈。",
+        "name": "星环会议 - NexusOrbital跨星球人居技术中枢",
+        "description": "NexusOrbital星环会议是分享太空居住创意的平台，汇集地球人居和太空人居技术，用户可与AI智能体互动并获取专业反馈。",
         "publisher": {
             "@type": "Organization",
             "name": "寰宇脉络 (NexusOrbital)",
@@ -561,18 +505,5 @@
         }
     }
     </script>
-    <div id="explorer-mode-dialog" class="explorer-mode-dialog" style="display: none;">
-        <div class="explorer-mode-content">
-            <h2>探索者模式</h2>
-            <p>欢迎启用探索者模式，这将为您解锁额外的功能和界面元素，让您获得更丰富的社区交互体验。</p>
-            <div class="explorer-mode-buttons">
-                <button id="start-exploring">开始探索</button>
-                <button id="close-explorer-dialog">稍后再说</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/mobile-nav.js"></script>
-    <script src="js/dome-dashboard.js"></script>
 </body>
 </html>
