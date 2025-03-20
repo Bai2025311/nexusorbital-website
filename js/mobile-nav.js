@@ -76,7 +76,7 @@ function createMobileNavigationDOM() {
                     <div class="orbit-animation"></div>
                     <div class="notification-pulse" id="profile-notification" style="display:none;"></div>
                 </div>
-                <span class="nav-label">我的</span>
+                <span class="nav-label">生命印记</span>
             </a>
         </nav>
     </div>
@@ -212,7 +212,7 @@ function getFeatureLabel(feature) {
     const labels = {
         'funding': '星海计划',
         'tech': '技术资产库',
-        'profile': '个人中心'
+        'profile': '生命印记'
     };
     
     return labels[feature] || feature;
