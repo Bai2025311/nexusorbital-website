@@ -800,3 +800,51 @@ textarea.form-control {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
 }
+
+/* 发帖按钮 */
+.post-button {
+    background: linear-gradient(135deg, #4e9eff 0%, #2979ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.post-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #5ca8ff 0%, #4086ff 100%);
+}
+
+.post-button i {
+    font-size: 12px;
+}
+
+/* 引力系统容器 */
+.gravity-system-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 确保引力系统的粒子在正确的层次上 */
+canvas.gravity-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}

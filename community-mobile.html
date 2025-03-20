@@ -17,9 +17,23 @@
 <body>
     <div class="stars-background"></div>
     
+    <!-- 粒子系统容器 -->
+    <div id="gravitySystem" class="gravity-system-container"></div>
+    
+    <!-- 滑动提示 -->
+    <div class="swipe-hint left">
+        <i class="fas fa-arrow-left"></i>
+        <span>技术众筹中心</span>
+    </div>
+    <div class="swipe-hint right">
+        <i class="fas fa-arrow-right"></i>
+        <span>工程师社区</span>
+    </div>
+    
     <div class="community-mobile-container">
         <div class="header">
             <h1>星环会议</h1>
+            <button id="postButton" class="post-button"><i class="fas fa-plus"></i> 发表帖子</button>
         </div>
         
         <div class="stats-container">
@@ -127,12 +141,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="post-title">标题</label>
-                        <input type="text" id="post-title" class="form-control" placeholder="输入帖子标题">
+                        <label for="postTitle">标题</label>
+                        <input type="text" id="postTitle" class="form-control" placeholder="输入帖子标题">
                     </div>
                     <div class="form-group">
-                        <label for="post-category">分类</label>
-                        <select id="post-category" class="form-control">
+                        <label for="postCategory">分类</label>
+                        <select id="postCategory" class="form-control">
                             <option value="">选择分类</option>
                             <option value="tech">技术分享</option>
                             <option value="design">创意设计</option>
@@ -142,8 +156,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="post-content">内容</label>
-                        <textarea id="post-content" class="form-control" placeholder="输入帖子内容"></textarea>
+                        <label for="postContent">内容</label>
+                        <textarea id="postContent" class="form-control" placeholder="输入帖子内容"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -187,21 +201,8 @@
             </button>
         </div>
 
-        <!-- 引力交互系统容器 -->
-        <div class="gravity-interaction-container" id="gravitySystem">
-            <div class="particle-background"></div>
-            <div class="gravity-interaction-controls">
-                <div class="swipe-hint left">
-                    <i class="fas fa-chevron-left"></i>
-                    <span>技术众筹</span>
-                </div>
-                <div class="swipe-hint right">
-                    <span>工程师社区</span>
-                    <i class="fas fa-chevron-right"></i>
-                </div>
-            </div>
-        </div>
-        
+        <!-- 已在顶部添加了引力交互系统容器，此处删除重复部分 -->
+
         <div class="nav-bar">
             <a href="control-dock.html" class="nav-item">
                 <i class="fas fa-rocket nav-icon"></i>
@@ -226,43 +227,59 @@
     <script src="js/community.js"></script>
     <script src="js/mobile-nav.js"></script>
     <script src="js/gravity-interaction.js"></script>
+    <script src="js/ai-task-pod.js"></script>
     
     <!-- 初始化引力交互和AI任务舱 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 设置社区页面禁用强制登录检查
+            window.disableCommunityLoginCheck = true;
+            console.log("社区移动版：已设置禁用强制登录检查");
+            
             // 初始化引力交互系统
-            const gravitySystem = new GravityInteractionSystem({
-                container: document.getElementById('gravitySystem'),
-                particleCount: 80,
-                particleColor: '#4e9eff',
-                maxParticleSize: 3,
-                speed: 0.5,
-                connectionDistance: 150,
-                useSwipeDetection: true
-            });
-            
-            gravitySystem.initialize();
-            
-            // 注册社区页面左右滑动事件
-            gravitySystem.onSwipeLeft = function() {
-                console.log('向左滑动 - 前往技术众筹中心');
-                // 显示滑动动画
-                const swipeHint = document.querySelector('.swipe-hint.left');
-                swipeHint.classList.add('active');
-                setTimeout(() => {
-                    window.location.href = 'funding-mobile.html';
-                }, 800);
-            };
-            
-            gravitySystem.onSwipeRight = function() {
-                console.log('向右滑动 - 前往工程师社区');
-                // 显示滑动动画
-                const swipeHint = document.querySelector('.swipe-hint.right');
-                swipeHint.classList.add('active');
-                setTimeout(() => {
-                    window.location.href = 'engineers-mobile.html';
-                }, 800);
-            };
+            if (typeof GravityInteractionSystem !== 'undefined') {
+                const gravitySystem = new GravityInteractionSystem({
+                    container: document.getElementById('gravitySystem'),
+                    particleCount: 80,
+                    particleColor: '#4e9eff',
+                    maxParticleSize: 3,
+                    speed: 0.5,
+                    connectionDistance: 150,
+                    useSwipeDetection: true
+                });
+                
+                gravitySystem.initialize();
+                
+                // 注册社区页面左右滑动事件
+                gravitySystem.onSwipeLeft = function() {
+                    console.log('向左滑动 - 前往技术众筹中心');
+                    // 显示滑动动画
+                    const swipeHint = document.querySelector('.swipe-hint.left');
+                    swipeHint.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = 'funding-mobile.html';
+                    }, 800);
+                };
+                
+                gravitySystem.onSwipeRight = function() {
+                    console.log('向右滑动 - 前往工程师社区');
+                    // 显示滑动动画
+                    const swipeHint = document.querySelector('.swipe-hint.right');
+                    swipeHint.classList.add('active');
+                    setTimeout(() => {
+                        window.location.href = 'engineers-mobile.html';
+                    }, 800);
+                };
+                
+                // 注册AI命令处理函数
+                if (typeof gravitySystem.registerAICommands === 'function') {
+                    gravitySystem.registerAICommands();
+                } else {
+                    console.error('registerAICommands方法未定义');
+                }
+            } else {
+                console.error('GravityInteractionSystem未定义，检查gravity-interaction.js是否正确加载');
+            }
             
             // 初始化AI任务舱
             const aiTaskPodToggle = document.getElementById('aiTaskPodToggle');
@@ -270,9 +287,6 @@
             const aiMessages = document.getElementById('aiMessages');
             const aiMessageInput = document.getElementById('aiMessageInput');
             const aiSendButton = document.getElementById('aiSendButton');
-            
-            // 注册AI命令处理函数
-            gravitySystem.registerAICommands();
             
             // 切换AI任务舱显示/隐藏
             aiTaskPodToggle.addEventListener('click', function() {
@@ -491,19 +505,50 @@
             document.querySelector('.new-post-button').addEventListener('click', function() {
                 const isLoginRequired = window.disableCommunityLoginCheck !== true;
                 
-                if (isLoginRequired && !window.isLoggedIn) {
-                    showToast('请先登录后再发表帖子');
-                    // 可以选择跳转到登录页面
-                    // window.location.href = 'new-login.html';
-                } else {
-                    // 显示发帖界面
-                    showPostModal();
+                if (isLoginRequired && !isLoggedIn()) {
+                    showToast('请先登录后再发帖');
+                    return;
                 }
+                
+                showPostModal();
             });
             
-            // 设置社区页面禁用强制登录检查
-            window.disableCommunityLoginCheck = true;
-            console.log("社区移动版：已设置禁用强制登录检查");
+            // 使用新的发帖按钮
+            const postButton = document.getElementById('postButton');
+            if (postButton) {
+                postButton.addEventListener('click', function() {
+                    const isLoginRequired = window.disableCommunityLoginCheck !== true;
+                    
+                    if (isLoginRequired && !isLoggedIn()) {
+                        showToast('请先登录后再发帖');
+                        return;
+                    }
+                    
+                    showPostModal();
+                });
+            }
+            
+            // 显示发帖模态窗口
+            function showPostModal() {
+                const modal = document.getElementById('postModal');
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.classList.add('show');
+                }, 10);
+            }
+            
+            // 关闭发帖模态窗口
+            function closePostModal() {
+                const modal = document.getElementById('postModal');
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    // 清空输入框
+                    document.getElementById('postTitle').value = '';
+                    document.getElementById('postCategory').value = '';
+                    document.getElementById('postContent').value = '';
+                }, 300);
+            }
             
             // 发帖模态窗口处理
             const postModal = document.getElementById('postModal');
@@ -511,36 +556,15 @@
             const cancelPost = document.getElementById('cancel-post');
             const publishPost = document.getElementById('publish-post');
             
-            // 显示发帖模态窗口
-            function showPostModal() {
-                postModal.style.display = 'flex';
-                setTimeout(() => {
-                    postModal.classList.add('show');
-                    document.getElementById('post-title').focus();
-                }, 10);
-            }
-            
-            // 关闭发帖模态窗口
-            function closePostModal() {
-                postModal.classList.remove('show');
-                setTimeout(() => {
-                    postModal.style.display = 'none';
-                    // 清空表单
-                    document.getElementById('post-title').value = '';
-                    document.getElementById('post-category').value = '';
-                    document.getElementById('post-content').value = '';
-                }, 300);
-            }
-            
             // 注册关闭事件
             closeModal.addEventListener('click', closePostModal);
             cancelPost.addEventListener('click', closePostModal);
             
             // 发布帖子
             publishPost.addEventListener('click', function() {
-                const title = document.getElementById('post-title').value.trim();
-                const category = document.getElementById('post-category').value;
-                const content = document.getElementById('post-content').value.trim();
+                const title = document.getElementById('postTitle').value.trim();
+                const category = document.getElementById('postCategory').value;
+                const content = document.getElementById('postContent').value.trim();
                 
                 // 简单表单验证
                 if (!title) {
@@ -566,7 +590,7 @@
             // 创建新帖子逻辑
             function createNewPost(title, category, content) {
                 // 获取分类名称
-                const categoryName = document.getElementById('post-category').options[document.getElementById('post-category').selectedIndex].text;
+                const categoryName = document.getElementById('postCategory').options[document.getElementById('postCategory').selectedIndex].text;
                 
                 // 创建帖子DOM元素
                 const postCard = document.createElement('div');
