@@ -402,23 +402,33 @@
             }
             
             .trinity-nav {
-                width: 90%;
-                justify-content: space-between;
-                padding: 12px 15px;
+                display: none !important; /* 完全隐藏黄色框区域的导航栏 */
             }
             
-            .trinity-nav a {
-                margin: 0 8px;
-                font-size: 14px;
+            .mobile-login-button {
+                display: block;
             }
             
-            .trinity-nav a span {
-                display: none;
+            .hero h1 {
+                font-size: 36px;
+                padding: 0 20px;
             }
             
-            .trinity-nav a i {
-                margin-right: 0;
-                font-size: 20px;
+            /* 显示穹顶仪表盘标记 */
+            .data-dashboard-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                z-index: 1001;
+                background: rgba(15, 76, 117, 0.7);
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             }
         }
         
@@ -526,52 +536,6 @@
         
         .progress-fill {
             transition: width 1s ease-in-out;
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-login-button {
-                display: block;
-            }
-            
-            .trinity-nav {
-                width: 100%;
-                overflow-x: auto;
-                justify-content: flex-start;
-                padding: 10px 5px;
-            }
-            
-            .trinity-nav a {
-                flex: 0 0 auto;
-                font-size: 12px;
-                padding: 8px 12px;
-            }
-            
-            /* 适配更多的导航项 */
-            .trinity-nav a span {
-                display: none;
-            }
-            
-            .trinity-nav a i {
-                margin-right: 0;
-                font-size: 18px;
-            }
-            
-            /* 显示穹顶仪表盘标记 */
-            .data-dashboard-toggle {
-                display: block;
-                position: fixed;
-                top: 15px;
-                right: 15px;
-                z-index: 1001;
-                background: rgba(15, 76, 117, 0.7);
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            }
         }
     </style>
 </head>
