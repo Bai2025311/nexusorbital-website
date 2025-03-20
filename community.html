@@ -21,6 +21,15 @@
     <link rel="stylesheet" href="css/explorer-mode.css">
     <link rel="stylesheet" href="css/mobile-nav.css">
     <link rel="stylesheet" href="css/dome-dashboard.css">
+    <script>
+        // 移动设备检测和重定向
+        (function() {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+            if (isMobile && !window.location.href.includes('community-mobile.html')) {
+                window.location.href = 'community-mobile.html';
+            }
+        })();
+    </script>
     <style>
         /* 导航栏样式覆盖 */
         header {
@@ -3088,33 +3097,6 @@
             });
         }
         
-        // 排行榜说明弹窗
-        const showExplanationBtn = document.getElementById('show-leaderboard-explanation');
-        const explanationPopup = document.querySelector('.explanation-popup');
-        
-        if (showExplanationBtn && explanationPopup) {
-            showExplanationBtn.addEventListener('click', function() {
-                if (explanationPopup.style.display === 'none') {
-                    explanationPopup.style.display = 'block';
-                    
-                    // 添加点击外部关闭功能
-                    const closePopupHandler = function(event) {
-                        if (!explanationPopup.contains(event.target) && event.target !== showExplanationBtn) {
-                            explanationPopup.style.display = 'none';
-                            document.removeEventListener('click', closePopupHandler);
-                        }
-                    };
-                    
-                    // 延迟添加事件监听，防止立即触发
-                    setTimeout(() => {
-                        document.addEventListener('click', closePopupHandler);
-                    }, 100);
-                } else {
-                    explanationPopup.style.display = 'none';
-                }
-            });
-        }
-        
         // 关闭模态框
         const closeButtons = document.querySelectorAll('.close-modal');
         closeButtons.forEach(button => {
@@ -3292,3 +3274,6 @@
         initSidebarLeaderboard();
     });
 </script>
+
+</body>
+</html>

@@ -116,46 +116,40 @@ function setActiveNavItem() {
  * 添加导航交互事件监听
  */
 function addNavigationEventListeners() {
-    // 获取所有导航项
     const navItems = document.querySelectorAll('.nav-item');
     
-    // 为尚未实现的页面添加点击事件
     navItems.forEach(item => {
-        const page = item.getAttribute('data-page');
-        
-        // 在社区页面中特殊处理profile点击
-        if (page === 'profile' && window.location.pathname.includes('community.html') && window.disableCommunityLoginCheck) {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
+        item.addEventListener('click', function(e) {
+            const page = this.getAttribute('data-page');
+            
+            // 特殊处理资料页面
+            if (page === 'profile') {
+                // 在社区页面上禁用登录检查
+                const isCommunityPage = window.location.href.includes('community') || window.location.href.includes('community-mobile');
+                const disableCommunityLoginCheck = true; // 社区页面禁用登录检查标志
                 
-                // 显示友好提示
-                const message = document.createElement('div');
-                message.className = 'toast-message info';
-                message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可访问个人空间';
-                document.body.appendChild(message);
+                // 如果在社区页面上且禁用了登录检查，则只显示提示而不跳转
+                if (isCommunityPage && disableCommunityLoginCheck) {
+                    e.preventDefault();
+                    showMobileToast('请先登录后查看个人资料');
+                    return;
+                }
                 
-                // 显示淡入效果
-                setTimeout(() => {
-                    message.classList.add('show');
-                }, 10);
-                
-                // 几秒后自动消失
-                setTimeout(() => {
-                    message.classList.remove('show');
-                    setTimeout(() => {
-                        message.remove();
-                    }, 300);
-                }, 3000);
-            });
-            return; // 仅跳过当前项的后续处理
-        }
-        // 对于尚未实现的页面，阻止默认行为并显示信息
-        else if (item.getAttribute('href') === '#') {
-            item.addEventListener('click', function(e) {
+                // 检查是否已登录
+                const isLoggedIn = false; // 模拟未登录状态
+                if (!isLoggedIn) {
+                    e.preventDefault();
+                    window.location.href = 'new-login.html';
+                    return;
+                }
+            }
+            
+            // 对于尚未实现的页面，阻止默认行为并显示信息
+            else if (item.getAttribute('href') === '#') {
                 e.preventDefault();
                 showFeatureComingSoon(page);
-            });
-        }
+            }
+        });
     });
     
     // 添加探索者模式按钮到移动导航上下文菜单
@@ -225,30 +219,61 @@ function getFeatureLabel(feature) {
  * 添加探索者模式到上下文菜单
  */
 function addExplorerModeToMenu() {
-    // 如果当前是社区页面且设置了禁用登录检查标志，则不添加探索者模式
-    if (window.location.pathname.includes('community.html') && window.disableCommunityLoginCheck) {
-        console.log('社区页面移动端：禁用探索者模式菜单');
+    // 在社区页面上禁用登录检查
+    const isCommunityPage = window.location.href.includes('community') || window.location.href.includes('community-mobile');
+    const disableCommunityLoginCheck = true; // 社区页面禁用登录检查标志
+    
+    // 如果在社区页面上且禁用了登录检查，则不强制检查登录
+    if (isCommunityPage && disableCommunityLoginCheck) {
+        console.log('社区页面已禁用登录检查');
         return;
     }
-
-    // 检查是否已有探索者模式功能
-    if (window.toggleExplorerMode) {
-        // 创建一个探索者模式入口点
-        const profileItem = document.querySelector('[data-page="profile"]');
-        
-        if (profileItem) {
-            profileItem.addEventListener('long-press', function(e) {
-                // 显示探索者模式切换选项
-                toggleExplorerMode();
-            });
-            
-            // 检查探索者模式状态并显示通知提示
-            const isExplorerMode = localStorage.getItem('explorerMode') === 'true';
-            if (isExplorerMode) {
-                document.getElementById('profile-notification').style.display = 'block';
-            }
-        }
+    
+    // 检查是否已登录
+    const isLoggedIn = false; // 模拟未登录状态
+    if (!isLoggedIn) {
+        console.log('用户未登录，无法使用探索者模式');
+        return;
     }
+    
+    // 添加探索者模式菜单项...
+}
+
+/**
+ * 显示移动端Toast消息
+ * @param {string} message - 消息内容 
+ * @param {number} duration - 持续时间(毫秒)
+ */
+function showMobileToast(message, duration = 2000) {
+    // 创建Toast元素
+    const toast = document.createElement('div');
+    toast.className = 'mobile-toast-message';
+    toast.textContent = message;
+    
+    // 添加样式
+    toast.style.position = 'fixed';
+    toast.style.bottom = '80px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    toast.style.color = 'white';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '20px';
+    toast.style.fontSize = '14px';
+    toast.style.zIndex = '2000';
+    
+    // 添加到文档
+    document.body.appendChild(toast);
+    
+    // 定时移除
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.5s';
+        
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 500);
+    }, duration);
 }
 
 /**

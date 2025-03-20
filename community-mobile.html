@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital - 星际社区</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/community-mobile.css">
+    <link rel="stylesheet" href="css/mobile-nav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>NexusOrbital</h1>
+        </div>
+    </header>
+
+    <main>
+        <!-- 状态指标区域 -->
+        <div class="status-indicators">
+            <div class="indicator">
+                <div class="indicator-title">氧气浓度</div>
+                <div class="indicator-value">98.4% <span class="positive-change">+0.1%</span></div>
+            </div>
+            <div class="indicator">
+                <div class="indicator-title">月球基地</div>
+                <div class="indicator-value">62%</div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 62%;"></div>
+                </div>
+            </div>
+            <div class="indicator">
+                <div class="indicator-title">社区活跃度</div>
+                <div class="indicator-value">89 <span class="positive-change">+0</span></div>
+            </div>
+        </div>
+
+        <!-- 内容过滤器 -->
+        <div class="content-filters">
+            <button class="filter-button active">全部</button>
+            <button class="filter-button">推荐</button>
+            <button class="filter-button">热门</button>
+            <button class="filter-button">最新</button>
+            <button class="new-post-button">
+                <i class="fas fa-pen"></i>
+                登录发帖
+            </button>
+        </div>
+
+        <!-- 帖子列表 -->
+        <div class="posts-container">
+            <!-- 帖子1 -->
+            <div class="post-card">
+                <div class="post-author">
+                    <img src="images/avatars/user1.jpg" alt="用户头像" class="author-avatar">
+                    <div class="author-info">
+                        <div class="author-name">星际探险家</div>
+                        <div class="post-meta">2小时前 · 来自 太空人居</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <h2 class="post-title">月球基地舱室设计：如何在有限空间创造舒适感？</h2>
+                    <p class="post-text">在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法。首先，多功能家具是关键，比如可以变形为工作台的床铺；其次，色彩心理学在太空环境中尤为重要，蓝色和绿色能缓解压力；最后，模块化设计允许宇航员根据个人偏好定制空间布局...</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button"><i class="far fa-comment"></i> 36</button>
+                    <button class="action-button"><i class="far fa-heart"></i> 128</button>
+                    <button class="action-button"><i class="far fa-bookmark"></i></button>
+                    <button class="action-button"><i class="far fa-share-square"></i></button>
+                </div>
+            </div>
+
+            <!-- 可以添加更多帖子 -->
+        </div>
+    </main>
+
+    <!-- 移动导航栏 -->
+    <div class="stellar-nav-container">
+        <nav class="stellar-navbar">
+            <a href="index.html" class="nav-item">
+                <div class="icon-container">
+                    <div class="nav-icon dashboard-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">控制舱</span>
+            </a>
+            
+            <a href="#" class="nav-item">
+                <div class="icon-container">
+                    <div class="nav-icon funding-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">星海计划</span>
+            </a>
+            
+            <a href="community.html" class="nav-item active">
+                <div class="icon-container">
+                    <div class="nav-icon community-icon"></div>
+                    <div class="orbit-animation active"></div>
+                </div>
+                <span class="nav-label">星环会议</span>
+            </a>
+            
+            <a href="#" class="nav-item">
+                <div class="icon-container">
+                    <div class="nav-icon library-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">技术库</span>
+            </a>
+            
+            <a href="#" class="nav-item">
+                <div class="icon-container">
+                    <div class="nav-icon profile-icon"></div>
+                    <div class="orbit-animation"></div>
+                </div>
+                <span class="nav-label">我的</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- 新帖发布弹窗 -->
+    <div class="modal" id="new-post-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>发表新帖子</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="post-form">
+                    <div class="form-group">
+                        <input type="text" id="post-title" placeholder="帖子标题" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="post-content" placeholder="分享你的想法..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="image-upload-container">
+                            <div class="image-upload-box">
+                                <i class="fas fa-plus"></i>
+                                <span>添加图片</span>
+                                <input type="file" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select id="post-category">
+                            <option value="" disabled selected>选择话题分类</option>
+                            <option value="habitat">人居技术</option>
+                            <option value="exploration">星际探索</option>
+                            <option value="resource">资源利用</option>
+                            <option value="life">太空生活</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-post">取消</button>
+                <button class="btn-primary" id="submit-post">发布</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/community-mobile.js"></script>
+</body>
+</html>
