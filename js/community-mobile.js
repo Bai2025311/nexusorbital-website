@@ -221,8 +221,14 @@ function initNewPostButton() {
     // 点击发帖按钮
     newPostButton.addEventListener('click', () => {
         // 检查登录状态
-        if (!isUserLoggedIn && !disableCommunityLoginCheck) {
-            showLoginPrompt('发表帖子');
+        if (!isUserLoggedIn) {
+            if (disableCommunityLoginCheck) {
+                // 显示友好提示消息
+                showToast('登录后才能发布内容，请先登录', 3000);
+            } else {
+                // 使用默认的登录提示
+                showLoginPrompt('发表帖子');
+            }
             return;
         }
         
@@ -285,7 +291,13 @@ function initPostInteractions() {
             
             // 如果未登录且需要登录的操作
             if (!isUserLoggedIn && (action === 'like' || action === 'comment' || action === 'bookmark')) {
-                showLoginPrompt(getActionText(action));
+                if (disableCommunityLoginCheck) {
+                    // 显示友好的toast消息
+                    showToast(`登录后才能${getActionText(action)}，请先登录`, 3000);
+                } else {
+                    // 使用默认的登录提示
+                    showLoginPrompt(getActionText(action));
+                }
                 return;
             }
             

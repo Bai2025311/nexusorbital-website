@@ -1,12 +1,15 @@
 /* 
  * NexusOrbital 引力交互系统样式
- * 版本: 1.0.0
+ * 版本: 2.0.0
+ * 设计理念: 太空极简主义 × 人因工程
  */
 
 /* 引力交互容器 */
 .gravity-container {
     position: relative;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 /* 粒子效果样式 */
@@ -15,6 +18,58 @@
     background-color: #fff;
     border-radius: 50%;
     pointer-events: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.particle.blue {
+    background-color: rgba(41, 182, 246, 0.8);
+    box-shadow: 0 0 10px rgba(41, 182, 246, 0.8);
+}
+
+.particle.green {
+    background-color: rgba(29, 233, 182, 0.8);
+    box-shadow: 0 0 10px rgba(29, 233, 182, 0.8);
+}
+
+.particle.purple {
+    background-color: rgba(124, 77, 255, 0.8);
+    box-shadow: 0 0 10px rgba(124, 77, 255, 0.8);
+}
+
+/* 星际轨道导航 */
+.orbital-path {
+    position: absolute;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: rotate 120s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 引力波纹效果 */
+.gravity-ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    opacity: 1;
+    pointer-events: none;
+    animation: ripple 1.5s ease-out forwards;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(3);
+        opacity: 0;
+    }
 }
 
 /* 页面过渡效果 */
@@ -24,7 +79,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000;
+    background: radial-gradient(circle at center, transparent 0%, #000 70%);
     opacity: 0;
     transition: opacity 0.5s ease;
     z-index: 9999;
@@ -34,71 +89,112 @@
 /* 引力手势提示 */
 .gravity-hint {
     position: fixed;
-    bottom: 70px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 13px;
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 100;
     pointer-events: none;
     white-space: nowrap;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .gravity-hint.show {
     opacity: 1;
 }
 
-.gravity-hint .arrow {
-    display: inline-block;
-    margin: 0 5px;
-    animation: arrowPulse 1.5s infinite;
+/* 长按交互效果 */
+.long-press-trigger {
+    position: relative;
+    overflow: visible;
 }
 
-.gravity-hint .left-arrow {
-    transform: rotate(180deg);
-}
-
-@keyframes arrowPulse {
-    0%, 100% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}
-
-/* 长按效果 */
-.long-press-effect {
+.long-press-ripple {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle at center, rgba(41, 182, 246, 0.6) 0%, transparent 70%);
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-    transform: translate(-50%, -50%);
+    opacity: 0;
+    z-index: -1;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.long-press-active .long-press-ripple {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* 3D数据模型动画 */
+.data-model-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+    z-index: 200;
     pointer-events: none;
     opacity: 0;
-    z-index: 15;
-    animation: pulseEffect 2s infinite;
+    transition: opacity 0.5s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
-@keyframes pulseEffect {
+.data-model-container.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.data-model {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateX(30deg) rotateY(0);
+    transform-style: preserve-3d;
+    animation: rotate3D 15s infinite linear;
+}
+
+@keyframes rotate3D {
     0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.5);
-    }
-    50% {
-        opacity: 0.5;
+        transform: translate(-50%, -50%) rotateX(30deg) rotateY(0);
     }
     100% {
+        transform: translate(-50%, -50%) rotateX(30deg) rotateY(360deg);
+    }
+}
+
+/* 陨石带特效 */
+.meteor {
+    position: absolute;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+    height: 1px;
+    width: 100px;
+    transform: rotate(-45deg);
+    animation: meteor 2s linear forwards;
+    opacity: 0;
+}
+
+@keyframes meteor {
+    0% {
+        transform: translateX(0) translateY(0) rotate(-45deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(300px) translateY(300px) rotate(-45deg);
         opacity: 0;
-        transform: translate(-50%, -50%) scale(1.5);
     }
 }
 
@@ -179,4 +275,32 @@
 .space-elevator-preview.visible {
     opacity: 0.7;
     width: 15px;
+}
+
+/* 长按效果 */
+.long-press-effect {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 15;
+    animation: pulseEffect 2s infinite;
+}
+
+@keyframes pulseEffect {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.5);
+    }
 }

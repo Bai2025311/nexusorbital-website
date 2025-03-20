@@ -3,165 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NexusOrbital 社区 - 移动版</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>星环会议 - NexusOrbital</title>
+    <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/community-mobile.css">
     <link rel="stylesheet" href="css/gravity-interaction.css">
     <link rel="stylesheet" href="css/ai-task-pod.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA相关 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#191e3b">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
 </head>
 <body>
-    <div class="container community-mobile-container">
-        <div class="stars-background"></div>
-        
+    <div class="stars-background"></div>
+    
+    <div class="community-mobile-container">
         <div class="header">
-            <h1>NexusOrbital</h1>
-            <div class="section-title">社区焦点</div>
+            <h1>星环会议</h1>
         </div>
         
         <div class="stats-container">
-            <div class="stat-item" data-stat="discussions">
-                <div class="stat-label">今日讨论</div>
-                <div class="stat-value">1,234</div>
-                <div class="stat-change">+12.4%</div>
+            <div class="stat-item" data-stat="oxygen">
+                <div class="stat-label">氧气浓度</div>
+                <div class="stat-value">98.4%</div>
                 <div class="progress-bar">
-                    <div class="progress-value" style="width: 78%;"></div>
-                </div>
-                <div class="indicator-dot"></div>
-            </div>
-            <div class="stat-item" data-stat="users">
-                <div class="stat-label">在线用户</div>
-                <div class="stat-value">386</div>
-                <div class="stat-change">+5.2%</div>
-                <div class="progress-bar">
-                    <div class="progress-value" style="width: 45%;"></div>
+                    <div class="progress-value" style="width: 98%;"></div>
                 </div>
             </div>
-            <div class="stat-item" data-stat="projects">
-                <div class="stat-label">活跃项目</div>
-                <div class="stat-value">56</div>
-                <div class="stat-change">+8.7%</div>
+            <div class="stat-item" data-stat="moon-base">
+                <div class="stat-label">月球基地</div>
+                <div class="stat-value">62%</div>
                 <div class="progress-bar">
                     <div class="progress-value" style="width: 62%;"></div>
+                </div>
+            </div>
+            <div class="stat-item" data-stat="community">
+                <div class="stat-label">社区活跃</div>
+                <div class="stat-value">89分</div>
+                <div class="progress-bar">
+                    <div class="progress-value" style="width: 89%;"></div>
                 </div>
             </div>
         </div>
         
         <div class="filters-container">
-            <button class="filter-button active">全部</button>
-            <button class="filter-button">热门讨论</button>
-            <button class="filter-button">新发布</button>
-            <button class="filter-button">技术分享</button>
-            <button class="filter-button">创意设计</button>
-            <button class="filter-button">资源共享</button>
+            <div class="filter-buttons">
+                <button class="filter-button active">推荐</button>
+                <button class="filter-button">热门</button>
+                <button class="filter-button">最新</button>
+            </div>
+            <button class="new-post-button">发表帖子</button>
         </div>
         
         <div class="content">
-            <!-- 帖子列表 -->
+            <!-- 帖子内容将通过JS动态生成 -->
             <div class="post-card">
                 <div class="post-author">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="作者头像" class="author-avatar">
+                    <img src="images/avatars/engineer1.jpg" alt="用户头像" class="author-avatar">
                     <div class="author-info">
-                        <div class="author-name">星际工程师</div>
+                        <div class="author-name">量子工程师</div>
                         <div class="post-meta">2小时前 · 技术分享</div>
                     </div>
                 </div>
                 <div class="post-content">
-                    <h3 class="post-title">新型量子引擎如何改变太空居住的能源结构</h3>
-                    <p class="post-text">今天我们来聊聊量子引擎如何解决长期太空居住的能源难题。根据最新研究，量子空泡技术可以提供比传统核聚变高10倍的能量密度，同时降低90%的辐射风险...</p>
+                    <div class="post-title">新型空间站连接模块设计突破</div>
+                    <div class="post-text">我们团队刚刚完成了新型空间站连接模块的设计，这将使模块安装时间减少40%，同时提高稳定性。欢迎各位提出建议！</div>
                 </div>
                 <div class="post-actions">
-                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 128</button>
-                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 46</button>
-                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
-                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
+                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 45</button>
+                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 12</button>
+                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i></button>
+                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i></button>
                 </div>
             </div>
             
             <div class="post-card">
                 <div class="post-author">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="作者头像" class="author-avatar">
+                    <img src="images/avatars/architect2.jpg" alt="用户头像" class="author-avatar">
                     <div class="author-info">
-                        <div class="author-name">空间建筑师_Luna</div>
-                        <div class="post-meta">5小时前 · 创意设计</div>
+                        <div class="author-name">星际建筑师</div>
+                        <div class="post-meta">昨天 · 创意设计</div>
                     </div>
                 </div>
                 <div class="post-content">
-                    <h3 class="post-title">我的"浮动花园"设计让空间站变成了艺术品</h3>
-                    <p class="post-text">很高兴分享我最新完成的"浮动花园"设计方案。这个设计整合了低重力植物培养技术和模块化空间利用，让空间站不再是冰冷的金属盒子。我特别设计了自动适应光照的反射系统...</p>
+                    <div class="post-title">月球基地生态区域渲染图</div>
+                    <div class="post-text">分享一下我们最新完成的月球基地生态区域渲染图，使用了先进的封闭生态系统设计，可支持30人长期生活所需的食物供应。</div>
                 </div>
                 <div class="post-actions">
-                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 256</button>
-                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 82</button>
-                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
-                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
+                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 126</button>
+                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 28</button>
+                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i></button>
+                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i></button>
                 </div>
             </div>
             
             <div class="post-card">
                 <div class="post-author">
-                    <img src="https://randomuser.me/api/portraits/men/28.jpg" alt="作者头像" class="author-avatar">
+                    <img src="images/avatars/researcher3.jpg" alt="用户头像" class="author-avatar">
                     <div class="author-info">
-                        <div class="author-name">太空医学专家</div>
-                        <div class="post-meta">1天前 · 资源共享</div>
+                        <div class="author-name">星际材料学家</div>
+                        <div class="post-meta">3天前 · 研究报告</div>
                     </div>
                 </div>
                 <div class="post-content">
-                    <h3 class="post-title">【免费资源】长期太空生活健康管理手册v2.0</h3>
-                    <p class="post-text">我们团队整理了最新的太空医学研究成果，编写了这份《长期太空生活健康管理手册》第二版。包含骨质疏松预防、肌肉维护、心理健康和辐射防护等章节，适合所有计划长期太空旅行或居住的人参考...</p>
+                    <div class="post-title">新型纳米复合材料在极端环境中的应用</div>
+                    <div class="post-text">我们实验室开发的新型纳米复合材料在模拟火星表面环境测试中表现出色，耐受温差超过300℃，同时保持结构完整性。</div>
                 </div>
                 <div class="post-actions">
-                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 421</button>
-                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 94</button>
-                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
-                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
-                </div>
-            </div>
-            
-            <div class="post-card">
-                <div class="post-author">
-                    <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="作者头像" class="author-avatar">
-                    <div class="author-info">
-                        <div class="author-name">引力波研究员</div>
-                        <div class="post-meta">2天前 · 热门讨论</div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <h3 class="post-title">讨论：人类是否需要为太空殖民制定统一法律？</h3>
-                    <p class="post-text">随着越来越多的私营企业和国家机构积极推进太空殖民计划，一个重要问题浮现：我们是否需要一个统一的太空殖民法律框架？目前各国对太空资源开发的立场存在显著差异...</p>
-                </div>
-                <div class="post-actions">
-                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 389</button>
-                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 147</button>
-                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
-                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
+                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 89</button>
+                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 34</button>
+                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i></button>
+                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i></button>
                 </div>
             </div>
         </div>
         
-        <div class="nav-bar">
-            <div class="nav-item active">
-                <div class="nav-icon"><i class="fas fa-home"></i></div>
-                <div class="nav-label">首页</div>
-            </div>
-            <div class="nav-item">
-                <div class="nav-icon"><i class="fas fa-compass"></i></div>
-                <div class="nav-label">探索</div>
-            </div>
-            <div class="nav-item">
-                <div class="nav-icon"><i class="fas fa-bell"></i></div>
-                <div class="nav-label">通知</div>
-            </div>
-            <div class="nav-item">
-                <div class="nav-icon"><i class="fas fa-user"></i></div>
-                <div class="nav-label">我的</div>
-            </div>
-        </div>
-        
-        <button class="new-post-button">
-            <i class="fas fa-edit"></i> 发布
-        </button>
-        
-        <!-- 模态弹窗 -->
+        <!-- 发帖模态窗口 -->
         <div class="modal" id="postModal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -196,8 +153,484 @@
             </div>
         </div>
         
-        <script src="js/community-mobile.js"></script>
-        <script src="js/ai-task-pod.js"></script>
-        <script src="js/gravity-interaction.js"></script>
-    </body>
+        <!-- AI任务舱组件 -->
+        <div class="ai-task-pod-container">
+            <div class="ai-task-pod" id="aiTaskPod">
+                <div class="ai-pod-indicator"></div>
+                <div class="ai-pod-inner">
+                    <div class="ai-pod-header">
+                        <div class="ai-pod-title">NexusAI助手</div>
+                        <div class="ai-pod-controls">
+                            <button class="ai-control-button ai-minimize"><i class="fas fa-minus"></i></button>
+                            <button class="ai-control-button ai-close"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="ai-pod-content">
+                        <div class="ai-messages" id="aiMessages">
+                            <div class="ai-message ai-assistant">
+                                <div class="ai-message-content">
+                                    欢迎访问星环会议！我是您的NexusAI助手，有什么可以帮助您的吗？
+                                </div>
+                                <div class="ai-message-time">刚刚</div>
+                            </div>
+                        </div>
+                        <div class="ai-input-area">
+                            <div class="ai-voice-trigger"><i class="fas fa-microphone"></i></div>
+                            <input type="text" id="aiMessageInput" class="ai-text-input" placeholder="输入问题或指令...">
+                            <button id="aiSendButton" class="ai-send-button"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="ai-task-pod-toggle" id="aiTaskPodToggle">
+                <i class="fas fa-robot"></i>
+            </button>
+        </div>
+
+        <!-- 引力交互系统容器 -->
+        <div class="gravity-interaction-container" id="gravitySystem">
+            <div class="particle-background"></div>
+            <div class="gravity-interaction-controls">
+                <div class="swipe-hint left">
+                    <i class="fas fa-chevron-left"></i>
+                    <span>技术众筹</span>
+                </div>
+                <div class="swipe-hint right">
+                    <span>工程师社区</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-bar">
+            <a href="control-dock.html" class="nav-item">
+                <i class="fas fa-rocket nav-icon"></i>
+                <span class="nav-label">控制舱</span>
+            </a>
+            <a href="galaxy-plan.html" class="nav-item">
+                <i class="fas fa-project-diagram nav-icon"></i>
+                <span class="nav-label">星海计划</span>
+            </a>
+            <a href="community-mobile.html" class="nav-item active">
+                <i class="fas fa-users nav-icon"></i>
+                <span class="nav-label">星环会议</span>
+            </a>
+            <a href="tech-library.html" class="nav-item">
+                <i class="fas fa-database nav-icon"></i>
+                <span class="nav-label">技术库</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="js/common.js"></script>
+    <script src="js/community.js"></script>
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/gravity-interaction.js"></script>
+    
+    <!-- 初始化引力交互和AI任务舱 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化引力交互系统
+            const gravitySystem = new GravityInteractionSystem({
+                container: document.getElementById('gravitySystem'),
+                particleCount: 80,
+                particleColor: '#4e9eff',
+                maxParticleSize: 3,
+                speed: 0.5,
+                connectionDistance: 150,
+                useSwipeDetection: true
+            });
+            
+            gravitySystem.initialize();
+            
+            // 注册社区页面左右滑动事件
+            gravitySystem.onSwipeLeft = function() {
+                console.log('向左滑动 - 前往技术众筹中心');
+                // 显示滑动动画
+                const swipeHint = document.querySelector('.swipe-hint.left');
+                swipeHint.classList.add('active');
+                setTimeout(() => {
+                    window.location.href = 'funding-mobile.html';
+                }, 800);
+            };
+            
+            gravitySystem.onSwipeRight = function() {
+                console.log('向右滑动 - 前往工程师社区');
+                // 显示滑动动画
+                const swipeHint = document.querySelector('.swipe-hint.right');
+                swipeHint.classList.add('active');
+                setTimeout(() => {
+                    window.location.href = 'engineers-mobile.html';
+                }, 800);
+            };
+            
+            // 初始化AI任务舱
+            const aiTaskPodToggle = document.getElementById('aiTaskPodToggle');
+            const aiTaskPod = document.getElementById('aiTaskPod');
+            const aiMessages = document.getElementById('aiMessages');
+            const aiMessageInput = document.getElementById('aiMessageInput');
+            const aiSendButton = document.getElementById('aiSendButton');
+            
+            // 注册AI命令处理函数
+            gravitySystem.registerAICommands();
+            
+            // 切换AI任务舱显示/隐藏
+            aiTaskPodToggle.addEventListener('click', function() {
+                aiTaskPod.classList.toggle('active');
+                aiTaskPodToggle.classList.toggle('hidden');
+                if (aiTaskPod.classList.contains('active')) {
+                    aiMessageInput.focus();
+                }
+            });
+            
+            // 关闭和最小化按钮
+            document.querySelector('.ai-close').addEventListener('click', function() {
+                aiTaskPod.classList.remove('active');
+                aiTaskPodToggle.classList.remove('hidden');
+            });
+            
+            document.querySelector('.ai-minimize').addEventListener('click', function() {
+                aiTaskPod.classList.remove('active');
+                aiTaskPodToggle.classList.remove('hidden');
+            });
+            
+            // 发送消息处理
+            function sendMessage() {
+                const message = aiMessageInput.value.trim();
+                if (message) {
+                    // 添加用户消息到界面
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'ai-message ai-user';
+                    messageElement.innerHTML = `
+                        <div class="ai-message-content">${message}</div>
+                        <div class="ai-message-time">刚刚</div>
+                    `;
+                    aiMessages.appendChild(messageElement);
+                    aiMessages.scrollTop = aiMessages.scrollHeight;
+                    
+                    // 清空输入框
+                    aiMessageInput.value = '';
+                    
+                    // 处理命令并显示回复
+                    setTimeout(() => {
+                        const commands = window.aiCommands || {};
+                        let responded = false;
+                        
+                        // 检查是否匹配已知命令
+                        for (const cmd in commands) {
+                            if (commands[cmd].keywords.some(keyword => message.includes(keyword))) {
+                                const response = commands[cmd].response();
+                                addAIResponse(response);
+                                responded = true;
+                                break;
+                            }
+                        }
+                        
+                        // 默认回复
+                        if (!responded) {
+                            addAIResponse('我了解您的问题。请尝试这些指令：帮助、如何发帖、社区功能、引力导航');
+                        }
+                    }, 800);
+                }
+            }
+            
+            // 添加AI回复
+            function addAIResponse(message) {
+                const responseElement = document.createElement('div');
+                responseElement.className = 'ai-message ai-assistant';
+                responseElement.innerHTML = `
+                    <div class="ai-message-content">${message.replace(/\n/g, '<br>')}</div>
+                    <div class="ai-message-time">刚刚</div>
+                `;
+                aiMessages.appendChild(responseElement);
+                aiMessages.scrollTop = aiMessages.scrollHeight;
+            }
+            
+            // 注册发送事件
+            aiSendButton.addEventListener('click', sendMessage);
+            aiMessageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 注册帖子操作按钮事件
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    // 根据disableCommunityLoginCheck标志决定是否显示登录提示
+                    const isLoginRequired = window.disableCommunityLoginCheck !== true;
+                    
+                    if (isLoginRequired && !window.isLoggedIn) {
+                        // 显示友好提示
+                        showToast('请先登录后再' + getActionName(action));
+                    } else {
+                        // 执行相应操作
+                        handlePostAction(action, this);
+                    }
+                });
+            });
+            
+            // 获取操作名称
+            function getActionName(action) {
+                switch(action) {
+                    case 'like': return '点赞';
+                    case 'comment': return '评论';
+                    case 'bookmark': return '收藏';
+                    case 'share': return '分享';
+                    default: return '操作';
+                }
+            }
+            
+            // 处理帖子操作
+            function handlePostAction(action, button) {
+                switch(action) {
+                    case 'like':
+                        toggleLike(button);
+                        break;
+                    case 'comment':
+                        showCommentInput(button);
+                        break;
+                    case 'bookmark':
+                        toggleBookmark(button);
+                        break;
+                    case 'share':
+                        sharePost(button);
+                        break;
+                }
+            }
+            
+            // 点赞处理
+            function toggleLike(button) {
+                button.classList.toggle('active');
+                const countElement = button.querySelector('i').nextSibling;
+                let count = parseInt(countElement.textContent.trim());
+                
+                if (button.classList.contains('active')) {
+                    countElement.textContent = ` ${count + 1}`;
+                    showToast('点赞成功');
+                } else {
+                    countElement.textContent = ` ${count - 1}`;
+                    showToast('已取消点赞');
+                }
+            }
+            
+            // 显示评论输入
+            function showCommentInput(button) {
+                const postCard = button.closest('.post-card');
+                
+                // 检查是否已有评论输入框
+                let commentInput = postCard.querySelector('.comment-input-container');
+                if (commentInput) {
+                    commentInput.remove();
+                    return;
+                }
+                
+                // 创建评论输入框
+                commentInput = document.createElement('div');
+                commentInput.className = 'comment-input-container';
+                commentInput.innerHTML = `
+                    <input type="text" class="comment-input" placeholder="写下你的评论...">
+                    <button class="comment-submit"><i class="fas fa-paper-plane"></i></button>
+                `;
+                
+                // 添加到帖子底部
+                postCard.appendChild(commentInput);
+                
+                // 聚焦输入框
+                commentInput.querySelector('.comment-input').focus();
+                
+                // 添加发送评论事件
+                commentInput.querySelector('.comment-submit').addEventListener('click', function() {
+                    const comment = commentInput.querySelector('.comment-input').value.trim();
+                    if (comment) {
+                        showToast('评论已发布');
+                        commentInput.remove();
+                        
+                        // 更新评论计数
+                        const countElement = button.querySelector('i').nextSibling;
+                        let count = parseInt(countElement.textContent.trim());
+                        countElement.textContent = ` ${count + 1}`;
+                    }
+                });
+            }
+            
+            // 收藏切换
+            function toggleBookmark(button) {
+                button.classList.toggle('active');
+                if (button.classList.contains('active')) {
+                    showToast('已收藏');
+                } else {
+                    showToast('已取消收藏');
+                }
+            }
+            
+            // 分享帖子
+            function sharePost(button) {
+                showToast('分享功能即将上线');
+            }
+            
+            // 显示Toast消息
+            function showToast(message) {
+                let toast = document.querySelector('.toast-message');
+                if (!toast) {
+                    toast = document.createElement('div');
+                    toast.className = 'toast-message';
+                    document.body.appendChild(toast);
+                }
+                
+                toast.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+            
+            // 发帖按钮处理
+            document.querySelector('.new-post-button').addEventListener('click', function() {
+                const isLoginRequired = window.disableCommunityLoginCheck !== true;
+                
+                if (isLoginRequired && !window.isLoggedIn) {
+                    showToast('请先登录后再发表帖子');
+                    // 可以选择跳转到登录页面
+                    // window.location.href = 'new-login.html';
+                } else {
+                    // 显示发帖界面
+                    showPostModal();
+                }
+            });
+            
+            // 设置社区页面禁用强制登录检查
+            window.disableCommunityLoginCheck = true;
+            console.log("社区移动版：已设置禁用强制登录检查");
+            
+            // 发帖模态窗口处理
+            const postModal = document.getElementById('postModal');
+            const closeModal = document.querySelector('.close-modal');
+            const cancelPost = document.getElementById('cancel-post');
+            const publishPost = document.getElementById('publish-post');
+            
+            // 显示发帖模态窗口
+            function showPostModal() {
+                postModal.style.display = 'flex';
+                setTimeout(() => {
+                    postModal.classList.add('show');
+                    document.getElementById('post-title').focus();
+                }, 10);
+            }
+            
+            // 关闭发帖模态窗口
+            function closePostModal() {
+                postModal.classList.remove('show');
+                setTimeout(() => {
+                    postModal.style.display = 'none';
+                    // 清空表单
+                    document.getElementById('post-title').value = '';
+                    document.getElementById('post-category').value = '';
+                    document.getElementById('post-content').value = '';
+                }, 300);
+            }
+            
+            // 注册关闭事件
+            closeModal.addEventListener('click', closePostModal);
+            cancelPost.addEventListener('click', closePostModal);
+            
+            // 发布帖子
+            publishPost.addEventListener('click', function() {
+                const title = document.getElementById('post-title').value.trim();
+                const category = document.getElementById('post-category').value;
+                const content = document.getElementById('post-content').value.trim();
+                
+                // 简单表单验证
+                if (!title) {
+                    showToast('请输入帖子标题');
+                    return;
+                }
+                
+                if (!category) {
+                    showToast('请选择帖子分类');
+                    return;
+                }
+                
+                if (!content) {
+                    showToast('请输入帖子内容');
+                    return;
+                }
+                
+                // 创建新帖子
+                createNewPost(title, category, content);
+                closePostModal();
+            });
+            
+            // 创建新帖子逻辑
+            function createNewPost(title, category, content) {
+                // 获取分类名称
+                const categoryName = document.getElementById('post-category').options[document.getElementById('post-category').selectedIndex].text;
+                
+                // 创建帖子DOM元素
+                const postCard = document.createElement('div');
+                postCard.className = 'post-card new-post';
+                
+                // 假设用户头像和名称
+                const userName = '当前用户';
+                const userAvatar = 'images/avatars/default-avatar.jpg';
+                
+                // 填充帖子内容
+                postCard.innerHTML = `
+                    <div class="post-author">
+                        <img src="${userAvatar}" alt="用户头像" class="author-avatar">
+                        <div class="author-info">
+                            <div class="author-name">${userName}</div>
+                            <div class="post-meta">刚刚 · ${categoryName}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-title">${title}</div>
+                        <div class="post-text">${content}</div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 0</button>
+                        <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 0</button>
+                        <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i></button>
+                        <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i></button>
+                    </div>
+                `;
+                
+                // 添加到帖子列表最前面
+                const content_container = document.querySelector('.content');
+                content_container.insertBefore(postCard, content_container.firstChild);
+                
+                // 添加动画效果
+                setTimeout(() => {
+                    postCard.classList.add('appear');
+                }, 10);
+                
+                // 重新绑定操作按钮事件
+                postCard.querySelectorAll('.action-button').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const action = this.getAttribute('data-action');
+                        handlePostAction(action, this);
+                    });
+                });
+                
+                // 显示成功消息
+                showToast('帖子发布成功！');
+            }
+        });
+    </script>
+    
+    <!-- PWA注册 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker 注册成功: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker 注册失败: ', err);
+                });
+            });
+        }
+    </script>
+</body>
 </html>

@@ -128,17 +128,19 @@ function addNavigationEventListeners() {
                 const isCommunityPage = window.location.href.includes('community') || window.location.href.includes('community-mobile');
                 const disableCommunityLoginCheck = true; // 社区页面禁用登录检查标志
                 
-                // 如果在社区页面上且禁用了登录检查，则只显示提示而不跳转
-                if (isCommunityPage && disableCommunityLoginCheck) {
-                    e.preventDefault();
-                    showMobileToast('请先登录后查看个人资料');
-                    return;
-                }
-                
                 // 检查是否已登录
                 const isLoggedIn = false; // 模拟未登录状态
+                
                 if (!isLoggedIn) {
                     e.preventDefault();
+                    
+                    // 如果在社区页面上且禁用了登录检查，则只显示提示而不跳转
+                    if (isCommunityPage && disableCommunityLoginCheck) {
+                        showMobileToast('登录后才能查看个人资料，请先登录', 3000);
+                        return;
+                    }
+                    
+                    // 否则跳转到登录页面
                     window.location.href = 'new-login.html';
                     return;
                 }

@@ -221,37 +221,64 @@ class GravityInteraction {
         if (!this.aiAssistant) return;
         
         // 注册常用命令处理
-        this.aiAssistant.registerCommand("帮助", "help", (text) => {
-            const helpResponse = {
-                type: "text",
-                content: "我可以帮助您：\n1. 探索社区功能\n2. 导航到不同区域\n3. 了解发帖规则\n4. 回答NexusOrbital相关问题\n\n试试说："如何发帖"或"社区有哪些功能"。"
-            };
-            return helpResponse;
-        });
+        let helpCommand = {
+            keywords: ['帮助', '指令', '命令', 'help'],
+            response: function() {
+                // 创建响应信息
+                let helpResponse = '可用指令列表：\n\n';
+                helpResponse += '1. 帮助 - 显示指令列表\n';
+                helpResponse += '2. 如何发帖 - 查看发帖教程\n';
+                helpResponse += '3. 社区功能 - 了解社区主要功能\n';
+                helpResponse += '4. 引力导航 - 学习引力交互系统的使用方法\n';
+                return helpResponse;
+            }
+        };
+        this.aiAssistant.registerCommand("帮助", "help", helpCommand);
         
-        this.aiAssistant.registerCommand("如何发帖", "post_help", (text) => {
-            const postHelp = {
-                type: "text",
-                content: "发帖步骤：\n1. 点击屏幕右下角的"发布"按钮\n2. 填写帖子标题和内容\n3. 选择合适的分类\n4. 点击"发布"按钮完成\n\n注意：发帖需要登录账号。"
-            };
-            return postHelp;
-        });
+        let howToPostCommand = {
+            keywords: ['如何发帖', '发帖', '创建帖子', '新建帖子'],
+            response: function() {
+                // 创建响应信息
+                let postHelp = '发布帖子的步骤：\n\n';
+                postHelp += '1. 点击界面右下角的"发表帖子"按钮\n';
+                postHelp += '2. 填写帖子标题（必填）\n';
+                postHelp += '3. 选择帖子分类（技术分享、创意设计等）\n';
+                postHelp += '4. 输入帖子内容\n';
+                postHelp += '5. 点击"发布"按钮完成\n\n';
+                postHelp += '注意：需要登录后才能发布内容';
+                return postHelp;
+            }
+        };
+        this.aiAssistant.registerCommand("如何发帖", "post_help", howToPostCommand);
         
-        this.aiAssistant.registerCommand("社区功能", "community_features", (text) => {
-            const communityFeatures = {
-                type: "text",
-                content: "NexusOrbital社区提供以下功能：\n1. 讨论区域：与其他太空人居爱好者交流\n2. 创意分享：分享您的人居设计和创意\n3. 技术交流：讨论最新的太空人居技术\n4. 活动参与：参与各类在线和线下活动"
-            };
-            return communityFeatures;
-        });
+        let communityFeaturesCommand = {
+            keywords: ['社区功能', '功能', '社区特性'],
+            response: function() {
+                // 创建响应信息
+                let featuresInfo = 'NexusOrbital社区主要功能：\n\n';
+                featuresInfo += '1. 技术共享 - 分享前沿太空技术和研究成果\n';
+                featuresInfo += '2. 创意设计 - 发布创新的太空居住解决方案\n';
+                featuresInfo += '3. 资源交流 - 交换实用资源和项目材料\n';
+                featuresInfo += '4. 协同工作 - 连接工程师共同解决技术挑战\n';
+                return featuresInfo;
+            }
+        };
+        this.aiAssistant.registerCommand("社区功能", "community_features", communityFeaturesCommand);
         
-        this.aiAssistant.registerCommand("引力导航", "gravity_navigation", (text) => {
-            const navHelp = {
-                type: "text",
-                content: "引力导航使用方法：\n在屏幕上左右滑动可以在不同板块间导航。\n- 向左滑动：前往下一个板块\n- 向右滑动：返回上一个板块\n\n滑动时会产生粒子特效，增强视觉体验。"
-            };
-            return navHelp;
-        });
+        let gravityNavigationCommand = {
+            keywords: ['引力导航', '引力交互', '导航', '滑动'],
+            response: function() {
+                // 创建响应信息
+                let navHelp = '引力交互系统使用指南：\n\n';
+                navHelp += '• 左右滑动 - 在不同功能板块间导航\n';
+                navHelp += '  - 左滑：进入技术众筹中心\n';
+                navHelp += '  - 右滑：进入工程师社区\n\n';
+                navHelp += '• 长按数据模块 - 查看详细3D数据分析\n';
+                navHelp += '• 点击数据模块 - 显示简要信息\n';
+                return navHelp;
+            }
+        };
+        this.aiAssistant.registerCommand("引力导航", "gravity_navigation", gravityNavigationCommand);
     }
 
     createParticles() {
@@ -568,5 +595,78 @@ function onSectionChange(section, index) {
     // 显示Toast消息
     if (typeof showToast === 'function') {
         showToast(`已导航到: ${section.name}`, 1500);
+    }
+}
+
+// 左滑进入技术众筹，右滑进入工程师社区
+function handleSwipe(direction) {
+    if (direction === 'left') {
+        // 左滑 - 进入技术众筹
+        showSwipeTransition('left', function() {
+            // 模拟导航到技术众筹
+            showToast('进入技术众筹', 2000);
+        });
+    } else if (direction === 'right') {
+        // 右滑 - 进入工程师社区
+        showSwipeTransition('right', function() {
+            // 模拟导航到工程师社区
+            showToast('进入工程师社区', 2000);
+        });
+    }
+}
+
+// 显示滑动过渡效果
+function showSwipeTransition(direction, callback) {
+    const container = document.querySelector('.community-mobile-container');
+    
+    // 创建过渡元素
+    const transition = document.createElement('div');
+    transition.className = 'gravity-transition';
+    document.body.appendChild(transition);
+    
+    // 触发重绘
+    void transition.offsetWidth;
+    
+    // 创建引力波纹效果
+    createGravityRipple(direction);
+    
+    // 显示过渡效果
+    transition.style.opacity = '1';
+    
+    // 过渡完成后执行回调
+    setTimeout(function() {
+        transition.style.opacity = '0';
+        
+        if (typeof callback === 'function') {
+            callback();
+        }
+        
+        // 移除过渡元素
+        setTimeout(function() {
+            transition.remove();
+        }, 500);
+    }, 500);
+}
+
+// 创建引力波纹效果
+function createGravityRipple(direction) {
+    const container = document.querySelector('.community-mobile-container');
+    const x = direction === 'left' ? window.innerWidth * 0.25 : window.innerWidth * 0.75;
+    const y = window.innerHeight / 2;
+    
+    // 创建3个波纹
+    for (let i = 0; i < 3; i++) {
+        setTimeout(function() {
+            const ripple = document.createElement('div');
+            ripple.className = 'gravity-ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            container.appendChild(ripple);
+            
+            // 移除波纹
+            setTimeout(function() {
+                ripple.remove();
+            }, 1500);
+        }, i * 300);
     }
 }

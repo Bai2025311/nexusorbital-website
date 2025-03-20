@@ -899,7 +899,10 @@ function showMessage(message) {
 // 页面加载时检查登录状态
 document.addEventListener('DOMContentLoaded', function() {
     // 如果当前页面设置了禁用登录检查标志，则不执行登录检查
-    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
+    const isCommunityPage = window.location.pathname.includes('community.html') || 
+                           window.location.pathname.includes('community-mobile.html');
+    
+    if (window.disableCommunityLoginCheck && isCommunityPage) {
         console.log('社区页面：禁用自动登录检查');
         // 仅更新导航UI，不执行登录重定向
         updateNavigation();
@@ -909,6 +912,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 在需要登录的页面检查登录状态
     const requiresAuth = [
         // '/community.html', // 不再需要强制登录
+        // '/community-mobile.html', // 不再需要强制登录
         '/profile.html',
         '/dashboard.html'
     ];
