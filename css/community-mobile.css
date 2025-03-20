@@ -99,11 +99,11 @@ html, body {
 }
 
 .stat-item:not(:last-child)::after {
-    content: "";
+    content: '';
     position: absolute;
     right: 0;
-    top: 15%;
-    height: 70%;
+    top: 10%;
+    height: 80%;
     width: 1px;
     background-color: var(--border-color);
 }
@@ -115,95 +115,96 @@ html, body {
 }
 
 .stat-value {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    line-height: 1;
+    margin-bottom: 3px;
 }
 
 .stat-change {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--secondary-color);
-    display: inline-block;
-    margin-top: 4px;
+}
+
+.indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.7;
+    }
 }
 
 .progress-bar {
     height: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
-    margin-top: 4px;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
+    margin-top: 5px;
+    overflow: hidden;
 }
 
 .progress-value {
     height: 100%;
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     border-radius: 2px;
-    position: absolute;
-    left: 0;
-    top: 0;
     transition: width 0.5s ease;
 }
 
 /* 过滤器 */
 .filters-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    margin-bottom: 15px;
+    overflow-x: auto;
+    padding: 0 15px 15px;
+    margin-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+
+.filters-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
 }
 
 .filter-button {
+    white-space: nowrap;
+    background-color: rgba(24, 32, 53, 0.7);
+    color: var(--text-secondary);
     border: none;
-    background-color: transparent;
-    color: var(--text-tertiary);
-    padding: 8px 15px;
     border-radius: 20px;
+    padding: 8px 15px;
+    margin-right: 10px;
     font-size: 14px;
     cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.filter-button:first-child {
-    background-color: var(--primary-color);
-    color: white;
+    transition: all 0.2s ease;
 }
 
 .filter-button.active {
     background-color: var(--primary-color);
-    color: white;
-}
-
-.new-post-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.new-post-button i {
-    margin-right: 5px;
-}
-
-.new-post-button:hover {
-    background-color: var(--primary-dark);
+    color: var(--text-primary);
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
 }
 
 /* 内容区域 */
 .content {
     flex: 1;
     overflow-y: auto;
-    padding: 0 15px 70px;
+    padding: 10px 15px;
+    padding-bottom: 70px;
 }
 
 /* 帖子卡片 */
@@ -218,15 +219,15 @@ html, body {
 .post-author {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .author-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
     margin-right: 10px;
+    object-fit: cover;
 }
 
 .author-info {
@@ -236,6 +237,7 @@ html, body {
 .author-name {
     font-weight: bold;
     font-size: 14px;
+    margin-bottom: 2px;
 }
 
 .post-meta {
@@ -249,7 +251,7 @@ html, body {
 
 .post-title {
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     line-height: 1.4;
 }
 
@@ -258,77 +260,105 @@ html, body {
     font-size: 14px;
     color: var(--text-secondary);
     line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-    -webkit-box-orient: vertical;
-    box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .post-actions {
     display: flex;
     justify-content: space-between;
+    border-top: 1px solid rgba(44, 62, 80, 0.5);
+    padding-top: 12px;
+    margin-top: 12px;
 }
 
 .action-button {
-    background: transparent;
+    background: none;
     border: none;
     color: var(--text-tertiary);
-    display: flex;
-    align-items: center;
     font-size: 14px;
     cursor: pointer;
-    padding: 5px;
-    transition: color 0.3s ease;
-}
-
-.action-button i {
-    margin-right: 5px;
+    padding: 4px 8px;
+    transition: all 0.2s ease;
 }
 
 .action-button:hover {
     color: var(--primary-color);
 }
 
-/* 底部导航 */
+.action-button i {
+    margin-right: 3px;
+}
+
+/* 底部导航栏 */
 .nav-bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: rgba(23, 31, 48, 0.9);
     display: flex;
     justify-content: space-around;
-    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-secondary);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 100;
+    z-index: 10;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(44, 62, 80, 0.3);
 }
 
 .nav-item {
-    text-align: center;
     flex: 1;
-    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    transition: all 0.2s ease;
 }
 
 .nav-icon {
-    font-size: 20px;
-    color: var(--text-tertiary);
-    margin-bottom: 2px;
+    font-size: 18px;
+    margin-bottom: 4px;
 }
 
 .nav-label {
     font-size: 12px;
-    color: var(--text-tertiary);
 }
 
-.nav-item.active .nav-icon,
-.nav-item.active .nav-label {
+.nav-item.active {
     color: var(--primary-color);
 }
 
-/* 新帖弹窗 */
+/* 浮动发帖按钮 */
+.new-post-button {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    width: auto;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.5);
+    z-index: 5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0 20px;
+    font-size: 15px;
+}
+
+.new-post-button i {
+    margin-right: 5px;
+}
+
+.new-post-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+}
+
+/* 模态弹窗 */
 .modal {
     display: none;
     position: fixed;
@@ -337,37 +367,62 @@ html, body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
+    z-index: 100;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .modal-content {
+    width: 90%;
+    max-width: 500px;
     background-color: var(--bg-secondary);
     border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 20px;
-    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
 }
 
 .close-modal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 22px;
-    color: var(--text-tertiary);
     background: none;
     border: none;
+    color: var(--text-tertiary);
+    font-size: 24px;
     cursor: pointer;
+    transition: color 0.2s ease;
 }
 
-.modal-title {
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 18px;
+.close-modal:hover {
+    color: var(--error-color);
+}
+
+.modal-body {
+    padding: 20px;
 }
 
 .form-group {
@@ -378,63 +433,60 @@ html, body {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
+    color: var(--text-secondary);
 }
 
-.form-control {
+.form-group input,
+.form-group textarea,
+.form-group select {
     width: 100%;
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
     padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
     color: var(--text-primary);
     font-size: 14px;
 }
 
-textarea.form-control {
-    min-height: 120px;
-    resize: vertical;
+.form-group textarea {
+    height: 120px;
+    resize: none;
 }
 
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
-.form-actions {
+.modal-footer {
+    padding: 15px 20px;
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-color);
 }
 
-.btn {
-    padding: 10px 20px;
+.btn-primary,
+.btn-secondary {
+    padding: 8px 20px;
     border-radius: 8px;
     border: none;
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
     color: white;
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-dark);
+    margin-left: 10px;
 }
 
 .btn-secondary {
-    background-color: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-secondary);
 }
 
-.btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.btn-primary:active,
+.btn-secondary:active {
+    transform: scale(0.95);
 }
 
-/* Toast消息 */
+/* 吐司消息 */
 .toast-message {
     position: fixed;
     bottom: 80px;
@@ -446,53 +498,127 @@ textarea.form-control {
     border-radius: 20px;
     font-size: 14px;
     z-index: 2000;
+    animation: fadeIn 0.3s ease;
 }
 
-/* 加载器 */
-.loader {
-    text-align: center;
-    padding: 20px;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-.loader i {
-    font-size: 24px;
-    color: var(--primary-color);
-    animation: spin 1s infinite linear;
+/* 媒体查询 */
+@media (max-width: 350px) {
+    .stat-value {
+        font-size: 18px;
+    }
+    
+    .nav-label {
+        font-size: 10px;
+    }
+    
+    .filters-container {
+        padding: 0 10px 10px;
+    }
+    
+    .filter-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .post-card {
+        padding: 12px;
+    }
 }
 
-@keyframes spin {
+/* 引力交互系统扩展样式 */
+/* 引力交互相关的悬浮按钮 */
+.long-press-trigger {
+    position: relative;
+    overflow: visible;
+}
+
+/* 数据可视化悬停效果 */
+.stat-item {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    position: relative;
+}
+
+.stat-item:active {
+    transform: scale(1.05);
+    background-color: rgba(41, 128, 185, 0.2);
+    border-radius: 10px;
+}
+
+/* 为长按核心数据模块添加效果 */
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: 8px;
+    z-index: -1;
+}
+
+.stat-item:active::before {
+    opacity: 1;
+    animation: pulseLight 1s infinite alternate;
+}
+
+@keyframes pulseLight {
     0% {
-        transform: rotate(0deg);
+        opacity: 0.2;
     }
     100% {
-        transform: rotate(360deg);
+        opacity: 0.6;
     }
 }
 
-/* 自适应样式 */
-@media (max-width: 480px) {
-    .post-actions {
-        justify-content: space-between;
-    }
-    
-    .action-button {
-        padding: 5px 8px;
-    }
+/* 3D拆解视图模拟 */
+.model-3d-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(16, 20, 30, 0.9);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
 }
 
-@media (min-width: 768px) {
-    .posts-container {
-        max-width: 600px;
-        margin: 0 auto;
+.model-3d-view.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.model-content {
+    width: 90%;
+    height: 70%;
+    perspective: 1000px;
+}
+
+.model-rotating {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: rotate3d 20s infinite linear;
+}
+
+@keyframes rotate3d {
+    0% {
+        transform: rotateY(0) rotateX(10deg);
     }
-    
-    .status-indicators {
-        max-width: 600px;
-        margin: 20px auto;
-    }
-    
-    .content-filters {
-        max-width: 600px;
-        margin: 0 auto 20px;
+    100% {
+        transform: rotateY(360deg) rotateX(10deg);
     }
 }

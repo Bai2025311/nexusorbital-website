@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化用户状态
     initUserStatus();
+    
+    // 初始化AI任务舱提示
+    initAIAssistantPrompt();
 });
 
 // 全局变量 - 用户登录状态
@@ -32,7 +35,7 @@ const disableCommunityLoginCheck = true;
  * 创建星空背景
  */
 function createStarryBackground() {
-    const starsContainer = document.getElementById('stars-background');
+    const starsContainer = document.querySelector('.stars-background');
     const starCount = 100; // 星星数量
     
     if (!starsContainer) return;
@@ -73,55 +76,71 @@ function createStarryBackground() {
  * 初始化动态指标
  */
 function initDynamicStats() {
-    // 氧气浓度随机微小变化
-    setInterval(() => {
-        const oxygenValue = document.querySelector('.stat-item:nth-child(1) .stat-value');
-        const oxygenChange = document.querySelector('.stat-item:nth-child(1) .stat-change');
-        if (!oxygenValue || !oxygenChange) return;
-        
-        // 基础值
-        let baseValue = 98.4;
-        // 随机变化（±0.2%）
-        const change = (Math.random() * 0.4 - 0.2).toFixed(1);
-        const newValue = (baseValue + parseFloat(change)).toFixed(1);
-        
-        oxygenValue.textContent = `${newValue}%`;
-        oxygenChange.textContent = change >= 0 ? `+${change}%` : `${change}%`;
-        oxygenChange.style.color = change >= 0 ? 'var(--secondary-color)' : 'var(--error-color)';
-    }, 5000);
+    const stats = [
+        {
+            selector: '[data-stat="discussions"] .stat-value',
+            changeSelector: '[data-stat="discussions"] .stat-change',
+            progressSelector: '[data-stat="discussions"] .progress-value',
+            min: 1200,
+            max: 1300,
+            format: (value) => value.toString(),
+            interval: 8000
+        },
+        {
+            selector: '[data-stat="users"] .stat-value',
+            changeSelector: '[data-stat="users"] .stat-change',
+            progressSelector: '[data-stat="users"] .progress-value',
+            min: 380,
+            max: 400,
+            format: (value) => value.toString(),
+            interval: 5000
+        },
+        {
+            selector: '[data-stat="projects"] .stat-value',
+            changeSelector: '[data-stat="projects"] .stat-change',
+            progressSelector: '[data-stat="projects"] .progress-value',
+            min: 50,
+            max: 60,
+            format: (value) => value.toString(),
+            interval: 10000
+        }
+    ];
     
-    // 月球基地进度变化
-    setInterval(() => {
-        const baseValue = document.querySelector('.stat-item:nth-child(2) .stat-value');
-        const progressBar = document.querySelector('.stat-item:nth-child(2) .progress-value');
-        if (!baseValue || !progressBar) return;
+    // 初始化和设置每个统计数据的定时更新
+    stats.forEach(stat => {
+        const valueEl = document.querySelector(stat.selector);
+        const changeEl = document.querySelector(stat.changeSelector);
+        const progressEl = document.querySelector(stat.progressSelector);
         
-        // 基础值
-        let value = parseInt(baseValue.textContent);
-        // 随机变化（±1%）
-        const change = Math.floor(Math.random() * 3) - 1;
-        const newValue = Math.min(Math.max(value + change, 0), 100);
+        if (!valueEl) return;
         
-        baseValue.textContent = `${newValue}%`;
-        progressBar.style.width = `${newValue}%`;
-    }, 7000);
-    
-    // 社区活跃度变化
-    setInterval(() => {
-        const activityValue = document.querySelector('.stat-item:nth-child(3) .stat-value');
-        const activityChange = document.querySelector('.stat-item:nth-child(3) .stat-change');
-        if (!activityValue || !activityChange) return;
+        // 初始值
+        const initialValue = parseInt(valueEl.textContent);
+        let lastValue = initialValue;
         
-        // 基础值
-        let value = parseInt(activityValue.textContent);
-        // 随机变化（-2到+3）
-        const change = Math.floor(Math.random() * 6) - 2;
-        const newValue = Math.max(value + change, 0);
-        
-        activityValue.textContent = newValue;
-        activityChange.textContent = change >= 0 ? `+${change}` : `${change}`;
-        activityChange.style.color = change >= 0 ? 'var(--secondary-color)' : 'var(--error-color)';
-    }, 10000);
+        // 设置定时器
+        setInterval(() => {
+            // 生成新值
+            const newValue = Math.floor(Math.random() * (stat.max - stat.min + 1)) + stat.min;
+            const change = newValue - lastValue;
+            const changePercent = ((change / lastValue) * 100).toFixed(1);
+            
+            // 更新DOM
+            valueEl.textContent = stat.format(newValue);
+            
+            if (changeEl) {
+                changeEl.textContent = changePercent >= 0 ? `+${changePercent}%` : `${changePercent}%`;
+                changeEl.style.color = changePercent >= 0 ? 'var(--positive-color)' : 'var(--negative-color)';
+            }
+            
+            if (progressEl) {
+                const progress = ((newValue - stat.min) / (stat.max - stat.min)) * 100;
+                progressEl.style.width = `${progress}%`;
+            }
+            
+            lastValue = newValue;
+        }, stat.interval);
+    });
 }
 
 /**
@@ -166,12 +185,23 @@ function initFilterButtons() {
             // 添加当前按钮的活跃状态
             this.classList.add('active');
             
-            // 这里可以添加筛选内容的逻辑
+            // 过滤内容
             const filterType = this.textContent.trim();
             console.log(`筛选类型: ${filterType}`);
             
-            // 示例：根据筛选类型获取帖子
-            // fetchPosts(filterType);
+            // 通知AI助手
+            if (window.gravitySystem && window.gravitySystem.aiAssistant) {
+                window.gravitySystem.aiAssistant.addMessage('系统', `已切换到"${filterType}"过滤器`, 'system');
+            }
+            
+            // 模拟数据加载动画
+            const content = document.querySelector('.content');
+            if (content) {
+                content.style.opacity = '0.6';
+                setTimeout(() => {
+                    content.style.opacity = '1';
+                }, 600);
+            }
         });
     });
 }
@@ -181,28 +211,36 @@ function initFilterButtons() {
  */
 function initNewPostButton() {
     const newPostButton = document.querySelector('.new-post-button');
-    const newPostModal = document.getElementById('new-post-modal');
+    const postModal = document.getElementById('postModal');
     const closeModalButton = document.querySelector('.close-modal');
     const cancelButton = document.getElementById('cancel-post');
-    const submitButton = document.getElementById('submit-post');
+    const publishButton = document.getElementById('publish-post');
     
-    // 点击发帖按钮显示弹窗
-    if (newPostButton) {
-        newPostButton.addEventListener('click', function() {
-            // 检查登录状态，未登录则提示登录
-            if (!isUserLoggedIn) {
-                showLoginPrompt('发表帖子');
-                return;
-            }
-            
-            if (newPostModal) {
-                newPostModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden'; // 防止背景滚动
-            }
-        });
-    }
+    if (!newPostButton || !postModal) return;
     
-    // 关闭弹窗的几种方式
+    // 点击发帖按钮
+    newPostButton.addEventListener('click', () => {
+        // 检查登录状态
+        if (!isUserLoggedIn && !disableCommunityLoginCheck) {
+            showLoginPrompt('发表帖子');
+            return;
+        }
+        
+        // 显示模态框
+        postModal.style.display = 'flex';
+        setTimeout(() => {
+            postModal.querySelector('.modal-content').style.transform = 'translateY(0)';
+        }, 10);
+    });
+    
+    // 关闭模态框
+    const closeModal = () => {
+        postModal.querySelector('.modal-content').style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            postModal.style.display = 'none';
+        }, 300);
+    };
+    
     if (closeModalButton) {
         closeModalButton.addEventListener('click', closeModal);
     }
@@ -211,55 +249,27 @@ function initNewPostButton() {
         cancelButton.addEventListener('click', closeModal);
     }
     
-    // 点击弹窗外部关闭弹窗
-    if (newPostModal) {
-        newPostModal.addEventListener('click', function(event) {
-            if (event.target === newPostModal) {
-                closeModal();
-            }
-        });
-    }
-    
-    // 提交发帖
-    if (submitButton) {
-        submitButton.addEventListener('click', function() {
-            const titleInput = document.getElementById('post-title');
-            const contentInput = document.getElementById('post-content');
-            const categorySelect = document.getElementById('post-category');
+    // 发布帖子
+    if (publishButton) {
+        publishButton.addEventListener('click', () => {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const category = document.getElementById('post-category').value;
             
-            if (!titleInput || !contentInput) return;
-            
-            const title = titleInput.value.trim();
-            const content = contentInput.value.trim();
-            const category = categorySelect ? categorySelect.value : '';
-            
-            if (!title || !content) {
-                alert('请填写完整信息');
+            if (!title || !content || !category) {
+                showToast('请填写完整的帖子信息', 2000);
                 return;
             }
             
-            // 这里可以添加发帖的逻辑
-            console.log('发布新帖子:', { title, content, category });
-            
-            // 发布成功后关闭弹窗
+            // 模拟发布
+            showToast('帖子发布成功！', 2000);
             closeModal();
             
             // 清空表单
-            document.getElementById('post-form').reset();
-            
-            // 显示成功提示
-            showToast('发布成功！');
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            document.getElementById('post-category').value = '';
         });
-    }
-    
-    /**
-     * 关闭弹窗
-     */
-    function closeModal() {
-        if (newPostModal) {
-            newPostModal.style.display = 'none';
-            document.body.style.overflow = ''; // 恢复背景滚动
-        }
     }
 }
 
@@ -271,86 +281,223 @@ function initPostInteractions() {
     
     actionButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const action = this.querySelector('i').className;
+            const action = this.getAttribute('data-action');
             
-            // 根据不同的操作执行不同的逻辑
-            if (action.includes('fa-comment')) {
-                // 检查登录状态，未登录则提示登录
-                if (!isUserLoggedIn) {
-                    showLoginPrompt('评论');
-                    return;
-                }
-                
-                console.log('点击了评论按钮');
-                // 打开评论区
-            } else if (action.includes('fa-heart')) {
-                // 检查登录状态，未登录则提示登录
-                if (!isUserLoggedIn) {
-                    showLoginPrompt('点赞');
-                    return;
-                }
-                
-                console.log('点击了点赞按钮');
-                
-                // 判断是否已点赞
-                const isLiked = this.querySelector('i').classList.contains('fas');
-                
-                if (isLiked) {
-                    // 取消点赞
-                    this.querySelector('i').classList.replace('fas', 'far');
-                    // 更新点赞数
-                    let likeCount = parseInt(this.textContent.trim());
-                    this.textContent = '';
-                    this.appendChild(document.createElement('i')).className = 'far fa-heart';
-                    this.append(` ${likeCount - 1}`);
-                } else {
-                    // 添加点赞
-                    this.querySelector('i').classList.replace('far', 'fas');
-                    // 更新点赞数
-                    let likeCount = parseInt(this.textContent.trim());
-                    this.textContent = '';
-                    this.appendChild(document.createElement('i')).className = 'fas fa-heart';
-                    this.append(` ${likeCount + 1}`);
-                }
-            } else if (action.includes('fa-bookmark')) {
-                // 检查登录状态，未登录则提示登录
-                if (!isUserLoggedIn) {
-                    showLoginPrompt('收藏');
-                    return;
-                }
-                
-                console.log('点击了收藏按钮');
-                
-                // 判断是否已收藏
-                const isBookmarked = this.querySelector('i').classList.contains('fas');
-                
-                if (isBookmarked) {
-                    // 取消收藏
-                    this.querySelector('i').classList.replace('fas', 'far');
-                } else {
-                    // 添加收藏
-                    this.querySelector('i').classList.replace('far', 'fas');
-                    // 显示成功提示
-                    showToast('收藏成功！');
-                }
-            } else if (action.includes('fa-share-square')) {
-                console.log('点击了分享按钮');
-                
-                // 简单的分享逻辑
-                if (navigator.share) {
-                    navigator.share({
-                        title: document.title,
-                        text: '查看这个NexusOrbital上的有趣话题',
-                        url: window.location.href
-                    })
-                    .catch(error => console.log('分享失败:', error));
-                } else {
-                    // 不支持原生分享API
-                    showToast('复制链接成功，快去分享吧！');
-                }
+            // 如果未登录且需要登录的操作
+            if (!isUserLoggedIn && (action === 'like' || action === 'comment' || action === 'bookmark')) {
+                showLoginPrompt(getActionText(action));
+                return;
+            }
+            
+            // 处理不同的操作
+            switch (action) {
+                case 'like':
+                    toggleLike(this);
+                    break;
+                case 'comment':
+                    showCommentForm(this);
+                    break;
+                case 'bookmark':
+                    toggleBookmark(this);
+                    break;
+                case 'share':
+                    showShareOptions(this);
+                    break;
             }
         });
     });
+}
+
+/**
+ * 获取操作文本
+ * @param {string} action - 操作类型
+ * @returns {string} - 操作文本
+ */
+function getActionText(action) {
+    switch (action) {
+        case 'like': return '点赞';
+        case 'comment': return '评论';
+        case 'bookmark': return '收藏';
+        case 'share': return '分享';
+        default: return '该操作';
+    }
+}
+
+/**
+ * 切换点赞状态
+ * @param {HTMLElement} button - 点赞按钮
+ */
+function toggleLike(button) {
+    const icon = button.querySelector('i');
+    const countText = button.textContent.trim().replace(/[^\d]/g, '');
+    let count = parseInt(countText) || 0;
+    
+    if (icon.classList.contains('fas')) {
+        // 取消点赞
+        icon.classList.remove('fas');
+        icon.classList.add('far');
+        count = Math.max(0, count - 1);
+    } else {
+        // 点赞
+        icon.classList.remove('far');
+        icon.classList.add('fas');
+        count++;
+        
+        // 显示点赞动画
+        const animatedHeart = document.createElement('div');
+        animatedHeart.className = 'animated-heart';
+        animatedHeart.innerHTML = '<i class="fas fa-heart"></i>';
+        button.appendChild(animatedHeart);
+        
+        setTimeout(() => {
+            animatedHeart.remove();
+        }, 1000);
+    }
+    
+    button.innerHTML = `<i class="${icon.className}"></i> ${count}`;
+}
+
+/**
+ * 显示评论表单
+ * @param {HTMLElement} button - 评论按钮
+ */
+function showCommentForm(button) {
+    const postCard = button.closest('.post-card');
+    if (!postCard) return;
+    
+    let commentForm = postCard.querySelector('.comment-form');
+    
+    if (commentForm) {
+        // 如果评论表单已存在，则切换显示/隐藏
+        commentForm.classList.toggle('active');
+        if (commentForm.classList.contains('active')) {
+            commentForm.querySelector('textarea').focus();
+        }
+    } else {
+        // 创建评论表单
+        commentForm = document.createElement('div');
+        commentForm.className = 'comment-form active';
+        commentForm.innerHTML = `
+            <textarea placeholder="发表你的评论..."></textarea>
+            <div class="comment-actions">
+                <button class="cancel-comment">取消</button>
+                <button class="submit-comment">发送</button>
+            </div>
+        `;
+        
+        // 添加到帖子卡片
+        postCard.appendChild(commentForm);
+        
+        // 焦点到文本框
+        setTimeout(() => {
+            commentForm.querySelector('textarea').focus();
+        }, 10);
+        
+        // 添加事件监听器
+        commentForm.querySelector('.cancel-comment').addEventListener('click', () => {
+            commentForm.classList.remove('active');
+        });
+        
+        commentForm.querySelector('.submit-comment').addEventListener('click', () => {
+            const commentText = commentForm.querySelector('textarea').value.trim();
+            if (commentText) {
+                // 这里可以添加发送评论的逻辑
+                showToast('评论已发送', 2000);
+                commentForm.querySelector('textarea').value = '';
+                commentForm.classList.remove('active');
+            } else {
+                showToast('请输入评论内容', 2000);
+            }
+        });
+    }
+}
+
+/**
+ * 切换收藏状态
+ * @param {HTMLElement} button - 收藏按钮
+ */
+function toggleBookmark(button) {
+    const icon = button.querySelector('i');
+    
+    if (icon.classList.contains('fas')) {
+        // 取消收藏
+        icon.classList.remove('fas');
+        icon.classList.add('far');
+        showToast('已取消收藏', 1500);
+    } else {
+        // 收藏
+        icon.classList.remove('far');
+        icon.classList.add('fas');
+        showToast('已添加到收藏', 1500);
+    }
+}
+
+/**
+ * 显示分享选项
+ * @param {HTMLElement} button - 分享按钮
+ */
+function showShareOptions(button) {
+    // 创建分享菜单
+    let shareMenu = document.querySelector('.share-menu');
+    
+    if (shareMenu) {
+        // 如果分享菜单已存在，则移除它
+        shareMenu.remove();
+        return;
+    }
+    
+    shareMenu = document.createElement('div');
+    shareMenu.className = 'share-menu';
+    shareMenu.innerHTML = `
+        <div class="share-option"><i class="fab fa-weixin"></i> 微信</div>
+        <div class="share-option"><i class="fab fa-weibo"></i> 微博</div>
+        <div class="share-option"><i class="fas fa-link"></i> 复制链接</div>
+        <div class="share-option"><i class="fas fa-qrcode"></i> 二维码</div>
+    `;
+    
+    // 定位菜单
+    const rect = button.getBoundingClientRect();
+    shareMenu.style.top = `${rect.bottom + window.scrollY + 10}px`;
+    shareMenu.style.right = `${window.innerWidth - rect.right - 10}px`;
+    
+    // 添加到文档
+    document.body.appendChild(shareMenu);
+    
+    // 添加点击事件
+    shareMenu.querySelectorAll('.share-option').forEach(option => {
+        option.addEventListener('click', () => {
+            const platform = option.textContent.trim();
+            showToast(`已分享到${platform}`, 1500);
+            shareMenu.remove();
+        });
+    });
+    
+    // 点击其他区域关闭菜单
+    document.addEventListener('click', function closeMenu(e) {
+        if (!shareMenu.contains(e.target) && e.target !== button) {
+            shareMenu.remove();
+            document.removeEventListener('click', closeMenu);
+        }
+    });
+}
+
+/**
+ * 初始化AI任务舱提示
+ */
+function initAIAssistantPrompt() {
+    // 在页面加载后等待3秒显示AI助手提示
+    setTimeout(() => {
+        // 检查AI助手是否已初始化
+        if (window.gravitySystem && window.gravitySystem.aiAssistant) {
+            // 向AI助手添加欢迎消息
+            window.gravitySystem.aiAssistant.togglePanel();
+            
+            // 3秒后自动关闭面板
+            setTimeout(() => {
+                window.gravitySystem.aiAssistant.closePanel();
+            }, 3000);
+        }
+    }, 3000);
 }
 
 /**
@@ -358,7 +505,7 @@ function initPostInteractions() {
  * @param {string} action - 用户想要执行的操作
  */
 function showLoginPrompt(action) {
-    showToast(`请先登录后再${action}`, 3000);
+    showToast(`请先登录后再${action}`, 2000);
 }
 
 /**
@@ -367,113 +514,40 @@ function showLoginPrompt(action) {
  * @param {number} duration - 持续时间(毫秒)
  */
 function showToast(message, duration = 2000) {
-    // 创建Toast元素
-    const toast = document.createElement('div');
-    toast.className = 'toast-message';
-    toast.textContent = message;
+    // 检查是否已有Toast
+    let toast = document.querySelector('.toast-message');
     
-    // 添加样式
-    toast.style.position = 'fixed';
-    toast.style.bottom = '80px';
-    toast.style.left = '50%';
-    toast.style.transform = 'translateX(-50%)';
-    toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    toast.style.color = 'white';
-    toast.style.padding = '10px 20px';
-    toast.style.borderRadius = '20px';
-    toast.style.fontSize = '14px';
-    toast.style.zIndex = '2000';
-    
-    // 添加到文档
-    document.body.appendChild(toast);
-    
-    // 定时移除
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.5s';
+    if (toast) {
+        // 清除现有的计时器
+        clearTimeout(toast.dataset.timerId);
         
+        // 更新消息
+        toast.textContent = message;
+    } else {
+        // 创建新的Toast
+        toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        // 动画效果
         setTimeout(() => {
-            document.body.removeChild(toast);
-        }, 500);
+            toast.classList.add('show');
+        }, 10);
+    }
+    
+    // 设置计时器在指定时间后隐藏Toast
+    const timerId = setTimeout(() => {
+        toast.classList.remove('show');
+        
+        // 动画结束后移除元素
+        toast.addEventListener('transitionend', function() {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        });
     }, duration);
-}
-
-/**
- * 获取帖子数据（模拟）
- * @param {string} filter - 筛选类型
- */
-function fetchPosts(filter) {
-    // 这里可以根据筛选类型获取不同的帖子
-    console.log(`获取${filter}类型的帖子`);
     
-    // 模拟延迟
-    setTimeout(() => {
-        // 刷新帖子列表
-        renderPosts([
-            {
-                id: 1,
-                title: '月球基地舱室设计：如何在有限空间创造舒适感？',
-                content: '在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法...',
-                author: {
-                    name: '星际探险家',
-                    avatar: 'images/avatars/user1.jpg'
-                },
-                time: '2小时前',
-                source: '太空人居',
-                comments: 36,
-                likes: 128
-            },
-            // 更多帖子...
-        ]);
-    }, 500);
-}
-
-/**
- * 渲染帖子列表
- * @param {Array} posts - 帖子数据
- */
-function renderPosts(posts) {
-    const container = document.querySelector('.posts-container');
-    if (!container) return;
-    
-    // 清空容器
-    container.innerHTML = '';
-    
-    // 添加帖子
-    posts.forEach(post => {
-        const postElement = createPostElement(post);
-        container.appendChild(postElement);
-    });
-}
-
-/**
- * 创建帖子元素
- * @param {Object} post - 帖子数据
- * @returns {HTMLElement} - 帖子元素
- */
-function createPostElement(post) {
-    const postElement = document.createElement('div');
-    postElement.className = 'post-card';
-    
-    postElement.innerHTML = `
-        <div class="post-author">
-            <img src="${post.author.avatar}" alt="${post.author.name}" class="author-avatar">
-            <div class="author-info">
-                <div class="author-name">${post.author.name}</div>
-                <div class="post-meta">${post.time} · 来自 ${post.source}</div>
-            </div>
-        </div>
-        <div class="post-content">
-            <h2 class="post-title">${post.title}</h2>
-            <p class="post-text">${post.content}</p>
-        </div>
-        <div class="post-actions">
-            <button class="action-button"><i class="far fa-comment"></i> ${post.comments}</button>
-            <button class="action-button"><i class="far fa-heart"></i> ${post.likes}</button>
-            <button class="action-button"><i class="far fa-bookmark"></i></button>
-            <button class="action-button"><i class="far fa-share-square"></i></button>
-        </div>
-    `;
-    
-    return postElement;
+    // 保存计时器ID
+    toast.dataset.timerId = timerId;
 }

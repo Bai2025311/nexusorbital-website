@@ -4,183 +4,200 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NexusOrbital 社区 - 移动版</title>
-    <link rel="stylesheet" href="css/community-mobile.css">
-    <link rel="stylesheet" href="css/mobile-nav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script>
-        // 登录状态配置
-        window.disableCommunityLoginCheck = true;
-    </script>
+    <link rel="stylesheet" href="css/community-mobile.css">
+    <link rel="stylesheet" href="css/gravity-interaction.css">
+    <link rel="stylesheet" href="css/ai-task-pod.css">
 </head>
 <body>
-    <div class="container">
-        <!-- 星空背景 -->
-        <div class="stars-background" id="stars-background"></div>
+    <div class="container community-mobile-container">
+        <div class="stars-background"></div>
         
-        <!-- 页头 -->
-        <div class="header">NexusOrbital</div>
+        <div class="header">
+            <h1>NexusOrbital</h1>
+            <div class="section-title">社区焦点</div>
+        </div>
         
-        <!-- 状态指标 -->
         <div class="stats-container">
-            <div class="stat-item">
-                <div class="stat-label">氧气浓度</div>
-                <div class="stat-value">98.4%</div>
-                <div class="stat-change">+0.1%</div>
+            <div class="stat-item" data-stat="discussions">
+                <div class="stat-label">今日讨论</div>
+                <div class="stat-value">1,234</div>
+                <div class="stat-change">+12.4%</div>
+                <div class="progress-bar">
+                    <div class="progress-value" style="width: 78%;"></div>
+                </div>
                 <div class="indicator-dot"></div>
             </div>
-            
-            <div class="stat-item">
-                <div class="stat-label">月球基地</div>
-                <div class="stat-value">62%</div>
+            <div class="stat-item" data-stat="users">
+                <div class="stat-label">在线用户</div>
+                <div class="stat-value">386</div>
+                <div class="stat-change">+5.2%</div>
+                <div class="progress-bar">
+                    <div class="progress-value" style="width: 45%;"></div>
+                </div>
+            </div>
+            <div class="stat-item" data-stat="projects">
+                <div class="stat-label">活跃项目</div>
+                <div class="stat-value">56</div>
+                <div class="stat-change">+8.7%</div>
                 <div class="progress-bar">
                     <div class="progress-value" style="width: 62%;"></div>
                 </div>
             </div>
-            
-            <div class="stat-item">
-                <div class="stat-label">社区活跃度</div>
-                <div class="stat-value">89</div>
-                <div class="stat-change">+0</div>
-            </div>
         </div>
         
-        <!-- 过滤器 -->
         <div class="filters-container">
             <button class="filter-button active">全部</button>
-            <button class="filter-button">推荐</button>
-            <button class="filter-button">热门</button>
-            <button class="filter-button">最新</button>
-            <button class="new-post-button">
-                <i class="fas fa-pen"></i>
-                登录发帖
-            </button>
+            <button class="filter-button">热门讨论</button>
+            <button class="filter-button">新发布</button>
+            <button class="filter-button">技术分享</button>
+            <button class="filter-button">创意设计</button>
+            <button class="filter-button">资源共享</button>
         </div>
-
-        <!-- 内容区域 -->
+        
         <div class="content">
-            <div class="posts-container">
-                <!-- 帖子 1 -->
-                <div class="post-card">
-                    <div class="post-author">
-                        <img src="images/avatars/user1.jpg" alt="用户头像" class="author-avatar">
-                        <div class="author-info">
-                            <div class="author-name">星际探险家</div>
-                            <div class="post-meta">2小时前 · 来自 太空人居</div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <h2 class="post-title">月球基地舱室设计：如何在有限空间创造舒适感？</h2>
-                        <p class="post-text">在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法。首先，多功能家具是关键，比如可以变形为工作台的床铺；其次，色彩心理学在太空环境中尤为重要，蓝色和绿色能缓解压力；最后，模块化设计允许个性化定制，满足不同宇航员的需求。</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-button"><i class="far fa-comment"></i> 36</button>
-                        <button class="action-button"><i class="far fa-heart"></i> 128</button>
-                        <button class="action-button"><i class="far fa-bookmark"></i></button>
-                        <button class="action-button"><i class="far fa-share-square"></i></button>
+            <!-- 帖子列表 -->
+            <div class="post-card">
+                <div class="post-author">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="作者头像" class="author-avatar">
+                    <div class="author-info">
+                        <div class="author-name">星际工程师</div>
+                        <div class="post-meta">2小时前 · 技术分享</div>
                     </div>
                 </div>
-                
-                <!-- 帖子 2 -->
-                <div class="post-card">
-                    <div class="post-author">
-                        <img src="images/avatars/user2.jpg" alt="用户头像" class="author-avatar">
-                        <div class="author-info">
-                            <div class="author-name">太空农艺师</div>
-                            <div class="post-meta">5小时前 · 来自 火星农业</div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <h2 class="post-title">火星温室新突破：低重力环境下的水培系统优化</h2>
-                        <p class="post-text">我们团队最近在火星模拟环境中测试了新型水培系统，结果令人振奋！通过调整营养液循环速率和气泡大小，解决了低重力环境下根部缺氧问题。同时，LED光谱优化提高了作物产量约28%。下一步将测试更多作物种类和混合种植模式。</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-button"><i class="far fa-comment"></i> 42</button>
-                        <button class="action-button"><i class="far fa-heart"></i> 95</button>
-                        <button class="action-button"><i class="far fa-bookmark"></i></button>
-                        <button class="action-button"><i class="far fa-share-square"></i></button>
+                <div class="post-content">
+                    <h3 class="post-title">新型量子引擎如何改变太空居住的能源结构</h3>
+                    <p class="post-text">今天我们来聊聊量子引擎如何解决长期太空居住的能源难题。根据最新研究，量子空泡技术可以提供比传统核聚变高10倍的能量密度，同时降低90%的辐射风险...</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 128</button>
+                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 46</button>
+                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
+                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
+                </div>
+            </div>
+            
+            <div class="post-card">
+                <div class="post-author">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="作者头像" class="author-avatar">
+                    <div class="author-info">
+                        <div class="author-name">空间建筑师_Luna</div>
+                        <div class="post-meta">5小时前 · 创意设计</div>
                     </div>
                 </div>
-                
-                <!-- 帖子 3 -->
-                <div class="post-card">
-                    <div class="post-author">
-                        <img src="images/avatars/user3.jpg" alt="用户头像" class="author-avatar">
-                        <div class="author-info">
-                            <div class="author-name">轨道工程师</div>
-                            <div class="post-meta">昨天 · 来自 空间站技术</div>
-                        </div>
+                <div class="post-content">
+                    <h3 class="post-title">我的"浮动花园"设计让空间站变成了艺术品</h3>
+                    <p class="post-text">很高兴分享我最新完成的"浮动花园"设计方案。这个设计整合了低重力植物培养技术和模块化空间利用，让空间站不再是冰冷的金属盒子。我特别设计了自动适应光照的反射系统...</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 256</button>
+                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 82</button>
+                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
+                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
+                </div>
+            </div>
+            
+            <div class="post-card">
+                <div class="post-author">
+                    <img src="https://randomuser.me/api/portraits/men/28.jpg" alt="作者头像" class="author-avatar">
+                    <div class="author-info">
+                        <div class="author-name">太空医学专家</div>
+                        <div class="post-meta">1天前 · 资源共享</div>
                     </div>
-                    <div class="post-content">
-                        <h2 class="post-title">空间站太阳能电池板除尘新方法分享</h2>
-                        <p class="post-text">在长期太空任务中，太阳能电池板积尘是个大问题。我们开发了一种利用静电场的自清洁涂层，能减少90%的维护工作。这项技术不需要额外能源，而且涂层寿命可达5年。详细技术报告已上传至技术库，欢迎各位同行讨论改进方案。</p>
+                </div>
+                <div class="post-content">
+                    <h3 class="post-title">【免费资源】长期太空生活健康管理手册v2.0</h3>
+                    <p class="post-text">我们团队整理了最新的太空医学研究成果，编写了这份《长期太空生活健康管理手册》第二版。包含骨质疏松预防、肌肉维护、心理健康和辐射防护等章节，适合所有计划长期太空旅行或居住的人参考...</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 421</button>
+                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 94</button>
+                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
+                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
+                </div>
+            </div>
+            
+            <div class="post-card">
+                <div class="post-author">
+                    <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="作者头像" class="author-avatar">
+                    <div class="author-info">
+                        <div class="author-name">引力波研究员</div>
+                        <div class="post-meta">2天前 · 热门讨论</div>
                     </div>
-                    <div class="post-actions">
-                        <button class="action-button"><i class="far fa-comment"></i> 28</button>
-                        <button class="action-button"><i class="far fa-heart"></i> 76</button>
-                        <button class="action-button"><i class="far fa-bookmark"></i></button>
-                        <button class="action-button"><i class="far fa-share-square"></i></button>
-                    </div>
+                </div>
+                <div class="post-content">
+                    <h3 class="post-title">讨论：人类是否需要为太空殖民制定统一法律？</h3>
+                    <p class="post-text">随着越来越多的私营企业和国家机构积极推进太空殖民计划，一个重要问题浮现：我们是否需要一个统一的太空殖民法律框架？目前各国对太空资源开发的立场存在显著差异...</p>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button" data-action="like"><i class="fas fa-heart"></i> 389</button>
+                    <button class="action-button" data-action="comment"><i class="fas fa-comment"></i> 147</button>
+                    <button class="action-button" data-action="bookmark"><i class="fas fa-bookmark"></i> 收藏</button>
+                    <button class="action-button" data-action="share"><i class="fas fa-share-alt"></i> 分享</button>
                 </div>
             </div>
         </div>
         
-        <!-- 底部导航 -->
         <div class="nav-bar">
             <div class="nav-item active">
                 <div class="nav-icon"><i class="fas fa-home"></i></div>
-                <div class="nav-label">控制舱</div>
+                <div class="nav-label">首页</div>
             </div>
             <div class="nav-item">
-                <div class="nav-icon"><i class="fas fa-dollar-sign"></i></div>
-                <div class="nav-label">星海计划</div>
+                <div class="nav-icon"><i class="fas fa-compass"></i></div>
+                <div class="nav-label">探索</div>
             </div>
             <div class="nav-item">
-                <div class="nav-icon"><i class="fas fa-users"></i></div>
-                <div class="nav-label">星环会议</div>
+                <div class="nav-icon"><i class="fas fa-bell"></i></div>
+                <div class="nav-label">通知</div>
             </div>
             <div class="nav-item">
-                <div class="nav-icon"><i class="fas fa-book"></i></div>
-                <div class="nav-label">技术库</div>
-            </div>
-            <div class="nav-item">
-                <div class="nav-icon"><i class="fas fa-user-astronaut"></i></div>
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
                 <div class="nav-label">我的</div>
             </div>
         </div>
-    </div>
-    
-    <!-- 新帖弹窗 -->
-    <div class="modal" id="new-post-modal">
-        <div class="modal-content">
-            <button class="close-modal">&times;</button>
-            <h3 class="modal-title">发表新帖</h3>
-            <form id="post-form">
-                <div class="form-group">
-                    <label for="post-title">标题</label>
-                    <input type="text" id="post-title" class="form-control" placeholder="请输入标题（最多50字）">
+        
+        <button class="new-post-button">
+            <i class="fas fa-edit"></i> 发布
+        </button>
+        
+        <!-- 模态弹窗 -->
+        <div class="modal" id="postModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>创建新帖子</h3>
+                    <button class="close-modal">&times;</button>
                 </div>
-                <div class="form-group">
-                    <label for="post-content">内容</label>
-                    <textarea id="post-content" class="form-control" placeholder="分享你的想法..."></textarea>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="post-title">标题</label>
+                        <input type="text" id="post-title" class="form-control" placeholder="输入帖子标题">
+                    </div>
+                    <div class="form-group">
+                        <label for="post-category">分类</label>
+                        <select id="post-category" class="form-control">
+                            <option value="">选择分类</option>
+                            <option value="tech">技术分享</option>
+                            <option value="design">创意设计</option>
+                            <option value="resource">资源共享</option>
+                            <option value="discussion">热门讨论</option>
+                            <option value="question">问题求助</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-content">内容</label>
+                        <textarea id="post-content" class="form-control" placeholder="输入帖子内容"></textarea>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="post-category">类别</label>
-                    <select id="post-category" class="form-control">
-                        <option value="space-living">太空人居</option>
-                        <option value="mars-agri">火星农业</option>
-                        <option value="space-tech">空间站技术</option>
-                        <option value="asteroid-mining">小行星采矿</option>
-                    </select>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="cancel-post">取消</button>
+                    <button class="btn-primary" id="publish-post">发布</button>
                 </div>
-                <div class="form-actions">
-                    <button type="button" id="cancel-post" class="btn btn-secondary">取消</button>
-                    <button type="button" id="submit-post" class="btn btn-primary">发布</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-    
-    <script src="js/mobile-nav.js"></script>
-    <script src="js/community-mobile.js"></script>
-</body>
+        
+        <script src="js/community-mobile.js"></script>
+        <script src="js/ai-task-pod.js"></script>
+        <script src="js/gravity-interaction.js"></script>
+    </body>
 </html>
