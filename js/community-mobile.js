@@ -4,6 +4,12 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // 创建星空背景
+    createStarryBackground();
+    
+    // 初始化动态指标
+    initDynamicStats();
+    
     // 初始化过滤器按钮
     initFilterButtons();
     
@@ -21,6 +27,102 @@ document.addEventListener('DOMContentLoaded', function() {
 let isUserLoggedIn = false;
 // 禁用社区登录强制检查
 const disableCommunityLoginCheck = true;
+
+/**
+ * 创建星空背景
+ */
+function createStarryBackground() {
+    const starsContainer = document.getElementById('stars-background');
+    const starCount = 100; // 星星数量
+    
+    if (!starsContainer) return;
+    
+    // 清空容器
+    starsContainer.innerHTML = '';
+    
+    // 创建星星
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // 随机大小（1-3像素）
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        
+        // 随机位置
+        const left = Math.random() * 100;
+        const top = Math.random() * 100;
+        star.style.left = `${left}%`;
+        star.style.top = `${top}%`;
+        
+        // 随机闪烁时间（2-6秒）
+        const duration = Math.random() * 4 + 2;
+        star.style.setProperty('--duration', `${duration}s`);
+        
+        // 随机开始时间（避免所有星星同时闪烁）
+        const delay = Math.random() * 5;
+        star.style.animationDelay = `${delay}s`;
+        
+        // 添加到容器
+        starsContainer.appendChild(star);
+    }
+}
+
+/**
+ * 初始化动态指标
+ */
+function initDynamicStats() {
+    // 氧气浓度随机微小变化
+    setInterval(() => {
+        const oxygenValue = document.querySelector('.stat-item:nth-child(1) .stat-value');
+        const oxygenChange = document.querySelector('.stat-item:nth-child(1) .stat-change');
+        if (!oxygenValue || !oxygenChange) return;
+        
+        // 基础值
+        let baseValue = 98.4;
+        // 随机变化（±0.2%）
+        const change = (Math.random() * 0.4 - 0.2).toFixed(1);
+        const newValue = (baseValue + parseFloat(change)).toFixed(1);
+        
+        oxygenValue.textContent = `${newValue}%`;
+        oxygenChange.textContent = change >= 0 ? `+${change}%` : `${change}%`;
+        oxygenChange.style.color = change >= 0 ? 'var(--secondary-color)' : 'var(--error-color)';
+    }, 5000);
+    
+    // 月球基地进度变化
+    setInterval(() => {
+        const baseValue = document.querySelector('.stat-item:nth-child(2) .stat-value');
+        const progressBar = document.querySelector('.stat-item:nth-child(2) .progress-value');
+        if (!baseValue || !progressBar) return;
+        
+        // 基础值
+        let value = parseInt(baseValue.textContent);
+        // 随机变化（±1%）
+        const change = Math.floor(Math.random() * 3) - 1;
+        const newValue = Math.min(Math.max(value + change, 0), 100);
+        
+        baseValue.textContent = `${newValue}%`;
+        progressBar.style.width = `${newValue}%`;
+    }, 7000);
+    
+    // 社区活跃度变化
+    setInterval(() => {
+        const activityValue = document.querySelector('.stat-item:nth-child(3) .stat-value');
+        const activityChange = document.querySelector('.stat-item:nth-child(3) .stat-change');
+        if (!activityValue || !activityChange) return;
+        
+        // 基础值
+        let value = parseInt(activityValue.textContent);
+        // 随机变化（-2到+3）
+        const change = Math.floor(Math.random() * 6) - 2;
+        const newValue = Math.max(value + change, 0);
+        
+        activityValue.textContent = newValue;
+        activityChange.textContent = change >= 0 ? `+${change}` : `${change}`;
+        activityChange.style.color = change >= 0 ? 'var(--secondary-color)' : 'var(--error-color)';
+    }, 10000);
+}
 
 /**
  * 初始化用户状态

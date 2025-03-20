@@ -2,46 +2,50 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusOrbital - 星际社区</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NexusOrbital 社区 - 移动版</title>
     <link rel="stylesheet" href="css/community-mobile.css">
     <link rel="stylesheet" href="css/mobile-nav.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script>
+        // 登录状态配置
+        window.disableCommunityLoginCheck = true;
+    </script>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>NexusOrbital</h1>
-        </div>
-    </header>
-
-    <main>
-        <!-- 状态指标区域 -->
-        <div class="status-indicators">
-            <div class="indicator">
-                <div class="indicator-title">氧气浓度</div>
-                <div class="indicator-value">98.4% <span class="positive-change">+0.1%</span></div>
+    <div class="container">
+        <!-- 星空背景 -->
+        <div class="stars-background" id="stars-background"></div>
+        
+        <!-- 页头 -->
+        <div class="header">NexusOrbital</div>
+        
+        <!-- 状态指标 -->
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-label">氧气浓度</div>
+                <div class="stat-value">98.4%</div>
+                <div class="stat-change">+0.1%</div>
+                <div class="indicator-dot"></div>
             </div>
-            <div class="indicator">
-                <div class="indicator-title">月球基地</div>
-                <div class="indicator-value">62%</div>
+            
+            <div class="stat-item">
+                <div class="stat-label">月球基地</div>
+                <div class="stat-value">62%</div>
                 <div class="progress-bar">
-                    <div class="progress" style="width: 62%;"></div>
+                    <div class="progress-value" style="width: 62%;"></div>
                 </div>
             </div>
-            <div class="indicator">
-                <div class="indicator-title">社区活跃度</div>
-                <div class="indicator-value">89 <span class="positive-change">+0</span></div>
+            
+            <div class="stat-item">
+                <div class="stat-label">社区活跃度</div>
+                <div class="stat-value">89</div>
+                <div class="stat-change">+0</div>
             </div>
         </div>
-
-        <!-- 内容过滤器 -->
-        <div class="content-filters">
+        
+        <!-- 过滤器 -->
+        <div class="filters-container">
             <button class="filter-button active">全部</button>
             <button class="filter-button">推荐</button>
             <button class="filter-button">热门</button>
@@ -52,120 +56,130 @@
             </button>
         </div>
 
-        <!-- 帖子列表 -->
-        <div class="posts-container">
-            <!-- 帖子1 -->
-            <div class="post-card">
-                <div class="post-author">
-                    <img src="images/avatars/user1.jpg" alt="用户头像" class="author-avatar">
-                    <div class="author-info">
-                        <div class="author-name">星际探险家</div>
-                        <div class="post-meta">2小时前 · 来自 太空人居</div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <h2 class="post-title">月球基地舱室设计：如何在有限空间创造舒适感？</h2>
-                    <p class="post-text">在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法。首先，多功能家具是关键，比如可以变形为工作台的床铺；其次，色彩心理学在太空环境中尤为重要，蓝色和绿色能缓解压力；最后，模块化设计允许宇航员根据个人偏好定制空间布局...</p>
-                </div>
-                <div class="post-actions">
-                    <button class="action-button"><i class="far fa-comment"></i> 36</button>
-                    <button class="action-button"><i class="far fa-heart"></i> 128</button>
-                    <button class="action-button"><i class="far fa-bookmark"></i></button>
-                    <button class="action-button"><i class="far fa-share-square"></i></button>
-                </div>
-            </div>
-
-            <!-- 可以添加更多帖子 -->
-        </div>
-    </main>
-
-    <!-- 移动导航栏 -->
-    <div class="stellar-nav-container">
-        <nav class="stellar-navbar">
-            <a href="index.html" class="nav-item">
-                <div class="icon-container">
-                    <div class="nav-icon dashboard-icon"></div>
-                    <div class="orbit-animation"></div>
-                </div>
-                <span class="nav-label">控制舱</span>
-            </a>
-            
-            <a href="#" class="nav-item">
-                <div class="icon-container">
-                    <div class="nav-icon funding-icon"></div>
-                    <div class="orbit-animation"></div>
-                </div>
-                <span class="nav-label">星海计划</span>
-            </a>
-            
-            <a href="community.html" class="nav-item active">
-                <div class="icon-container">
-                    <div class="nav-icon community-icon"></div>
-                    <div class="orbit-animation active"></div>
-                </div>
-                <span class="nav-label">星环会议</span>
-            </a>
-            
-            <a href="#" class="nav-item">
-                <div class="icon-container">
-                    <div class="nav-icon library-icon"></div>
-                    <div class="orbit-animation"></div>
-                </div>
-                <span class="nav-label">技术库</span>
-            </a>
-            
-            <a href="#" class="nav-item">
-                <div class="icon-container">
-                    <div class="nav-icon profile-icon"></div>
-                    <div class="orbit-animation"></div>
-                </div>
-                <span class="nav-label">我的</span>
-            </a>
-        </nav>
-    </div>
-
-    <!-- 新帖发布弹窗 -->
-    <div class="modal" id="new-post-modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>发表新帖子</h3>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="post-form">
-                    <div class="form-group">
-                        <input type="text" id="post-title" placeholder="帖子标题" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="post-content" placeholder="分享你的想法..." required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <div class="image-upload-container">
-                            <div class="image-upload-box">
-                                <i class="fas fa-plus"></i>
-                                <span>添加图片</span>
-                                <input type="file" accept="image/*">
-                            </div>
+        <!-- 内容区域 -->
+        <div class="content">
+            <div class="posts-container">
+                <!-- 帖子 1 -->
+                <div class="post-card">
+                    <div class="post-author">
+                        <img src="images/avatars/user1.jpg" alt="用户头像" class="author-avatar">
+                        <div class="author-info">
+                            <div class="author-name">星际探险家</div>
+                            <div class="post-meta">2小时前 · 来自 太空人居</div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <select id="post-category">
-                            <option value="" disabled selected>选择话题分类</option>
-                            <option value="habitat">人居技术</option>
-                            <option value="exploration">星际探索</option>
-                            <option value="resource">资源利用</option>
-                            <option value="life">太空生活</option>
-                        </select>
+                    <div class="post-content">
+                        <h2 class="post-title">月球基地舱室设计：如何在有限空间创造舒适感？</h2>
+                        <p class="post-text">在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法。首先，多功能家具是关键，比如可以变形为工作台的床铺；其次，色彩心理学在太空环境中尤为重要，蓝色和绿色能缓解压力；最后，模块化设计允许个性化定制，满足不同宇航员的需求。</p>
                     </div>
-                </form>
+                    <div class="post-actions">
+                        <button class="action-button"><i class="far fa-comment"></i> 36</button>
+                        <button class="action-button"><i class="far fa-heart"></i> 128</button>
+                        <button class="action-button"><i class="far fa-bookmark"></i></button>
+                        <button class="action-button"><i class="far fa-share-square"></i></button>
+                    </div>
+                </div>
+                
+                <!-- 帖子 2 -->
+                <div class="post-card">
+                    <div class="post-author">
+                        <img src="images/avatars/user2.jpg" alt="用户头像" class="author-avatar">
+                        <div class="author-info">
+                            <div class="author-name">太空农艺师</div>
+                            <div class="post-meta">5小时前 · 来自 火星农业</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">火星温室新突破：低重力环境下的水培系统优化</h2>
+                        <p class="post-text">我们团队最近在火星模拟环境中测试了新型水培系统，结果令人振奋！通过调整营养液循环速率和气泡大小，解决了低重力环境下根部缺氧问题。同时，LED光谱优化提高了作物产量约28%。下一步将测试更多作物种类和混合种植模式。</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-button"><i class="far fa-comment"></i> 42</button>
+                        <button class="action-button"><i class="far fa-heart"></i> 95</button>
+                        <button class="action-button"><i class="far fa-bookmark"></i></button>
+                        <button class="action-button"><i class="far fa-share-square"></i></button>
+                    </div>
+                </div>
+                
+                <!-- 帖子 3 -->
+                <div class="post-card">
+                    <div class="post-author">
+                        <img src="images/avatars/user3.jpg" alt="用户头像" class="author-avatar">
+                        <div class="author-info">
+                            <div class="author-name">轨道工程师</div>
+                            <div class="post-meta">昨天 · 来自 空间站技术</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">空间站太阳能电池板除尘新方法分享</h2>
+                        <p class="post-text">在长期太空任务中，太阳能电池板积尘是个大问题。我们开发了一种利用静电场的自清洁涂层，能减少90%的维护工作。这项技术不需要额外能源，而且涂层寿命可达5年。详细技术报告已上传至技术库，欢迎各位同行讨论改进方案。</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-button"><i class="far fa-comment"></i> 28</button>
+                        <button class="action-button"><i class="far fa-heart"></i> 76</button>
+                        <button class="action-button"><i class="far fa-bookmark"></i></button>
+                        <button class="action-button"><i class="far fa-share-square"></i></button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="cancel-post">取消</button>
-                <button class="btn-primary" id="submit-post">发布</button>
+        </div>
+        
+        <!-- 底部导航 -->
+        <div class="nav-bar">
+            <div class="nav-item active">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div class="nav-label">控制舱</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="nav-label">星海计划</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><i class="fas fa-users"></i></div>
+                <div class="nav-label">星环会议</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><i class="fas fa-book"></i></div>
+                <div class="nav-label">技术库</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><i class="fas fa-user-astronaut"></i></div>
+                <div class="nav-label">我的</div>
             </div>
         </div>
     </div>
-
+    
+    <!-- 新帖弹窗 -->
+    <div class="modal" id="new-post-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h3 class="modal-title">发表新帖</h3>
+            <form id="post-form">
+                <div class="form-group">
+                    <label for="post-title">标题</label>
+                    <input type="text" id="post-title" class="form-control" placeholder="请输入标题（最多50字）">
+                </div>
+                <div class="form-group">
+                    <label for="post-content">内容</label>
+                    <textarea id="post-content" class="form-control" placeholder="分享你的想法..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="post-category">类别</label>
+                    <select id="post-category" class="form-control">
+                        <option value="space-living">太空人居</option>
+                        <option value="mars-agri">火星农业</option>
+                        <option value="space-tech">空间站技术</option>
+                        <option value="asteroid-mining">小行星采矿</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancel-post" class="btn btn-secondary">取消</button>
+                    <button type="button" id="submit-post" class="btn btn-primary">发布</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script src="js/mobile-nav.js"></script>
     <script src="js/community-mobile.js"></script>
 </body>
