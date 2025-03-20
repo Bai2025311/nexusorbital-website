@@ -1613,7 +1613,7 @@
                     <li><a href="design-studio.html">智能构建室</a></li>
                     <li><a href="marketplace.html">星海计划</a></li>
                     <li><a href="technology.html">技术矩阵</a></li>
-                    <li><a href="new-login.html" class="btn-primary">登录发帖</a></li>
+                    <li><a href="new-login.html" class="btn-primary">登录 / 注册</a></li>
                 </ul>
                 <div class="hamburger">
                     <span class="bar"></span>
@@ -2441,7 +2441,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="accept-task" class="btn btn-primary">接受任务</button>
+                <button id="accept-task" class="btn btn-primary">接受</button>
                 <button class="btn close-modal-btn">暂不接受</button>
             </div>
         </div>
@@ -2543,19 +2543,16 @@
     <script src="js/mobile-nav.js"></script>
     <script src="js/badges.js"></script>
     <script src="js/leaderboard.js"></script>
-    <script src="js/community-interaction.js"></script>
+    <script src="js/community-interaction.js">
+    </script>
     
     <!-- MVP集成脚本 -->
     <script src="js/integrations.js"></script>
     <script src="js/mvp.js"></script>
     <script>
-        // 设置全局标志，禁用社区页面的自动登录检查
-        window.disableCommunityLoginCheck = true;
-        console.log('社区页面：已设置禁用登录检查标志');
-        
         // 当DOM加载完成后执行，用于调试
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('社区页面：DOM已加载，禁用登录检查状态: ' + (window.disableCommunityLoginCheck ? '已启用' : '未启用'));
+            console.log('社区页面：DOM已加载');
             
             // 初始化MVP功能
             if (window.NexusOrbital && window.NexusOrbital.MVP) {
@@ -2593,7 +2590,7 @@
         const joinChatBtn = document.querySelector('.join-chat-btn');
         if (joinChatBtn) {
             joinChatBtn.addEventListener('click', function() {
-                alert('引力波聊天室将在下一版本推出，敬请期待！\n\n该功能将使用AI分析社区内容，生成可视化的知识关系图谱，帮助您发现更有价值的内容和潜在合作伙伴。');
+                alert('引力波聊天室将在下一版本推出，敬请期待！\n\n该功能将使用AI分析社区内容，生成可视化的知识关系图谱，帮助您发现更多有价值的内容和潜在合作伙伴。');
             });
         }
         
@@ -2730,7 +2727,7 @@
         const exploreMapBtn = document.querySelector('.explore-map-btn');
         if (exploreMapBtn) {
             exploreMapBtn.addEventListener('click', function() {
-                alert('知识星图导航功能将在下一版本推出，敬请期待！\n\n该功能将使用AI分析社区内容，生成可视化的知识关系图谱，帮助您发现更有价值的内容和潜在合作伙伴。');
+                alert('知识星图导航功能将在下一版本推出，敬请期待！\n\n该功能将使用AI分析社区内容，生成可视化的知识关系图谱，帮助您发现更多有价值的内容和潜在合作伙伴。');
             });
         }
         
@@ -2800,7 +2797,7 @@
                     infoElement.innerHTML = '推荐已更新，基于您的最新浏览记录';
                     
                     // 一段时间后恢复原始提示
-                    setTimeout(function() {
+                    setTimeout(() => {
                         infoElement.innerHTML = '基于您的浏览历史和兴趣偏好智能推荐';
                     }, 3000);
                 }, 1500);

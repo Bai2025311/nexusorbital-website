@@ -124,23 +124,12 @@ function addNavigationEventListeners() {
             
             // 特殊处理资料页面
             if (page === 'profile') {
-                // 在社区页面上禁用登录检查
-                const isCommunityPage = window.location.href.includes('community') || window.location.href.includes('community-mobile');
-                const disableCommunityLoginCheck = true; // 社区页面禁用登录检查标志
-                
                 // 检查是否已登录
-                const isLoggedIn = false; // 模拟未登录状态
+                const isLoggedIn = localStorage.getItem('auth_token') !== null;
                 
                 if (!isLoggedIn) {
                     e.preventDefault();
-                    
-                    // 如果在社区页面上且禁用了登录检查，则只显示提示而不跳转
-                    if (isCommunityPage && disableCommunityLoginCheck) {
-                        showMobileToast('登录后才能查看个人资料，请先登录', 3000);
-                        return;
-                    }
-                    
-                    // 否则跳转到登录页面
+                    // 跳转到登录页面
                     window.location.href = 'new-login.html';
                     return;
                 }
@@ -221,18 +210,8 @@ function getFeatureLabel(feature) {
  * 添加探索者模式到上下文菜单
  */
 function addExplorerModeToMenu() {
-    // 在社区页面上禁用登录检查
-    const isCommunityPage = window.location.href.includes('community') || window.location.href.includes('community-mobile');
-    const disableCommunityLoginCheck = true; // 社区页面禁用登录检查标志
-    
-    // 如果在社区页面上且禁用了登录检查，则不强制检查登录
-    if (isCommunityPage && disableCommunityLoginCheck) {
-        console.log('社区页面已禁用登录检查');
-        return;
-    }
-    
     // 检查是否已登录
-    const isLoggedIn = false; // 模拟未登录状态
+    const isLoggedIn = localStorage.getItem('auth_token') !== null;
     if (!isLoggedIn) {
         console.log('用户未登录，无法使用探索者模式');
         return;

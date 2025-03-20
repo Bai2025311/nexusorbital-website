@@ -3,20 +3,10 @@
  * 包括登录、注册、验证码、JWT处理等功能
  */
 
-// 使用全局配置中的API基本URL
-const API_BASE_URL = window.NexusConfig ? window.NexusConfig.API_BASE_URL : 'http://localhost:3060/api';
-
-// 在开发控制台输出当前使用的API地址
-console.log('auth.js脚本已加载');
-console.log('当前API基础URL:', API_BASE_URL);
+// API基础URL，生产环境应该使用相对路径或HTTPS
+const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
 
 document.addEventListener("DOMContentLoaded", function() {
-    console.log('auth.js脚本已加载');
-    
-    // 输出页面URL，确认页面类型
-    console.log('当前页面URL:', window.location.href);
-    console.log('是否是注册页面:', window.location.href.includes('register.html'));
-    
     // 处理登录/注册选项卡切换
     const tabButtons = document.querySelectorAll('.tab-btn');
     if (tabButtons.length > 0) {
@@ -57,10 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // 处理登录表单提交
     const loginForm = document.querySelector('.auth-form');
-    console.log('登录表单元素:', loginForm);
-    const isLoginForm = window.location.href.includes('login.html');
-    if (loginForm && isLoginForm) {
-        console.log('添加登录表单事件监听器');
+    if (loginForm && window.location.href.includes('login.html')) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -93,12 +80,53 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     // 处理注册表单提交
-    const registerForm = document.querySelector('.auth-form');
-    console.log('注册表单元素:', registerForm);
-    const isRegisterForm = window.location.href.includes('register.html');
-    if (registerForm && isRegisterForm) {
-        console.log('在auth.js中找到注册表单 - 但我们不再在这里添加事件，因为register.html已经有了自己的提交逻辑');
-        // 不再添加事件监听器，避免冲突
+    if (loginForm && window.location.href.includes('register.html')) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 判断当前活动的注册选项卡
+            const activeTab = document.querySelector('.tab-content.active');
+            
+            if (activeTab.id === 'email-tab') {
+                // 邮箱注册
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                if (username && email && password && confirmPassword) {
+                    if (password === confirmPassword) {
+                        registerWithEmail(username, email, password);
+                    } else {
+                        showMessage('两次输入的密码不一致');
+                    }
+                } else {
+                    showMessage('请填写所有必填字段');
+                }
+            } else if (activeTab.id === 'phone-tab') {
+                // 手机号注册
+                const username = document.getElementById('phone-username').value;
+                const countryCode = document.getElementById('country-code').value;
+                const phone = document.getElementById('phone').value;
+                const code = document.getElementById('verification-code').value;
+                const password = document.getElementById('phone-password').value;
+                
+                if (username && countryCode && phone && code && password) {
+                    registerWithPhone(username, countryCode, phone, code, password);
+                } else {
+                    showMessage('请填写所有必填字段');
+                }
+            } else if (activeTab.id === 'social-tab') {
+                // 社交媒体注册
+                const socialType = document.querySelector('.btn-social.active').classList.contains('weixin') ? 'weixin' : 
+                                   document.querySelector('.btn-social.active').classList.contains('weibo') ? 'weibo' : 
+                                   document.querySelector('.btn-social.active').classList.contains('xiaohongshu') ? 'xiaohongshu' : '';
+                
+                if (socialType) {
+                    registerWithSocial(socialType);
+                }
+            }
+        });
     }
     
     // 处理社交登录按钮
@@ -212,7 +240,7 @@ function loginWithEmail(email, password) {
                 }
                 
                 showMessage('登录成功！');
-                window.location.href = '/index.html';
+                window.location.href = '/community.html';
             } else {
                 showMessage(data.message || '邮箱或密码错误');
                 loginButton.disabled = false;
@@ -262,7 +290,7 @@ function loginWithPhone(countryCode, phone, code) {
                 }
                 
                 showMessage('登录成功！');
-                window.location.href = '/index.html';
+                window.location.href = '/community.html';
             } else {
                 showMessage(data.message || '验证码错误或手机号未注册');
                 loginButton.disabled = false;
@@ -502,7 +530,7 @@ function loginWithSocial(socialType) {
             
             // 提示成功并跳转
             showMessage(`${socialNameMap[socialType]}授权登录成功！`);
-            window.location.href = '/index.html';
+            window.location.href = '/community.html';
         });
     }
 }
@@ -517,73 +545,59 @@ function registerWithSocial(socialType) {
 }
 
 /**
- * 通过邮箱注册
+ * 邮箱注册
  * @param {string} username 用户名
  * @param {string} email 邮箱
  * @param {string} password 密码
  */
-// 将函数暴露为全局函数，便于外部调用
-window.registerWithEmail = function(username, email, password) {
-    console.log('registerWithEmail函数被调用');
-    
-    // 获取注册按钮元素
-    const registerButton = document.querySelector('button[type="submit"]');
-    if (!registerButton) {
-        console.error('未找到注册按钮元素');
-        return;
-    }
-    
-    console.log('已找到注册按钮:', registerButton);
-    
-    // 禁用按钮，防止重复提交
-    registerButton.disabled = true;
-    registerButton.textContent = '注册中...';
-    
-    console.log('开始注册请求，URL:', `${API_BASE_URL}/register`);
-    console.log('注册数据:', { username, email, password: '***' });
-    
-    // 调用API注册
-    fetch(`${API_BASE_URL}/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, email, password })
-    })
-    .then(response => {
-        console.log('注册响应状态:', response.status, response.statusText);
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            showMessage('注册成功，请登录');
-            
-            // 如果是在注册页面，跳转到登录页
-            if (window.location.pathname.includes('register.html')) {
-                window.location.href = '/new-login.html';
-            } else {
-                // 如果是在登录页的注册选项卡，切换到登录选项卡
-                const loginTab = document.querySelector('[data-tab="login"]');
-                if (loginTab) {
-                    loginTab.click();
-                }
+function registerWithEmail(username, email, password) {
+    // 显示加载状态
+    const registerButton = document.querySelector('#email-register-form button[type="submit"]');
+    if (registerButton) {
+        const originalText = registerButton.textContent;
+        registerButton.disabled = true;
+        registerButton.textContent = '注册中...';
+        
+        // 调用API注册
+        fetch(`${API_BASE_URL}/register/email`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage('注册成功，请登录');
                 
-                // 重置表单
-                const form = document.getElementById('email-register-form');
-                if (form) form.reset();
+                // 如果是在注册页面，跳转到登录页
+                if (window.location.pathname.includes('register.html')) {
+                    window.location.href = '/login.html';
+                } else {
+                    // 如果是在登录页的注册选项卡，切换到登录选项卡
+                    const loginTab = document.querySelector('[data-tab="login"]');
+                    if (loginTab) {
+                        loginTab.click();
+                    }
+                    
+                    // 重置表单
+                    const form = document.getElementById('email-register-form');
+                    if (form) form.reset();
+                }
+            } else {
+                showMessage(data.message || '注册失败，请稍后重试');
+                registerButton.disabled = false;
+                registerButton.textContent = originalText;
             }
-        } else {
-            showMessage(data.message || '注册失败，请稍后重试');
+        })
+        .catch(error => {
+            console.error('注册错误:', error);
+            showMessage('网络错误，请稍后再试');
             registerButton.disabled = false;
-            registerButton.textContent = '注册';
-        }
-    })
-    .catch(error => {
-        console.error('注册错误:', error);
-        showMessage('网络错误，请稍后再试');
-        registerButton.disabled = false;
-        registerButton.textContent = '注册';
-    });
+            registerButton.textContent = originalText;
+        });
+    }
 }
 
 /**
@@ -617,7 +631,7 @@ function registerWithPhone(username, countryCode, phone, code, password) {
                 
                 // 如果是在注册页面，跳转到登录页
                 if (window.location.pathname.includes('register.html')) {
-                    window.location.href = '/new-login.html';
+                    window.location.href = '/login.html';
                 } else {
                     // 如果是在登录页的注册选项卡，切换到登录选项卡
                     const loginTab = document.querySelector('[data-tab="login"]');
@@ -691,29 +705,31 @@ function getAuthToken() {
 }
 
 /**
- * 检查用户是否已登录
+ * 检查是否已登录
  * @returns {boolean} 是否已登录
  */
 function isLoggedIn() {
-    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
-        console.log('社区页面：登录检查被调用，但由于禁用标志不会影响页面行为');
-    }
+    const token = getAuthToken();
+    if (!token) return false;
     
-    // 从sessionStorage中获取token
-    const token = sessionStorage.getItem('token');
-    
-    // 如果没有token，从localStorage中检查
-    if (!token) {
-        // 尝试从localStorage中获取
-        const storedToken = localStorage.getItem('auth_token');
-        if (!storedToken) {
+    // 验证令牌是否过期
+    try {
+        // 解析JWT令牌，获取过期时间
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const exp = payload.exp;
+        
+        // 如果已过期，清除令牌并返回false
+        if (exp && exp * 1000 < Date.now()) {
+            clearAuthToken();
             return false;
         }
+        
         return true;
+    } catch (error) {
+        console.error('验证令牌出错', error);
+        clearAuthToken();
+        return false;
     }
-    
-    // 存在token则已登录
-    return true;
 }
 
 /**
@@ -730,7 +746,7 @@ function clearAuthToken() {
 function logout() {
     clearAuthToken();
     showMessage('已退出登录');
-    window.location.href = '/new-login.html';
+    window.location.href = '/login.html';
 }
 
 /**
@@ -898,21 +914,9 @@ function showMessage(message) {
 
 // 页面加载时检查登录状态
 document.addEventListener('DOMContentLoaded', function() {
-    // 如果当前页面设置了禁用登录检查标志，则不执行登录检查
-    const isCommunityPage = window.location.pathname.includes('community.html') || 
-                           window.location.pathname.includes('community-mobile.html');
-    
-    if (window.disableCommunityLoginCheck && isCommunityPage) {
-        console.log('社区页面：禁用自动登录检查');
-        // 仅更新导航UI，不执行登录重定向
-        updateNavigation();
-        return;
-    }
-    
     // 在需要登录的页面检查登录状态
     const requiresAuth = [
-        // '/community.html', // 不再需要强制登录
-        // '/community-mobile.html', // 不再需要强制登录
+        '/community.html',
         '/profile.html',
         '/dashboard.html'
     ];
@@ -921,7 +925,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (requiresAuth.some(path => currentPath.endsWith(path)) && !isLoggedIn()) {
         // 未登录，重定向到登录页
-        window.location.href = '/new-login.html'; // 更新为新登录页路径
+        window.location.href = '/login.html';
     }
     
     // 更新导航UI，显示用户信息或登录/注册链接
@@ -985,7 +989,7 @@ function updateNavigation() {
         // 未登录，显示登录/注册链接
         userMenuContainer.innerHTML = `
             <div class="auth-links">
-                <a href="/new-login.html" class="btn-login">登录</a>
+                <a href="/login.html" class="btn-login">登录</a>
                 <a href="/register.html" class="btn-register">注册</a>
             </div>
         `;
@@ -1185,7 +1189,7 @@ function showWeixinQrCodeLogin() {
                 
                 // 提示成功并跳转
                 showMessage('微信扫码登录成功！');
-                window.location.href = '/index.html';
+                window.location.href = '/community.html';
             },
             // 状态变化回调
             (status) => {

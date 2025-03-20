@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>星际人居社区 - NexusOrbital</title>
+    <title>星环会议 - NexusOrbital</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/community-mobile.css">
     <link rel="stylesheet" href="css/gravity-interaction.css">
@@ -32,27 +32,27 @@
     
     <div class="community-mobile-container">
         <div class="header">
-            <h1>星际人居社区</h1>
-            <button id="postButton" class="post-button"><i class="fas fa-plus"></i> 创建方案</button>
+            <h1>星环会议</h1>
+            <button id="postButton" class="post-button"><i class="fas fa-plus"></i> 发布</button>
         </div>
         
         <div class="stats-container">
             <div class="stat-item" data-stat="habitat-tech">
-                <div class="stat-label">舱室适应性</div>
+                <div class="stat-label">氧气浓度</div>
                 <div class="stat-value">98.4%</div>
                 <div class="progress-bar">
                     <div class="progress-value" style="width: 98%;"></div>
                 </div>
             </div>
             <div class="stat-item" data-stat="moon-base">
-                <div class="stat-label">月球基地</div>
+                <div class="stat-label">空间站</div>
                 <div class="stat-value">62%</div>
                 <div class="progress-bar">
                     <div class="progress-value" style="width: 62%;"></div>
                 </div>
             </div>
             <div class="stat-item" data-stat="collaboration">
-                <div class="stat-label">协作指数</div>
+                <div class="stat-label">社区活跃</div>
                 <div class="stat-value">89分</div>
                 <div class="progress-bar">
                     <div class="progress-value" style="width: 89%;"></div>
@@ -66,7 +66,7 @@
                 <button class="filter-button">热门研究</button>
                 <button class="filter-button">最新技术</button>
             </div>
-            <button class="new-post-button">创建方案</button>
+            <button class="new-post-button">发布</button>
         </div>
         
         <div class="content">
@@ -136,33 +136,33 @@
         <div class="modal" id="postModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>创建新技术方案</h3>
+                    <h3>发布新帖子</h3>
                     <button class="close-modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="postTitle">方案标题</label>
-                        <input type="text" id="postTitle" class="form-control" placeholder="输入方案标题">
+                        <label for="postTitle">帖子标题</label>
+                        <input type="text" id="postTitle" class="form-control" placeholder="输入帖子标题">
                     </div>
                     <div class="form-group">
-                        <label for="postCategory">技术领域</label>
+                        <label for="postCategory">帖子分类</label>
                         <select id="postCategory" class="form-control">
-                            <option value="">选择领域</option>
-                            <option value="tech">技术突破</option>
-                            <option value="design">人居设计</option>
+                            <option value="">选择分类</option>
+                            <option value="tech">技术分享</option>
+                            <option value="design">创意设计</option>
                             <option value="resource">资源利用</option>
                             <option value="discussion">行星讨论</option>
                             <option value="question">技术咨询</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="postContent">方案内容</label>
+                        <label for="postContent">帖子内容</label>
                         <textarea id="postContent" class="form-control" placeholder="描述您的技术方案或研究成果"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn-secondary" id="cancel-post">取消</button>
-                    <button class="btn-primary" id="publish-post">发布方案</button>
+                    <button class="btn-primary" id="publish-post">发布帖子</button>
                 </div>
             </div>
         </div>
@@ -173,7 +173,7 @@
                 <div class="ai-pod-indicator"></div>
                 <div class="ai-pod-inner">
                     <div class="ai-pod-header">
-                        <div class="ai-pod-title">NexusAI星际助手</div>
+                        <div class="ai-pod-title">NexusAI助手</div>
                         <div class="ai-pod-controls">
                             <button class="ai-control-button ai-minimize"><i class="fas fa-minus"></i></button>
                             <button class="ai-control-button ai-close"><i class="fas fa-times"></i></button>
@@ -183,7 +183,7 @@
                         <div class="ai-messages" id="aiMessages">
                             <div class="ai-message ai-assistant">
                                 <div class="ai-message-content">
-                                    欢迎访问星际人居社区！我是您的NexusAI助手，有什么可以帮助您的吗？
+                                    欢迎访问星环会议！我是您的NexusAI助手，有什么可以帮助您的吗？
                                 </div>
                                 <div class="ai-message-time">刚刚</div>
                             </div>
@@ -214,7 +214,7 @@
             </a>
             <a href="community-mobile.html" class="nav-item active">
                 <i class="fas fa-users nav-icon"></i>
-                <span class="nav-label">星际人居社区</span>
+                <span class="nav-label">星环会议</span>
             </a>
             <a href="tech-library.html" class="nav-item">
                 <i class="fas fa-database nav-icon"></i>
@@ -232,10 +232,6 @@
     <!-- 初始化引力交互和AI任务舱 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 设置社区页面禁用强制登录检查
-            window.disableCommunityLoginCheck = true;
-            console.log("社区移动版：已设置禁用强制登录检查");
-            
             // 初始化引力交互系统
             if (typeof GravityInteractionSystem !== 'undefined') {
                 const gravitySystem = new GravityInteractionSystem({
@@ -372,16 +368,15 @@
             document.querySelectorAll('.action-button').forEach(button => {
                 button.addEventListener('click', function() {
                     const action = this.getAttribute('data-action');
-                    // 根据disableCommunityLoginCheck标志决定是否显示登录提示
-                    const isLoginRequired = window.disableCommunityLoginCheck !== true;
                     
-                    if (isLoginRequired && !window.isLoggedIn) {
-                        // 显示友好提示
-                        showToast('请先登录后再' + getActionName(action));
-                    } else {
-                        // 执行相应操作
-                        handlePostAction(action, this);
+                    if (!isLoggedIn()) {
+                        // 重定向到登录页面
+                        window.location.href = 'new-login.html';
+                        return;
                     }
+                    
+                    // 执行相应操作
+                    handlePostAction(action, this);
                 });
             });
             
@@ -503,10 +498,8 @@
             
             // 发帖按钮处理
             document.querySelector('.new-post-button').addEventListener('click', function() {
-                const isLoginRequired = window.disableCommunityLoginCheck !== true;
-                
-                if (isLoginRequired && !isLoggedIn()) {
-                    showToast('请先登录后再发帖');
+                if (!isLoggedIn()) {
+                    window.location.href = 'new-login.html';
                     return;
                 }
                 
@@ -517,10 +510,8 @@
             const postButton = document.getElementById('postButton');
             if (postButton) {
                 postButton.addEventListener('click', function() {
-                    const isLoginRequired = window.disableCommunityLoginCheck !== true;
-                    
-                    if (isLoginRequired && !isLoggedIn()) {
-                        showToast('请先登录后再发帖');
+                    if (!isLoggedIn()) {
+                        window.location.href = 'new-login.html';
                         return;
                     }
                     
@@ -562,6 +553,11 @@
             
             // 发布帖子
             publishPost.addEventListener('click', function() {
+                if (!isLoggedIn()) {
+                    window.location.href = 'new-login.html';
+                    return;
+                }
+                
                 const title = document.getElementById('postTitle').value.trim();
                 const category = document.getElementById('postCategory').value;
                 const content = document.getElementById('postContent').value.trim();
@@ -634,6 +630,14 @@
                 postCard.querySelectorAll('.action-button').forEach(button => {
                     button.addEventListener('click', function() {
                         const action = this.getAttribute('data-action');
+                        
+                        if (!isLoggedIn()) {
+                            // 重定向到登录页面
+                            window.location.href = 'new-login.html';
+                            return;
+                        }
+                        
+                        // 执行相应操作
                         handlePostAction(action, this);
                     });
                 });
