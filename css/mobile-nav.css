@@ -15,9 +15,10 @@
   --star-white: #ffffff;
   
   /* 尺寸变量 */
-  --nav-height: 65px;
+  --nav-height: 70px;
   --icon-size: 24px;
   --font-size-small: 12px;
+  --nav-bg: rgba(10, 25, 47, 0.98);
 }
 
 /* 移动端导航容器 - 固定在底部 */
@@ -28,11 +29,11 @@
   left: 0;
   width: 100%;
   height: var(--nav-height);
-  background-color: rgba(27, 39, 53, 0.85);
+  background-color: var(--nav-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 1000;
-  border-top: 1px solid rgba(58, 123, 213, 0.3);
+  border-top: none; /* 移除顶部边框 */
   box-shadow: 0 -4px 20px rgba(10, 17, 40, 0.2);
 }
 

@@ -430,6 +430,17 @@
                 justify-content: center;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             }
+            
+            /* 确保移动端没有多余的黑线 */
+            body::after {
+                content: none !important;
+            }
+            
+            /* 确保所有可能导致黑线的边框都被移除 */
+            * {
+                border-top-color: transparent !important;
+                border-bottom-color: transparent !important;
+            }
         }
         
         /* 穹顶式仪表盘样式 */
@@ -878,6 +889,57 @@
         if (window.NexusOrbital && window.NexusOrbital.MVP) {
             window.NexusOrbital.MVP.init();
         }
+        
+        // 在移动设备上移除trinity-nav导航栏
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+        
+        function handleTrinityNav() {
+            const trinityNav = document.querySelector('.trinity-nav');
+            if (trinityNav) {
+                if (isMobile()) {
+                    trinityNav.style.display = 'none';
+                    // 将Trinity nav元素从DOM中完全移除以防止任何黑线显示
+                    if (trinityNav.parentNode) {
+                        trinityNav.parentNode.removeChild(trinityNav);
+                    }
+                    
+                    // 确保底部有足够的间距，不会被移动导航栏覆盖
+                    document.querySelectorAll('footer').forEach(footer => {
+                        if (footer) {
+                            footer.style.marginBottom = 'var(--nav-height)';
+                        }
+                    });
+                } else {
+                    // 如果元素已被移除，则重新添加
+                    if (!document.querySelector('.trinity-nav')) {
+                        const newTrinityNav = document.createElement('div');
+                        newTrinityNav.className = 'trinity-nav';
+                        newTrinityNav.innerHTML = `
+                            <a href="index.html" class="active"><i class="fas fa-globe-americas"></i> <span>地球层</span></a>
+                            <a href="technology.html"><i class="fas fa-rocket"></i> <span>星际层</span></a>
+                            <a href="community.html"><i class="fas fa-users"></i> <span>星环会议</span></a>
+                            <a href="design-studio.html"><i class="fas fa-pencil-ruler"></i> <span>智能构建室</span></a>
+                            <a href="marketplace.html"><i class="fas fa-store"></i> <span>星海计划</span></a>
+                        `;
+                        // 插入到主header之前
+                        const header = document.querySelector('header');
+                        if (header && header.parentNode) {
+                            header.parentNode.insertBefore(newTrinityNav, header);
+                        }
+                    } else {
+                        trinityNav.style.display = 'flex';
+                    }
+                }
+            }
+        }
+        
+        // 初始化时执行
+        handleTrinityNav();
+        
+        // 监听窗口大小变化
+        window.addEventListener('resize', handleTrinityNav);
     });
     </script>
 

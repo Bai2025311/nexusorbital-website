@@ -258,10 +258,25 @@ function handleResponsiveChanges() {
     // 根据窗口宽度控制导航显示
     if (window.innerWidth <= 768) {
         mobileNav.style.display = 'block';
-        document.body.style.paddingBottom = 'var(--nav-height)';
+        // 移除body的paddingBottom，避免多余空间
+        document.body.style.paddingBottom = '0';
+        
+        // 只为需要的元素添加底部边距
+        document.querySelectorAll('footer').forEach(footer => {
+            if (footer) {
+                footer.style.marginBottom = 'var(--nav-height)';
+            }
+        });
     } else {
         mobileNav.style.display = 'none';
         document.body.style.paddingBottom = '0';
+        
+        // 复原底部边距
+        document.querySelectorAll('footer').forEach(footer => {
+            if (footer) {
+                footer.style.marginBottom = '0';
+            }
+        });
     }
 }
 
