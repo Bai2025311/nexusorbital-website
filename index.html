@@ -441,6 +441,27 @@
                 border-top-color: transparent !important;
                 border-bottom-color: transparent !important;
             }
+            
+            /* 针对spline容器底部可能的黑线问题 */
+            .spline-container {
+                border-bottom: none !important;
+                margin-bottom: 0 !important;
+                box-shadow: none !important;
+            }
+            
+            /* 确保section之间没有边框 */
+            section {
+                border-top: none !important;
+                border-bottom: none !important;
+                box-shadow: none !important;
+            }
+            
+            /* 调整section-about在移动设备上的外观 */
+            .section-about {
+                padding-top: 50px !important;
+                margin-top: 0 !important; 
+                border-top: none !important;
+            }
         }
         
         /* 穹顶式仪表盘样式 */
@@ -621,9 +642,9 @@
 
     <main>
         <!-- Spline 3D体验区 -->
-        <div class="spline-container">
+        <div class="spline-container" style="border-bottom: none !important;">
             <!-- 这里将嵌入Spline的3D内容 -->
-            <iframe id="spline-viewer" frameborder="0" width="100%" height="100%" src="https://my.spline.design/untitled-b962d0b9cc99a3d4ebeb0f4372e8dcf7/" allowfullscreen></iframe>
+            <iframe id="spline-viewer" frameborder="0" width="100%" height="100%" src="https://my.spline.design/untitled-b962d0b9cc99a3d4ebeb0f4372e8dcf7/" allowfullscreen style="border: none !important;"></iframe>
             
             <div class="spline-overlay">
                 <h1>人类跨星球生存的技术中枢</h1>
@@ -895,6 +916,51 @@
             return window.innerWidth <= 768;
         }
         
+        function removeBlackLines() {
+            // 针对spline容器和section之间可能的黑线
+            const splineContainer = document.querySelector('.spline-container');
+            if (splineContainer) {
+                splineContainer.style.borderBottom = 'none';
+                splineContainer.style.marginBottom = '0';
+                splineContainer.style.boxShadow = 'none';
+            }
+            
+            // 确保iframe没有边框
+            const splineViewer = document.getElementById('spline-viewer');
+            if (splineViewer) {
+                splineViewer.style.border = 'none';
+                splineViewer.style.outline = 'none';
+                splineViewer.setAttribute('frameborder', '0');
+            }
+            
+            // 移除所有section的边框
+            document.querySelectorAll('section').forEach(section => {
+                section.style.borderTop = 'none';
+                section.style.borderBottom = 'none';
+                section.style.boxShadow = 'none';
+            });
+            
+            // 特别关注section-about
+            const sectionAbout = document.querySelector('.section-about');
+            if (sectionAbout) {
+                sectionAbout.style.paddingTop = '50px';
+                sectionAbout.style.marginTop = '0';
+                sectionAbout.style.borderTop = 'none';
+            }
+            
+            // 处理可能显示为黑线的背景色
+            document.querySelectorAll('*').forEach(el => {
+                const computedStyle = window.getComputedStyle(el);
+                if (computedStyle.height === '1px' || computedStyle.height === '2px') {
+                    el.style.display = 'none';
+                }
+            });
+        }
+        
+        // 页面加载时立即处理黑线问题
+        removeBlackLines();
+        
+        // 在移动设备上移除trinity-nav导航栏
         function handleTrinityNav() {
             const trinityNav = document.querySelector('.trinity-nav');
             if (trinityNav) {
