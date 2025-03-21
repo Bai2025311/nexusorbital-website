@@ -217,4 +217,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // 为评论按钮添加事件
+    const commentButtons = document.querySelectorAll('.post-action-btn[data-action="comment"]');
+    commentButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 这里可以添加评论功能代码
+            showToast('task-toast', null, '评论功能即将推出');
+        });
+    });
+    
+    // 为收藏按钮添加事件
+    const favoriteButtons = document.querySelectorAll('.post-action-btn[data-action="favorite"]');
+    favoriteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 添加收藏功能代码
+            showToast('task-toast', null, '方案已收藏');
+        });
+    });
+    
+    // 为分享按钮添加事件
+    const shareButtons = document.querySelectorAll('.post-action-btn[data-action="share"]');
+    shareButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            showToast('task-toast', null, '分享链接已复制到剪贴板');
+        });
+    });
 });

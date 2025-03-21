@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>星际人居技术平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #000012;
+            color: white;
+            line-height: 1.5;
+            overflow-x: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        /* 动态星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkling 10s linear infinite;
+        }
+        
+        @keyframes twinkling {
+            from { background-position: 0 0; }
+            to { background-position: 200px 200px; }
+        }
+        
+        /* 主容器 */
+        .container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        /* 页面头部 */
+        .header {
+            text-align: left;
+            color: white;
+            padding: 15px 0 10px;
+            position: relative;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 0 20px;
+            letter-spacing: 1px;
+        }
+        
+        /* 穹顶区域 - 实时太空环境数据 */
+        .dome-container {
+            position: relative;
+            padding-bottom: 50px;
+            overflow: hidden;
+        }
+        
+        .dome-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #2D033B 0%, #0F4C75 100%);
+            z-index: -1;
+        }
+        
+        .dome-curve {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .dome-curve:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 40px;
+            background-color: #000012;
+            border-radius: 50% 50% 0 0;
+        }
+        
+        /* 数据卡片 */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .data-card {
+            background-color: rgba(15, 76, 117, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .data-card:active {
+            transform: scale(0.98);
+        }
+        
+        .data-title {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .data-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .data-change {
+            font-size: 12px;
+            color: #4cd964;
+            margin-left: 5px;
+        }
+        
+        .data-indicator {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #4cd964;
+            margin-left: 3px;
+            vertical-align: middle;
+        }
+        
+        .data-progress {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .data-progress-value {
+            height: 100%;
+            border-radius: 2px;
+        }
+        
+        /* 主要功能区 */
+        .main-features {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(15, 76, 117, 0.7) 0%, rgba(45, 3, 59, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            width: 47%;
+            height: 130px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:active {
+            transform: scale(0.95);
+        }
+        
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: #1e90ff;
+        }
+        
+        .feature-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        /* 活动项目 */
+        .projects-section {
+            padding: 20px;
+            margin-top: 10px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .view-all {
+            color: #1e90ff;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        
+        .project-card {
+            background-color: rgba(15, 25, 40, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid #1e90ff;
+        }
+        
+        .project-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .project-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .project-progress {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .project-progress-bar {
+            flex-grow: 1;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+        
+        .project-progress-value {
+            height: 100%;
+            background: linear-gradient(to right, #1e90ff, #4cd964);
+            border-radius: 3px;
+        }
+        
+        .project-percentage {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e90ff;
+        }
+        
+        /* AI助手浮球 */
+        .ai-assistant {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #1e90ff, #2D033B);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(30, 144, 255, 0.5);
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(30, 144, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0); }
+        }
+        
+        .ai-assistant i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(10, 18, 34, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            text-decoration: none;
+            width: 20%;
+        }
+        
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        
+        .nav-item.active {
+            color: #1e90ff;
+        }
+        
+        /* 陨石带粒子特效 */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        /* Toast提示 */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background-color: rgba(30, 41, 59, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast.warning {
+            background-color: #ff9800;
+        }
+        
+        .toast.success {
+            background-color: #4cd964;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="stars"></div>
+        <div id="particles-container" class="particles-container"></div>
+        
+        <!-- 顶部导航 -->
+        <div class="header">
+            <h1 class="title">星际人居技术平台</h1>
+        </div>
+        
+        <!-- 穹顶区域 - 太空环境数据 -->
+        <div class="dome-container">
+            <div class="dome-background"></div>
+            <div class="dome-curve"></div>
+            
+            <div class="data-grid">
+                <div class="data-card" id="oxygen-card">
+                    <div class="data-title">氧气循环系统</div>
+                    <div class="data-value">98.4% <span class="data-change">+0.2%</span> <span class="data-indicator"></span></div>
+                </div>
+                
+                <div class="data-card" id="energy-card">
+                    <div class="data-title">能源利用率</div>
+                    <div class="data-value">87.3% <span class="data-change">+1.5%</span> <span class="data-indicator"></span></div>
+                </div>
+                
+                <div class="data-card" id="lunar-card">
+                    <div class="data-title">月球基地建设</div>
+                    <div class="data-value">62%</div>
+                    <div class="data-progress">
+                        <div class="data-progress-value" style="width: 62%; background-color: #1e90ff;"></div>
+                    </div>
+                </div>
+                
+                <div class="data-card" id="community-card">
+                    <div class="data-title">社区活跃度</div>
+                    <div class="data-value">89 <span class="data-change">+3</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主要功能区 -->
+        <div class="main-features">
+            <div class="feature-card" id="crowd-innovation">
+                <i class="fas fa-rocket feature-icon"></i>
+                <div class="feature-title">技术众筹</div>
+            </div>
+            
+            <div class="feature-card" id="engineer-community">
+                <i class="fas fa-users feature-icon"></i>
+                <div class="feature-title">工程师社区</div>
+            </div>
+        </div>
+        
+        <!-- 活动项目 -->
+        <div class="projects-section">
+            <div class="section-header">
+                <div class="section-title">活跃项目</div>
+                <a href="#" class="view-all">查看全部</a>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-title">月球农场气密系统</div>
+                <div class="project-info">
+                    <span>验证期</span>
+                    <span>12 工程师参与</span>
+                </div>
+                <div class="project-progress">
+                    <div class="project-progress-bar">
+                        <div class="project-progress-value" style="width: 75%;"></div>
+                    </div>
+                    <div class="project-percentage">75%</div>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-title">太空舱3D打印技术</div>
+                <div class="project-info">
+                    <span>量产期</span>
+                    <span>28 工程师参与</span>
+                </div>
+                <div class="project-progress">
+                    <div class="project-progress-bar">
+                        <div class="project-progress-value" style="width: 92%;"></div>
+                    </div>
+                    <div class="project-percentage">92%</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI助手浮球 -->
+        <div class="ai-assistant" id="ai-assistant">
+            <i class="fas fa-robot"></i>
+        </div>
+        
+        <!-- 底部导航 -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-compass"></i>
+                <span>控制舱</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-dollar-sign"></i>
+                <span>星海计划</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>星环会议</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-book"></i>
+                <span>技术库</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 创建陨石带粒子特效
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            
+            document.addEventListener('touchmove', function(e) {
+                const touch = e.touches[0];
+                createParticle(touch.clientX, touch.clientY);
+            });
+            
+            function createParticle(x, y) {
+                const size = Math.random() * 4 + 1;
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 100 + 50;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                
+                container.appendChild(particle);
+                
+                let startTime = null;
+                const duration = Math.random() * 1000 + 500;
+                
+                function animate(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+                    const percent = Math.min(progress / duration, 1);
+                    
+                    particle.style.opacity = percent > 0.7 ? (1 - percent) * 0.7 : percent * 0.7;
+                    particle.style.left = `${x + vx * percent}px`;
+                    particle.style.top = `${y + vy * percent}px`;
+                    
+                    if (percent < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        container.removeChild(particle);
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        // Toast提示
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }, 100);
+        }
+        
+        // 数据卡片长按事件
+        function setupLongPress() {
+            const cards = document.querySelectorAll('.data-card');
+            
+            cards.forEach(card => {
+                let pressTimer;
+                
+                card.addEventListener('touchstart', function() {
+                    pressTimer = window.setTimeout(() => {
+                        showToast('正在加载3D拆解视图...', 'info');
+                    }, 500);
+                });
+                
+                card.addEventListener('touchend', function() {
+                    clearTimeout(pressTimer);
+                });
+                
+                card.addEventListener('touchmove', function() {
+                    clearTimeout(pressTimer);
+                });
+            });
+        }
+        
+        // 功能卡片点击事件
+        function setupFeatureCards() {
+            const crowdInnovation = document.getElementById('crowd-innovation');
+            const engineerCommunity = document.getElementById('engineer-community');
+            
+            crowdInnovation.addEventListener('click', function() {
+                showToast('正在前往技术众筹中心...', 'info');
+            });
+            
+            engineerCommunity.addEventListener('click', function() {
+                showToast('正在前往工程师社区...', 'info');
+            });
+        }
+        
+        // AI助手点击事件
+        function setupAIAssistant() {
+            const aiAssistant = document.getElementById('ai-assistant');
+            
+            aiAssistant.addEventListener('click', function() {
+                showToast('AI助手已启动，请说出您的指令', 'success');
+            });
+        }
+        
+        // 模拟数据变化
+        function simulateDataChanges() {
+            const oxygenValue = document.querySelector('#oxygen-card .data-value');
+            const energyValue = document.querySelector('#energy-card .data-value');
+            const lunarProgress = document.querySelector('#lunar-card .data-progress-value');
+            const communityValue = document.querySelector('#community-card .data-value');
+            
+            setInterval(() => {
+                // 随机微小变化
+                const oxygenChange = (Math.random() * 0.2 - 0.1).toFixed(1);
+                const energyChange = (Math.random() * 0.4 - 0.2).toFixed(1);
+                
+                let currentOxygen = parseFloat(oxygenValue.textContent);
+                let currentEnergy = parseFloat(energyValue.textContent);
+                
+                currentOxygen = Math.min(Math.max(currentOxygen + parseFloat(oxygenChange), 90), 99.9);
+                currentEnergy = Math.min(Math.max(currentEnergy + parseFloat(energyChange), 80), 95);
+                
+                oxygenValue.innerHTML = `${currentOxygen.toFixed(1)}% <span class="data-change">${oxygenChange >= 0 ? '+' : ''}${oxygenChange}%</span> <span class="data-indicator"></span>`;
+                energyValue.innerHTML = `${currentEnergy.toFixed(1)}% <span class="data-change">${energyChange >= 0 ? '+' : ''}${energyChange}%</span> <span class="data-indicator"></span>`;
+                
+                // 更新指示点颜色
+                document.querySelectorAll('.data-indicator').forEach(dot => {
+                    const changeText = dot.previousElementSibling.textContent;
+                    if (parseFloat(changeText) >= 0) {
+                        dot.style.backgroundColor = '#4cd964';
+                    } else {
+                        dot.style.backgroundColor = '#ff3b30';
+                    }
+                });
+                
+                // 更新进度条
+                const lunarChangePercent = Math.random() * 0.5;
+                let currentLunarProgress = parseFloat(lunarProgress.style.width);
+                currentLunarProgress = Math.min(currentLunarProgress + lunarChangePercent, 100);
+                lunarProgress.style.width = `${currentLunarProgress}%`;
+                document.querySelector('#lunar-card .data-value').textContent = `${Math.floor(currentLunarProgress)}%`;
+                
+            }, 5000); // 每5秒更新一次
+        }
+        
+        // 在页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            setupLongPress();
+            setupFeatureCards();
+            setupAIAssistant();
+            simulateDataChanges();
+        });
+    </script>
+</body>
+</html>

@@ -914,14 +914,26 @@ function showMessage(message) {
 
 // 页面加载时检查登录状态
 document.addEventListener('DOMContentLoaded', function() {
+    // 全局标志，控制社区页面是否需要登录检查
+    window.disableCommunityLoginCheck = true;
+    
     // 在需要登录的页面检查登录状态
     const requiresAuth = [
-        '/community.html',
         '/profile.html',
         '/dashboard.html'
     ];
     
     const currentPath = window.location.pathname;
+    
+    // 检查是否是社区页面
+    const isCommunityPage = currentPath.endsWith('/community.html') || 
+                           currentPath.endsWith('/community-mobile.html');
+    
+    // 如果是社区页面且没有禁用登录检查，则加入到requiresAuth
+    if (isCommunityPage && !window.disableCommunityLoginCheck) {
+        requiresAuth.push('/community.html');
+        requiresAuth.push('/community-mobile.html');
+    }
     
     if (requiresAuth.some(path => currentPath.endsWith(path)) && !isLoggedIn()) {
         // 未登录，重定向到登录页

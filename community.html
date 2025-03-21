@@ -318,7 +318,6 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
         }
         
         .template-item {
@@ -1613,7 +1612,7 @@
                     <li><a href="design-studio.html">智能构建室</a></li>
                     <li><a href="marketplace.html">星海计划</a></li>
                     <li><a href="technology.html">技术矩阵</a></li>
-                    <li><a href="new-login.html" class="btn-primary">登录 / 注册</a></li>
+                    <li><a href="login.html" class="btn-primary">登录 / 注册</a></li>
                 </ul>
                 <div class="hamburger">
                     <span class="bar"></span>
@@ -1774,404 +1773,86 @@
 
             <!-- 右侧边栏 -->
             <aside class="sidebar-right">
-                <!-- 智能体推荐区 -->
-                <div class="sidebar-section">
+                <div class="sidebar-section user-info">
                     <div class="section-header">
-                        <h3>智能体推荐</h3>
-                        <a href="agents.html">查看全部</a>
+                        <h3>个人资料</h3>
                     </div>
                     <div class="section-content">
-                        <div class="recommended-agents">
-                            <div class="recommended-agent">
-                                <div class="agent-icon">
-                                    <img src="images/agents/engineer.svg" alt="工程师">
-                                </div>
-                                <div class="agent-info">
-                                    <h4 class="agent-name">工程师</h4>
-                                    <p class="agent-role">系统构建专家</p>
-                                    <button class="activate-btn" data-agent="engineer">激活</button>
-                                </div>
-                            </div>
-                            <div class="recommended-agent">
-                                <div class="agent-icon">
-                                    <img src="images/agents/scientist.svg" alt="科学家">
-                                </div>
-                                <div class="agent-info">
-                                    <h4 class="agent-name">科学家</h4>
-                                    <p class="agent-role">研究与实验专家</p>
-                                    <button class="activate-btn" data-agent="scientist">激活</button>
+                        <div class="user-profile">
+                            <img src="img/avatar/default.png" alt="用户头像" class="user-avatar">
+                            <div class="user-stats">
+                                <div class="username">访客</div>
+                                <div class="user-level">Lv.0 新手探索者</div>
+                                <div class="user-badges">
+                                    <span class="badge badge-locked"><i class="fas fa-lock"></i></span>
+                                    <span class="badge badge-locked"><i class="fas fa-lock"></i></span>
+                                    <span class="badge badge-locked"><i class="fas fa-lock"></i></span>
                                 </div>
                             </div>
-                            <div class="recommended-agent">
-                                <div class="agent-icon">
-                                    <img src="images/agents/explorer.svg" alt="探索者">
-                                </div>
-                                <div class="agent-info">
-                                    <h4 class="agent-name">探索者</h4>
-                                    <p class="agent-role">太空探索专家</p>
-                                    <button class="activate-btn" data-agent="explorer">激活</button>
-                                </div>
-                            </div>
-                            <div class="recommended-agent">
-                                <div class="agent-icon">
-                                    <img src="images/agents/coordinator.svg" alt="统筹者">
-                                </div>
-                                <div class="agent-info">
-                                    <h4 class="agent-name">统筹者</h4>
-                                    <p class="agent-role">项目管理与协调</p>
-                                    <button class="activate-btn" data-agent="coordinator">激活</button>
-                                </div>
-                            </div>
-                            <div class="recommended-agent">
-                                <div class="agent-icon">
-                                    <img src="images/agents/architect.svg" alt="建筑师">
-                                </div>
-                                <div class="agent-info">
-                                    <h4 class="agent-name">建筑师</h4>
-                                    <p class="agent-role">居住设计专家</p>
-                                    <button class="activate-btn" data-agent="architect">激活</button>
-                                </div>
-                            </div>
-                            <div class="recommended-agent">
-                                <div class="agent-icon">
-                                    <img src="images/agents/botanist.svg" alt="植物学家">
-                                </div>
-                                <div class="agent-info">
-                                    <h4 class="agent-name">植物学家</h4>
-                                    <p class="agent-role">生物与生态专家</p>
-                                    <button class="activate-btn" data-agent="botanist">激活</button>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="login-suggestion">
+                            <p>登录后可查看完整功能</p>
+                            <a href="login.html" class="btn-primary login-btn">登录 / 注册</a>
                         </div>
                     </div>
                 </div>
                 
-                <!-- 热门话题区 -->
                 <div class="sidebar-section">
                     <div class="section-header">
                         <h3>热门话题</h3>
                     </div>
                     <div class="section-content">
-                        <div class="hot-topic">
-                            <div class="topic-index top">1</div>
-                            <div class="topic-content">
-                                <h4 class="topic-title">太空电梯最新进展：碳纳米管材料突破</h4>
-                                <div class="topic-meta">浏览 3.2万 · 评论 422</div>
-                            </div>
-                        </div>
-                        <div class="hot-topic">
-                            <div class="topic-index top">2</div>
-                            <div class="topic-content">
-                                <h4 class="topic-title">月球永久基地设计大赛开始报名</h4>
-                                <div class="topic-meta">浏览 2.8万 · 评论 316</div>
-                            </div>
-                        </div>
-                        <div class="hot-topic">
-                            <div class="topic-index top">3</div>
-                            <div class="topic-content">
-                                <h4 class="topic-title">火星农业舱研究：首批植物成功生长</h4>
-                                <div class="topic-meta">浏览 2.5万 · 评论 284</div>
-                            </div>
-                        </div>
-                        <div class="hot-topic">
-                            <div class="topic-index">4</div>
-                            <div class="topic-content">
-                                <h4 class="topic-title">太空垃圾清理机器人原型发布</h4>
-                                <div class="topic-meta">浏览 2.1万 · 评论 142</div>
-                            </div>
-                        </div>
-                        <div class="hot-topic">
-                            <div class="topic-index">5</div>
-                            <div class="topic-content">
-                                <h4 class="topic-title">国际空间站生活体验</h4>
-                                <div class="topic-meta">浏览 1.9万 · 评论 136</div>
-                            </div>
-                        </div>
+                        <ul class="trending-topics">
+                            <li><a href="#">#星环科技联盟</a> <span class="topic-count">2.1k</span></li>
+                            <li><a href="#">#量子通信技术</a> <span class="topic-count">1.8k</span></li>
+                            <li><a href="#">#太空矿业开发</a> <span class="topic-count">1.5k</span></li>
+                            <li><a href="#">#亚轨道旅行体验</a> <span class="topic-count">980</span></li>
+                            <li><a href="#">#第四纪生物技术</a> <span class="topic-count">840</span></li>
+                        </ul>
                     </div>
                 </div>
                 
-                <!-- AI星图导航 -->
                 <div class="sidebar-section">
                     <div class="section-header">
-                        <h3>AI星图导航</h3>
+                        <h3>成就系统</h3>
                     </div>
                     <div class="section-content">
-                        <div class="stellar-knowledge-map">
-                            <div class="knowledge-map-preview">
-                                <img src="images/knowledge-map-preview.jpg" alt="知识星图预览">
-                                <div class="map-overlay">
-                                    <p>探索知识星图，发现更多创意...</p>
+                        <div class="achievements">
+                            <div class="achievement">
+                                <div class="achievement-icon locked">
+                                    <i class="fas fa-comment-alt"></i>
                                 </div>
-                            </div>
-                            <div class="map-stats">
-                                <div class="stat-item">
-                                    <i class="fas fa-star"></i>
-                                    <span>1234个知识点</span>
-                                </div>
-                                <div class="stat-item">
-                                    <i class="fas fa-link"></i>
-                                    <span>567条关系</span>
-                                </div>
-                            </div>
-                            <button class="explore-map-btn">探索知识星图</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 轨道热点 - 流行话题标签云 -->
-                <div class="sidebar-section">
-                    <div class="section-header">
-                        <h3>轨道热点</h3>
-                    </div>
-                    <div class="section-content">
-                        <div class="orbital-hotspots">
-                            <div class="tag-cloud">
-                                <a href="#" class="tag-item super-hot">月球基地<span class="tag-temp">+2451°</span></a>
-                                <a href="#" class="tag-item hot">火星移民<span class="tag-temp">+1827°</span></a>
-                                <a href="#" class="tag-item medium">太空电梯<span class="tag-temp">+926°</span></a>
-                                <a href="#" class="tag-item hot">戴森球<span class="tag-temp">+1654°</span></a>
-                                <a href="#" class="tag-item medium">人工重力<span class="tag-temp">+753°</span></a>
-                                <a href="#" class="tag-item cool">太空旅行<span class="tag-temp">+421°</span></a>
-                                <a href="#" class="tag-item medium">太空农业<span class="tag-temp">+892°</span></a>
-                                <a href="#" class="tag-item cool">行星地质<span class="tag-temp">+365°</span></a>
-                                <a href="#" class="tag-item hot">星际通信<span class="tag-temp">+1532°</span></a>
-                            </div>
-                            <div class="hotspot-info">
-                                <i class="fas fa-fire-alt"></i>
-                                <span>热度基于实时讨论量和增长速率计算</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 推荐轨道 - 个性化内容推荐 -->
-                <div class="sidebar-section">
-                    <div class="section-header">
-                        <h3>推荐轨道</h3>
-                        <button class="refresh-btn" title="刷新推荐"><i class="fas fa-sync-alt"></i></button>
-                    </div>
-                    <div class="section-content">
-                        <div class="recommended-orbit">
-                            <div class="orbit-path">
-                                <div class="planet-indicator" title="兴趣匹配度"></div>
-                                <div class="orbit-line"></div>
-                            </div>
-                            <div class="recommended-items">
-                                <div class="recommended-item">
-                                    <div class="rec-item-header">
-                                        <span class="rec-category">太空人居</span>
-                                        <span class="match-score">98% 匹配</span>
+                                <div class="achievement-progress">
+                                    <div class="achievement-name">活跃发言者</div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 0%"></div>
                                     </div>
-                                    <p class="rec-title">行星表面重力适应训练系统</p>
-                                    <div class="rec-meta">
-                                        <span><i class="fas fa-user"></i> 重力工程师</span>
-                                        <span><i class="fas fa-comments"></i> 42条讨论</span>
-                                    </div>
-                                </div>
-                                <div class="recommended-item">
-                                    <div class="rec-item-header">
-                                        <span class="rec-category">灯塔人物</span>
-                                        <span class="match-score">95% 匹配</span>
-                                    </div>
-                                    <p class="rec-title">跟踪：星际建筑师的月球基地设计理念</p>
-                                    <div class="rec-meta">
-                                        <span><i class="fas fa-user"></i> 星际建筑师</span>
-                                        <span><i class="fas fa-heart"></i> 182人关注</span>
-                                    </div>
-                                </div>
-                                <div class="recommended-item">
-                                    <div class="rec-item-header">
-                                        <span class="rec-category">技术前沿</span>
-                                        <span class="match-score">87% 匹配</span>
-                                    </div>
-                                    <p class="rec-title">新型太空辐射屏蔽材料实验结果分析</p>
-                                    <div class="rec-meta">
-                                        <span><i class="fas fa-flask"></i> 材料实验室</span>
-                                        <span><i class="fas fa-eye"></i> 368次浏览</span>
-                                    </div>
+                                    <div class="progress-text">0/10</div>
                                 </div>
                             </div>
-                            <div class="recommendation-info">
-                                <i class="fas fa-robot"></i>
-                                <span>基于您的浏览历史和兴趣偏好智能推荐</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 社区数据统计 -->
-                <div class="sidebar-section">
-                    <div class="section-header">
-                        <h3>星际数据</h3>
-                    </div>
-                    <div class="section-content">
-                        <div class="community-stats">
-                            <div class="stats-card">
-                                <div class="stats-icon">
-                                    <i class="fas fa-users"></i>
+                            <div class="achievement">
+                                <div class="achievement-icon locked">
+                                    <i class="fas fa-thumbs-up"></i>
                                 </div>
-                                <div class="stats-info">
-                                    <span class="stats-value">12,456</span>
-                                    <span class="stats-label">活跃航天员</span>
-                                </div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-icon">
-                                    <i class="fas fa-comment-dots"></i>
-                                </div>
-                                <div class="stats-info">
-                                    <span class="stats-value">42,789</span>
-                                    <span class="stats-label">讨论数量</span>
-                                </div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-icon">
-                                    <i class="fas fa-project-diagram"></i>
-                                </div>
-                                <div class="stats-info">
-                                    <span class="stats-value">573</span>
-                                    <span class="stats-label">协作项目</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 参与度评分 -->
-                <div class="sidebar-section">
-                    <div class="section-header">
-                        <h3>参与度评分</h3>
-                    </div>
-                    <div class="section-content">
-                        <div class="engagement-score">
-                            <div class="score-circle">
-                                <div class="score-value">85%</div>
-                                <div class="score-label">参与度评分</div>
-                            </div>
-                            <div class="score-details">
-                                <div class="score-item">
-                                    <div class="score-item-label">发帖数量</div>
-                                    <div class="score-bar-container">
-                                        <div class="score-bar" style="width: 80%;"></div>
+                                <div class="achievement-progress">
+                                    <div class="achievement-name">点赞达人</div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 0%"></div>
                                     </div>
-                                    <div class="score-item-value">80%</div>
-                                </div>
-                                <div class="score-item">
-                                    <div class="score-item-label">评论数量</div>
-                                    <div class="score-bar-container">
-                                        <div class="score-bar" style="width: 70%;"></div>
-                                    </div>
-                                    <div class="score-item-value">70%</div>
-                                </div>
-                                <div class="score-item">
-                                    <div class="score-item-label">点赞数量</div>
-                                    <div class="score-bar-container">
-                                        <div class="score-bar" style="width: 90%;"></div>
-                                    </div>
-                                    <div class="score-item-value">90%</div>
+                                    <div class="progress-text">0/20</div>
                                 </div>
                             </div>
-                            <div class="boost-engagement">
-                                <button class="boost-btn">提升参与度</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 用户徽章与成就 -->
-                <div class="sidebar-section">
-                    <div class="section-header">
-                        <h3>星际徽章</h3>
-                        <span class="badge-count">6/24</span>
-                    </div>
-                    <div class="section-content">
-                        <div class="user-badges">
-                            <div class="badge-row">
-                                <div class="badge-item" title="探险家徽章 - 浏览超过50个帖子">
-                                    <div class="badge-icon unlocked">
-                                        <i class="fas fa-compass"></i>
-                                    </div>
-                                    <span class="badge-name">探险家</span>
+                            <div class="achievement">
+                                <div class="achievement-icon locked">
+                                    <i class="fas fa-medal"></i>
                                 </div>
-                                <div class="badge-item" title="先驱者徽章 - 发布10篇原创内容">
-                                    <div class="badge-icon unlocked">
-                                        <i class="fas fa-flag"></i>
+                                <div class="achievement-progress">
+                                    <div class="achievement-name">社区之星</div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 0%"></div>
                                     </div>
-                                    <span class="badge-name">先驱者</span>
+                                    <div class="progress-text">0/30</div>
                                 </div>
-                                <div class="badge-item" title="科学家徽章 - 分享3篇研究报告">
-                                    <div class="badge-icon unlocked">
-                                        <i class="fas fa-flask"></i>
-                                    </div>
-                                    <span class="badge-name">科学家</span>
-                                </div>
-                            </div>
-                            <div class="badge-row">
-                                <div class="badge-item" title="社区之星徽章 - 获得50个点赞">
-                                    <div class="badge-icon unlocked">
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <span class="badge-name">社区之星</span>
-                                </div>
-                                <div class="badge-item" title="连接者徽章 - 与10位成员互动">
-                                    <div class="badge-icon unlocked">
-                                        <i class="fas fa-network-wired"></i>
-                                    </div>
-                                    <span class="badge-name">连接者</span>
-                                </div>
-                                <div class="badge-item" title="思想家徽章 - 参与5个深度讨论">
-                                    <div class="badge-icon unlocked">
-                                        <i class="fas fa-brain"></i>
-                                    </div>
-                                    <span class="badge-name">思想家</span>
-                                </div>
-                            </div>
-                            <div class="badge-row">
-                                <div class="badge-item" title="工程师徽章 - 分享1个技术解决方案">
-                                    <div class="badge-icon locked">
-                                        <i class="fas fa-wrench"></i>
-                                    </div>
-                                    <span class="badge-name">工程师</span>
-                                </div>
-                                <div class="badge-item" title="领航员徽章 - 创建1个受欢迎的主题">
-                                    <div class="badge-icon locked">
-                                        <i class="fas fa-rocket"></i>
-                                    </div>
-                                    <span class="badge-name">领航员</span>
-                                </div>
-                                <div class="badge-item" title="建筑师徽章 - 提出1个栖息地设计">
-                                    <div class="badge-icon locked">
-                                        <i class="fas fa-drafting-compass"></i>
-                                    </div>
-                                    <span class="badge-name">建筑师</span>
-                                </div>
-                            </div>
-                            <div class="badges-footer">
-                                <button class="view-all-badges">查看全部徽章</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 星际排行榜 -->
-                <div class="sidebar-section">
-                    <div class="section-header">
-                        <h3>星际排行榜</h3>
-                        <a href="#" class="view-all-btn" id="view-full-leaderboard">查看全部</a>
-                    </div>
-                    <div class="section-content">
-                        <div class="leaderboard">
-                            <div class="leaderboard-tabs">
-                                <button class="leaderboard-tab active" data-type="overall">综合排行</button>
-                                <button class="leaderboard-tab" data-type="posts">发帖排行</button>
-                                <button class="leaderboard-tab" data-type="comments">评论排行</button>
-                                <button class="leaderboard-tab" data-type="likes">获赞排行</button>
-                            </div>
-                            <div class="leaderboard-users">
-                                <!-- 排行榜内容将由JS动态生成 -->
-                            </div>
-                            <div class="view-more-container">
-                                <a href="#" id="view-more-rankings">查看更多排名 <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -2336,82 +2017,6 @@
         </div>
     </div>
 
-    <!-- 徽章详情模态框 -->
-    <div class="modal" id="badge-detail-modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>星际徽章详情</h3>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <!-- 内容将由badges.js动态生成 -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn close-modal-btn">关闭</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 徽章模态窗口 -->
-    <div id="badge-modal" class="custom-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="badge-modal-title">徽章详情</h3>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="badge-detail">
-                    <div class="badge-icon-large">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <h4 id="badge-name-detail">徽章名称</h4>
-                    <p id="badge-description">徽章描述将在这里显示，说明获得此徽章的条件和意义。</p>
-                    <div class="badge-progress-container">
-                        <div class="progress-label">解锁进度</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="badge-progress-fill"></div>
-                        </div>
-                        <div class="progress-text" id="badge-progress-text">0%</div>
-                    </div>
-                    <div class="badge-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">获得时间</span>
-                            <span class="stat-value" id="badge-date">尚未获得</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">稀有度</span>
-                            <span class="stat-value" id="badge-rarity">普通</span>
-                        </div>
-                    </div>
-                    
-                    <!-- 徽章分享按钮 -->
-                    <button class="badge-share-btn" id="show-share-panel">
-                        <i class="fas fa-share-alt"></i> 分享此徽章
-                    </button>
-                    
-                    <!-- 徽章分享面板 -->
-                    <div class="badge-share-panel" id="badge-share-panel" style="display: none;">
-                        <p>将您的成就分享给朋友</p>
-                        <div class="badge-share-options">
-                            <div class="share-option wechat" data-platform="wechat">
-                                <i class="fab fa-weixin"></i>
-                            </div>
-                            <div class="share-option weibo" data-platform="weibo">
-                                <i class="fab fa-weibo"></i>
-                            </div>
-                            <div class="share-option qq" data-platform="qq">
-                                <i class="fab fa-qq"></i>
-                            </div>
-                            <div class="share-option link" data-platform="link">
-                                <i class="fas fa-link"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- 任务接受模态框 -->
     <div class="modal" id="task-modal" style="display: none;">
         <div class="modal-content">
@@ -2543,16 +2148,19 @@
     <script src="js/mobile-nav.js"></script>
     <script src="js/badges.js"></script>
     <script src="js/leaderboard.js"></script>
-    <script src="js/community-interaction.js">
-    </script>
+    <script src="js/community-interaction.js"></script>
     
     <!-- MVP集成脚本 -->
     <script src="js/integrations.js"></script>
     <script src="js/mvp.js"></script>
     <script>
+        // 设置全局标志，禁用社区页面的自动登录检查
+        window.disableCommunityLoginCheck = true;
+        console.log('社区页面：已设置禁用登录检查标志');
+        
         // 当DOM加载完成后执行，用于调试
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('社区页面：DOM已加载');
+            console.log('社区页面：DOM已加载，禁用登录检查状态: ' + (window.disableCommunityLoginCheck ? '已启用' : '未启用'));
             
             // 初始化MVP功能
             if (window.NexusOrbital && window.NexusOrbital.MVP) {
@@ -2562,8 +2170,7 @@
     </script>
     
     <script src="js/community.js"></script>
-    <script src="js/auth.js">
-    </script>
+    <script src="js/auth.js"></script>
     
     <script type="application/ld+json">
     {
@@ -2581,696 +2188,5 @@
         }
     }
     </script>
-</body>
-</html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 引力波聊天室功能
-        const joinChatBtn = document.querySelector('.join-chat-btn');
-        if (joinChatBtn) {
-            joinChatBtn.addEventListener('click', function() {
-                alert('引力波聊天室将在下一版本推出，敬请期待！\n\n该功能将使用AI分析社区内容，生成可视化的知识关系图谱，帮助您发现更多有价值的内容和潜在合作伙伴。');
-            });
-        }
-        
-        // 话题折叠舱功能
-        const foldingButtons = document.querySelectorAll('.folding-cabin');
-        foldingButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const postCard = this.closest('.post-card');
-                const foldingCabin = postCard.querySelector('.topic-folding-cabin');
-                
-                if (foldingCabin.style.display === 'none') {
-                    foldingCabin.style.display = 'block';
-                    this.innerHTML = '<i class="fas fa-expand-alt"></i> 展开';
-                } else {
-                    foldingCabin.style.display = 'none';
-                    this.innerHTML = '<i class="fas fa-compress-alt"></i> 折叠';
-                }
-            });
-        });
-        
-        // 折叠舱关闭按钮
-        const cabinCloseButtons = document.querySelectorAll('.cabin-close-btn');
-        cabinCloseButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const foldingCabin = this.closest('.topic-folding-cabin');
-                foldingCabin.style.display = 'none';
-                const postCard = this.closest('.post-card');
-                const foldingButton = postCard.querySelector('.folding-cabin');
-                foldingButton.innerHTML = '<i class="fas fa-compress-alt"></i> 折叠';
-            });
-        });
-        
-        // 零重力创作面板工具栏
-        const toolButtons = document.querySelectorAll('.tool-btn');
-        toolButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const textarea = document.getElementById('post-content');
-                const tool = this.title;
-                
-                // 简单的文本格式化示例
-                switch (tool) {
-                    case '标题':
-                        insertAtCursor(textarea, '# 标题文本');
-                        break;
-                    case '粗体':
-                        insertAtCursor(textarea, '**粗体文本**');
-                        break;
-                    case '斜体':
-                        insertAtCursor(textarea, '*斜体文本*');
-                        break;
-                    case '链接':
-                        insertAtCursor(textarea, '[链接文本](https://example.com)');
-                        break;
-                    case '代码块':
-                        insertAtCursor(textarea, '```\n代码块\n```');
-                        break;
-                    case '列表':
-                        insertAtCursor(textarea, '- 列表项1\n- 列表项2\n- 列表项3');
-                        break;
-                    case '表格':
-                        insertAtCursor(textarea, '| 列1 | 列2 | 列3 |\n| --- | --- | --- |\n| 内容1 | 内容2 | 内容3 |');
-                        break;
-                    case '公式':
-                        insertAtCursor(textarea, '$$E = mc^2$$');
-                        break;
-                }
-            });
-        });
-        
-        // 预览按钮
-        const previewBtn = document.querySelector('.preview-btn');
-        if (previewBtn) {
-            previewBtn.addEventListener('click', function() {
-                alert('预览功能将在下一版本开放，敬请期待！');
-            });
-        }
-        
-        // 创生之柱模板库
-        const templateItems = document.querySelectorAll('.template-item');
-        templateItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const template = this.getAttribute('data-template');
-                const textarea = document.getElementById('post-content');
-                const titleInput = document.getElementById('post-title');
-                
-                // 根据不同模板设置不同的内容
-                switch (template) {
-                    case 'whitepaper':
-                        titleInput.value = '【太空人居白皮书】';
-                        textarea.value = '## 摘要\n\n[在此处简要描述您的太空人居概念的核心思想，150字以内]\n\n## 关键技术模块\n\n1. **环境控制与生命支持系统**\n   - 技术参数：\n   - 创新点：\n\n2. **结构设计**\n   - 材料选择：\n   - 抗辐射能力：\n\n3. **能源系统**\n   - 能源类型：\n   - 效率评估：\n\n## 适居性评估\n\n* 心理健康考量：\n* 社交空间设计：\n* 长期可持续性：\n\n## 参考标准\n\n符合ISO-52900太空人居标准';
-                        break;
-                    case 'starship-log':
-                        titleInput.value = '【星舰日志】';
-                        textarea.value = '# 任务日志：T+[天数]\n\n## 环境数据\n\n* 辐射剂量：μSv/h\n* 舱内温度：℃\n* 氧气余量：%\n* 水资源循环效率：%\n\n## 今日观察\n\n[记录您的太空/月球/火星生活体验]\n\n## 技术调整\n\n[记录对居住模块所做的任何改进或调整]\n\n## 心理状态评估\n\n[描述长期太空生活的心理影响和应对策略]';
-                        break;
-                    case 'dyson-blueprint':
-                        titleInput.value = '【戴森球能源解决方案】';
-                        textarea.value = '# 微型戴森结构能源捕获系统\n\n## 理论基础\n\n引力透镜公式：$\\theta = \\frac{4GM}{c^2b}$\n\n## 模块配置\n\n1. **能量收集单元**\n   - 配置：\n   - 效率：\n\n2. **能量转换系统**\n   - 工作原理：\n   - 热管理：\n\n3. **分配网络**\n   - 拓扑结构：\n   - 冗余设计：\n\n## 实施路径\n\n* 第一阶段：\n* 第二阶段：\n* 第三阶段：\n\n## 应用场景\n\n[描述该能源系统如何应用于人居环境]';
-                        break;
-                    case 'custom':
-                        alert('自定义模板功能将在下一版本开放，敬请期待！');
-                        break;
-                }
-            });
-        });
-        
-        // 辅助函数：在光标位置插入文本
-        function insertAtCursor(textarea, text) {
-            const startPos = textarea.selectionStart;
-            const endPos = textarea.selectionEnd;
-            textarea.value = textarea.value.substring(0, startPos) + text + textarea.value.substring(endPos, textarea.value.length);
-            textarea.focus();
-            textarea.selectionStart = startPos + text.length;
-            textarea.selectionEnd = startPos + text.length;
-        }
-        
-        // 实现动态重力排版（简化版）
-        document.querySelectorAll('input[type="file"]').forEach(input => {
-            input.addEventListener('change', function() {
-                if (this.files && this.files[0]) {
-                    const uploadBox = this.parentElement;
-                    uploadBox.innerHTML = '';
-                    uploadBox.style.backgroundImage = `url(${URL.createObjectURL(this.files[0])})`;
-                    uploadBox.style.backgroundSize = 'cover';
-                    
-                    // 在图片上传后自动应用动态重力排版
-                    const statusSpan = document.querySelector('.orbital-flow-status span');
-                    statusSpan.innerHTML = '<i class="fas fa-meteor"></i> 动态重力排版已优化布局';
-                }
-            });
-        });
-        
-        // AI星图导航功能
-        const exploreMapBtn = document.querySelector('.explore-map-btn');
-        if (exploreMapBtn) {
-            exploreMapBtn.addEventListener('click', function() {
-                alert('知识星图导航功能将在下一版本推出，敬请期待！\n\n该功能将使用AI分析社区内容，生成可视化的知识关系图谱，帮助您发现更多有价值的内容和潜在合作伙伴。');
-            });
-        }
-        
-        // 推荐轨道刷新功能
-        const refreshBtn = document.querySelector('.refresh-btn');
-        if (refreshBtn) {
-            refreshBtn.addEventListener('click', function() {
-                // 添加旋转动画
-                refreshBtn.classList.add('spinning');
-                
-                // 模拟推荐内容更新
-                setTimeout(function() {
-                    // 获取推荐内容元素
-                    const recommendedItems = document.querySelector('.recommended-items');
-                    
-                    // 推荐内容数据（模拟数据）
-                    const recommendations = [
-                        {
-                            category: '设计挑战',
-                            matchScore: '99%',
-                            title: '火星沙尘暴防护系统设计大赛',
-                            author: '火星先驱',
-                            stats: { icon: 'fas fa-medal', text: '5天后截止' }
-                        },
-                        {
-                            category: '研究报告',
-                            matchScore: '94%',
-                            title: '长期太空居住对人体骨密度的影响研究',
-                            author: '太空医学院',
-                            stats: { icon: 'fas fa-download', text: '76次下载' }
-                        },
-                        {
-                            category: '创新项目',
-                            matchScore: '92%',
-                            title: '模块化太空站内饰定制系统实施方案',
-                            author: '空间设计师',
-                            stats: { icon: 'fas fa-star', text: '23人点赞' }
-                        }
-                    ];
-                    
-                    // 清空当前推荐内容
-                    recommendedItems.innerHTML = '';
-                    
-                    // 添加新推荐内容
-                    recommendations.forEach(rec => {
-                        const itemHtml = `
-                            <div class="recommended-item">
-                                <div class="rec-item-header">
-                                    <span class="rec-category">${rec.category}</span>
-                                    <span class="match-score">${rec.matchScore} 匹配</span>
-                                </div>
-                                <p class="rec-title">${rec.title}</p>
-                                <div class="rec-meta">
-                                    <span><i class="fas fa-user"></i> ${rec.author}</span>
-                                    <span><i class="${rec.stats.icon}"></i> ${rec.stats.text}</span>
-                                </div>
-                            </div>
-                        `;
-                        recommendedItems.innerHTML += itemHtml;
-                    });
-                    
-                    // 移除旋转动画
-                    refreshBtn.classList.remove('spinning');
-                    
-                    // 显示更新提示
-                    const infoElement = document.querySelector('.recommendation-info span');
-                    infoElement.innerHTML = '推荐已更新，基于您的最新浏览记录';
-                    
-                    // 一段时间后恢复原始提示
-                    setTimeout(() => {
-                        infoElement.innerHTML = '基于您的浏览历史和兴趣偏好智能推荐';
-                    }, 3000);
-                }, 1500);
-            });
-        }
-        
-        // 标签云交互效果
-        const tagItems = document.querySelectorAll('.tag-item');
-        tagItems.forEach(tag => {
-            tag.addEventListener('click', function(e) {
-                e.preventDefault();
-                const tagName = this.textContent.split('+')[0].trim();
-                alert(`将为您呈现"${tagName}"相关的热门内容，该功能将在下一版本完善。`);
-            });
-        });
-        
-        // 参与度提升功能
-        const boostBtn = document.querySelector('.boost-btn');
-        if (boostBtn) {
-            boostBtn.addEventListener('click', function() {
-                // 显示参与度提升任务列表
-                const tasks = [
-                    { id: 1, title: '发布一篇原创文章', points: 50, difficulty: '中' },
-                    { id: 2, title: '对三个帖子进行有质量的评论', points: 30, difficulty: '低' },
-                    { id: 3, title: '在一周内连续三天访问社区', points: 20, difficulty: '低' },
-                    { id: 4, title: '发起一个太空人居相关讨论', points: 40, difficulty: '中' },
-                    { id: 5, title: '向社区分享一篇科研论文并进行解读', points: 60, difficulty: '高' }
-                ];
-                
-                // 创建任务列表HTML
-                let tasksHTML = '<div class="engagement-tasks">';
-                tasksHTML += '<h4>参与度提升任务</h4>';
-                tasksHTML += '<div class="tasks-list">';
-                
-                tasks.forEach(task => {
-                    tasksHTML += `
-                        <div class="task-item">
-                            <div class="task-info">
-                                <div class="task-title">${task.title}</div>
-                                <div class="task-meta">
-                                    <span class="task-difficulty">难度: ${task.difficulty}</span>
-                                    <span class="task-points">+${task.points} 分</span>
-                                </div>
-                            </div>
-                            <button class="task-accept-btn" data-task-id="${task.id}">接受</button>
-                        </div>
-                    `;
-                });
-                
-                tasksHTML += '</div>';
-                tasksHTML += '<div class="tasks-footer">完成任务可提升您的社区参与度评分并解锁更多社区特权</div>';
-                tasksHTML += '</div>';
-                
-                // 创建模态框
-                const modal = document.createElement('div');
-                modal.className = 'modal';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3>提升社区参与度</h3>
-                            <span class="close-modal">&times;</span>
-                        </div>
-                        <div class="modal-body">
-                            ${tasksHTML}
-                        </div>
-                    </div>
-                `;
-                
-                // 添加到页面
-                document.body.appendChild(modal);
-                
-                // 显示模态框
-                setTimeout(() => {
-                    modal.style.display = 'flex';
-                }, 100);
-                
-                // 关闭模态框
-                const closeModal = modal.querySelector('.close-modal');
-                closeModal.addEventListener('click', function() {
-                    modal.style.opacity = '0';
-                    setTimeout(() => {
-                        document.body.removeChild(modal);
-                    }, 300);
-                });
-                
-                // 任务接受按钮事件
-                const acceptButtons = modal.querySelectorAll('.task-accept-btn');
-                acceptButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const taskId = this.getAttribute('data-task-id');
-                        const task = tasks.find(t => t.id == taskId);
-                        alert(`您已接受任务：${task.title}\n\n完成该任务将获得 +${task.points} 参与度评分！`);
-                        this.disabled = true;
-                        this.innerHTML = '已接受';
-                        this.style.backgroundColor = '#ccc';
-                    });
-                });
-            });
-        }
-        
-        // 社区数据统计动画效果
-        function animateStats() {
-            const statValues = document.querySelectorAll('.stats-value');
-            statValues.forEach(value => {
-                const targetValue = value.textContent;
-                const startValue = 0;
-                value.textContent = startValue;
-                
-                // 动画函数
-                const duration = 2000; // 动画持续时间
-                const frameRate = 60; // 帧率
-                const totalFrames = duration / (1000 / frameRate);
-                let frame = 0;
-                
-                function animate() {
-                    frame++;
-                    const progress = frame / totalFrames;
-                    const currentValue = Math.round(progress * parseInt(targetValue.replace(/,/g, '')));
-                    value.textContent = currentValue.toLocaleString();
-                    
-                    if (frame < totalFrames) {
-                        requestAnimationFrame(animate);
-                    } else {
-                        value.textContent = targetValue;
-                    }
-                }
-                
-                animate();
-            });
-        }
-        
-        // 页面加载后执行动画
-        window.addEventListener('load', function() {
-            // 延迟一段时间后执行动画，让页面加载完毕
-            setTimeout(animateStats, 500);
-        });
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 徽章解锁动画
-        const badgeItems = document.querySelectorAll('.badge-item');
-        badgeItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const badgeIcon = this.querySelector('.badge-icon');
-                badgeIcon.classList.add('unlocked');
-                badgeIcon.style.animation = 'badge-unlock-pulse 1s ease-out';
-                
-                // 徽章分享面板
-                const sharePanel = document.querySelector('.badge-share-panel');
-                sharePanel.style.display = 'block';
-                
-                // 徽章分享按钮
-                const shareBtn = document.querySelector('.badge-share-btn');
-                shareBtn.addEventListener('click', function() {
-                    alert('徽章分享功能将在下一版本开放，敬请期待！');
-                });
-            });
-        });
-    });
-</script>
-
-<script src="js/leaderboard.js"></script>
-<script>
-    // 排行榜交互脚本
-    document.addEventListener('DOMContentLoaded', function() {
-        // 侧边栏排行榜初始化
-        const sidebarTabs = document.querySelectorAll('.sidebar-section .leaderboard-tab');
-        const sidebarLeaderboardUsers = document.querySelector('.sidebar-section .leaderboard-users');
-        
-        // 为侧边栏排行榜标签添加点击事件
-        sidebarTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                // 移除其他标签的活跃状态
-                sidebarTabs.forEach(t => t.classList.remove('active'));
-                // 添加当前标签的活跃状态
-                this.classList.add('active');
-                
-                // 获取排行榜类型
-                const type = this.getAttribute('data-type');
-                
-                // 获取对应类型的排行榜数据
-                const data = window.leaderboardData[type] || window.leaderboardData.overall;
-                
-                // 更新侧边栏排行榜
-                updateSidebarLeaderboard(data.slice(0, 3), type);
-            });
-        });
-        
-        // 初始化侧边栏排行榜
-        function initSidebarLeaderboard() {
-            const activeTab = document.querySelector('.sidebar-section .leaderboard-tab.active');
-            const type = activeTab ? activeTab.getAttribute('data-type') : 'overall';
-            const data = window.leaderboardData[type] || window.leaderboardData.overall;
-            
-            updateSidebarLeaderboard(data.slice(0, 3), type);
-        }
-        
-        // 更新侧边栏排行榜
-        function updateSidebarLeaderboard(data, type) {
-            if (!sidebarLeaderboardUsers) return;
-            
-            sidebarLeaderboardUsers.innerHTML = '';
-            
-            data.forEach((user, index) => {
-                const rank = index + 1;
-                let score = user.score;
-                if (type === 'posts') score = user.posts;
-                else if (type === 'comments') score = user.comments;
-                else if (type === 'likes') score = user.likes;
-                
-                const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
-                
-                const userHTML = `
-                    <div class="leaderboard-user">
-                        <div class="leaderboard-rank ${rankClass}">${rank}</div>
-                        <div class="leaderboard-avatar">
-                            <img src="${user.avatar}" alt="${user.username}" onerror="this.src='assets/avatars/default.jpg'">
-                        </div>
-                        <div class="leaderboard-info">
-                            <div class="leaderboard-username">${user.username}</div>
-                            <div class="leaderboard-stats">
-                                ${type === 'overall' ? 
-                                    `综合评分: <span class="leaderboard-score">${score}</span>` :
-                                    type === 'posts' ?
-                                    `发帖数: <span class="leaderboard-score">${score}</span>` :
-                                    type === 'comments' ?
-                                    `评论数: <span class="leaderboard-score">${score}</span>` :
-                                    `获赞数: <span class="leaderboard-score">${score}</span>`
-                                }
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                sidebarLeaderboardUsers.innerHTML += userHTML;
-            });
-            
-            // 为排行榜项添加动画效果
-            const userItems = sidebarLeaderboardUsers.querySelectorAll('.leaderboard-user');
-            userItems.forEach((item, index) => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    item.style.opacity = '1';
-                    item.style.transform = 'translateY(0)';
-                }, 50 * index);
-            });
-        }
-        
-        // 查看完整排行榜
-        const viewFullLeaderboardBtn = document.getElementById('view-full-leaderboard');
-        const viewMoreRankingsBtn = document.getElementById('view-more-rankings');
-        const leaderboardModal = document.getElementById('leaderboard-modal');
-        
-        if (viewFullLeaderboardBtn) {
-            viewFullLeaderboardBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (leaderboardModal) {
-                    leaderboardModal.style.display = 'block';
-                    // 初始化模态框排行榜
-                    if (window.leaderboardSystem) {
-                        window.leaderboardSystem.showLeaderboard('overall');
-                    }
-                }
-            });
-        }
-        
-        if (viewMoreRankingsBtn) {
-            viewMoreRankingsBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (leaderboardModal) {
-                    leaderboardModal.style.display = 'block';
-                    // 初始化模态框排行榜，使用当前活跃的标签类型
-                    const activeTab = document.querySelector('.sidebar-section .leaderboard-tab.active');
-                    const type = activeTab ? activeTab.getAttribute('data-type') : 'overall';
-                    
-                    if (window.leaderboardSystem) {
-                        window.leaderboardSystem.showLeaderboard(type);
-                        
-                        // 设置模态框中对应的标签为活跃状态
-                        const modalTabs = document.querySelectorAll('#leaderboard-modal .leaderboard-tab');
-                        modalTabs.forEach(tab => {
-                            tab.classList.remove('active');
-                            if (tab.getAttribute('data-type') === type) {
-                                tab.classList.add('active');
-                            }
-                        });
-                    }
-                }
-            });
-        }
-        
-        // 关闭模态框
-        const closeButtons = document.querySelectorAll('.close-modal');
-        closeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const modal = this.closest('.modal');
-                if (modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        });
-        
-        // 点击模态框外部关闭
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        });
-        
-        // 初始化侧边栏排行榜
-        initSidebarLeaderboard();
-    });
-</script>
-
-<script>
-    // 排行榜交互脚本
-    document.addEventListener('DOMContentLoaded', function() {
-        // 侧边栏排行榜初始化
-        const sidebarTabs = document.querySelectorAll('.sidebar-section .leaderboard-tab');
-        const sidebarLeaderboardUsers = document.querySelector('.sidebar-section .leaderboard-users');
-        
-        // 为侧边栏排行榜标签添加点击事件
-        sidebarTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                // 移除其他标签的活跃状态
-                sidebarTabs.forEach(t => t.classList.remove('active'));
-                // 添加当前标签的活跃状态
-                this.classList.add('active');
-                
-                // 获取排行榜类型
-                const type = this.getAttribute('data-type');
-                
-                // 获取对应类型的排行榜数据
-                const data = window.leaderboardData[type] || window.leaderboardData.overall;
-                
-                // 更新侧边栏排行榜
-                updateSidebarLeaderboard(data.slice(0, 3), type);
-            });
-        });
-        
-        // 初始化侧边栏排行榜
-        function initSidebarLeaderboard() {
-            const activeTab = document.querySelector('.sidebar-section .leaderboard-tab.active');
-            const type = activeTab ? activeTab.getAttribute('data-type') : 'overall';
-            const data = window.leaderboardData[type] || window.leaderboardData.overall;
-            
-            updateSidebarLeaderboard(data.slice(0, 3), type);
-        }
-        
-        // 更新侧边栏排行榜
-        function updateSidebarLeaderboard(data, type) {
-            if (!sidebarLeaderboardUsers) return;
-            
-            sidebarLeaderboardUsers.innerHTML = '';
-            
-            data.forEach((user, index) => {
-                const rank = index + 1;
-                let score = user.score;
-                if (type === 'posts') score = user.posts;
-                else if (type === 'comments') score = user.comments;
-                else if (type === 'likes') score = user.likes;
-                
-                const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
-                
-                const userHTML = `
-                    <div class="leaderboard-user">
-                        <div class="leaderboard-rank ${rankClass}">${rank}</div>
-                        <div class="leaderboard-avatar">
-                            <img src="${user.avatar}" alt="${user.username}" onerror="this.src='assets/avatars/default.jpg'">
-                        </div>
-                        <div class="leaderboard-info">
-                            <div class="leaderboard-username">${user.username}</div>
-                            <div class="leaderboard-stats">
-                                ${type === 'overall' ? 
-                                    `综合评分: <span class="leaderboard-score">${score}</span>` :
-                                    type === 'posts' ?
-                                    `发帖数: <span class="leaderboard-score">${score}</span>` :
-                                    type === 'comments' ?
-                                    `评论数: <span class="leaderboard-score">${score}</span>` :
-                                    `获赞数: <span class="leaderboard-score">${score}</span>`
-                                }
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                sidebarLeaderboardUsers.innerHTML += userHTML;
-            });
-            
-            // 为排行榜项添加动画效果
-            const userItems = sidebarLeaderboardUsers.querySelectorAll('.leaderboard-user');
-            userItems.forEach((item, index) => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    item.style.opacity = '1';
-                    item.style.transform = 'translateY(0)';
-                }, 50 * index);
-            });
-        }
-        
-        // 查看完整排行榜
-        const viewFullLeaderboardBtn = document.getElementById('view-full-leaderboard');
-        const viewMoreRankingsBtn = document.getElementById('view-more-rankings');
-        const leaderboardModal = document.getElementById('leaderboard-modal');
-        
-        if (viewFullLeaderboardBtn) {
-            viewFullLeaderboardBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (leaderboardModal) {
-                    leaderboardModal.style.display = 'block';
-                    // 初始化模态框排行榜
-                    if (window.leaderboardSystem) {
-                        window.leaderboardSystem.showLeaderboard('overall');
-                    }
-                }
-            });
-        }
-        
-        if (viewMoreRankingsBtn) {
-            viewMoreRankingsBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (leaderboardModal) {
-                    leaderboardModal.style.display = 'block';
-                    // 初始化模态框排行榜，使用当前活跃的标签类型
-                    const activeTab = document.querySelector('.sidebar-section .leaderboard-tab.active');
-                    const type = activeTab ? activeTab.getAttribute('data-type') : 'overall';
-                    
-                    if (window.leaderboardSystem) {
-                        window.leaderboardSystem.showLeaderboard(type);
-                        
-                        // 设置模态框中对应的标签为活跃状态
-                        const modalTabs = document.querySelectorAll('#leaderboard-modal .leaderboard-tab');
-                        modalTabs.forEach(tab => {
-                            tab.classList.remove('active');
-                            if (tab.getAttribute('data-type') === type) {
-                                tab.classList.add('active');
-                            }
-                        });
-                    }
-                }
-            });
-        }
-        
-        // 关闭模态框
-        const closeButtons = document.querySelectorAll('.close-modal');
-        closeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const modal = this.closest('.modal');
-                if (modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        });
-        
-        // 点击模态框外部关闭
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        });
-        
-        // 初始化侧边栏排行榜
-        initSidebarLeaderboard();
-    });
-</script>
-
 </body>
 </html>

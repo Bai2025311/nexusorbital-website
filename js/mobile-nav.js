@@ -130,7 +130,7 @@ function addNavigationEventListeners() {
                 if (!isLoggedIn) {
                     e.preventDefault();
                     // 跳转到登录页面
-                    window.location.href = 'new-login.html';
+                    window.location.href = 'login.html';
                     return;
                 }
             }
@@ -212,6 +212,7 @@ function getFeatureLabel(feature) {
 function addExplorerModeToMenu() {
     // 检查是否已登录
     const isLoggedIn = localStorage.getItem('auth_token') !== null;
+    
     if (!isLoggedIn) {
         console.log('用户未登录，无法使用探索者模式');
         return;

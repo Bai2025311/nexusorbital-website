@@ -116,32 +116,15 @@ document.addEventListener('DOMContentLoaded', function() {
 function showPostModal() {
     // 检查是否登录
     if (!isLoggedIn()) {
-        // 在社区页面上，检查是否禁用登录检查
+        // 如果设置了禁用登录检查标志，则显示友好提示而不是重定向
         if (window.disableCommunityLoginCheck) {
-            // 显示友好提示而不是登录弹窗
-            const message = document.createElement('div');
-            message.className = 'toast-message info';
-            message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可发布内容';
-            document.body.appendChild(message);
-            
-            // 显示淡入效果
-            setTimeout(() => {
-                message.classList.add('show');
-            }, 10);
-            
-            // 几秒后自动消失
-            setTimeout(() => {
-                message.classList.remove('show');
-                setTimeout(() => {
-                    message.remove();
-                }, 300);
-            }, 3000);
-            return;
-        } else {
-            // 使用默认的登录提示
-            showLoginRequiredMessage();
+            showToast('请先登录后再发帖，点击右上角"登录 / 注册"按钮');
             return;
         }
+        
+        // 重定向到登录页面
+        window.location.href = 'login.html';
+        return;
     }
     
     // 已登录，显示发帖模态框
@@ -561,29 +544,9 @@ function addPostToDOM(title, category, content, images) {
     actionButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             const action = button.getAttribute('data-action');
-            // 检查登录状态并尊重禁用登录检查标志
-            if (!isLoggedIn() && !window.disableCommunityLoginCheck) {
-                showLoginRequiredMessage();
-                return;
-            } else if (!isLoggedIn() && window.disableCommunityLoginCheck) {
-                // 在社区页面上，仅显示提示而不强制登录
-                const message = document.createElement('div');
-                message.className = 'toast-message info';
-                message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可使用此功能';
-                document.body.appendChild(message);
-                
-                // 显示淡入效果
-                setTimeout(() => {
-                    message.classList.add('show');
-                }, 10);
-                
-                // 几秒后自动消失
-                setTimeout(() => {
-                    message.classList.remove('show');
-                    setTimeout(() => {
-                        message.remove();
-                    }, 300);
-                }, 3000);
+            // 检查登录状态
+            if (!isLoggedIn()) {
+                window.location.href = 'login.html';
                 return;
             }
             
@@ -643,29 +606,6 @@ function showSuccessMessage() {
  * 显示需要登录的提示信息
  */
 function showLoginRequiredMessage() {
-    // 如果在社区页面上且设置了禁用登录检查标志，则显示非侵入式提示
-    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
-        // 显示友好的toast消息而非模态框
-        const message = document.createElement('div');
-        message.className = 'toast-message info';
-        message.innerHTML = '<i class="fas fa-info-circle"></i> 登录后可使用此功能';
-        document.body.appendChild(message);
-        
-        // 显示淡入效果
-        setTimeout(() => {
-            message.classList.add('show');
-        }, 10);
-        
-        // 几秒后自动消失
-        setTimeout(() => {
-            message.classList.remove('show');
-            setTimeout(() => {
-                message.remove();
-            }, 300);
-        }, 3000);
-        return;
-    }
-    
     // 创建消息元素
     const messageContainer = document.createElement('div');
     messageContainer.className = 'login-message-container';
@@ -689,7 +629,7 @@ function showLoginRequiredMessage() {
     
     loginButton.addEventListener('click', function() {
         // 不进行直接跳转，而是打开登录模态框
-        const loginUrl = localStorage.getItem('login_url') || '/new-login.html';
+        const loginUrl = localStorage.getItem('login_url') || '/login.html';
         window.open(loginUrl, '_blank');
         messageContainer.remove();
     });
@@ -769,16 +709,9 @@ function filterPosts(filterType) {
 }
 
 /**
- * 检查登录状态并更新UI，但不强制登录
+ * 检查登录状态并更新UI
  */
 function checkLoginStatus() {
-    // 如果设置了禁用标志，跳过登录状态检查
-    if (window.disableCommunityLoginCheck) {
-        console.log('社区页面：登录状态检查被调用，但由于禁用标志不会影响UI');
-        return;
-    }
-
-    // 登录按钮现在显示为"登录发帖"
     const loginButton = document.querySelector('.nav-menu li a.btn-primary');
     
     if (isLoggedIn()) {
@@ -830,11 +763,6 @@ function checkLoginStatus() {
                 });
             }
         }
-    } else {
-        // 未登录状态，确保按钮显示为"登录发帖"
-        if (loginButton && loginButton.textContent !== '登录发帖') {
-            loginButton.textContent = '登录发帖';
-        }
     }
 }
 
@@ -850,5 +778,29 @@ function logout() {
     window.location.href = 'index.html';
 }
 
-// 更新于2025-03-20：修复了社区页面中的移动端登录弹窗问题
-// 更新者：Cascade AI助手
+/**
+ * 显示提示信息
+ * @param {string} message 提示信息
+ */
+function showToast(message) {
+    // 创建消息元素
+    const messageElement = document.createElement('div');
+    messageElement.className = 'toast-message info';
+    messageElement.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+    
+    // 添加到页面
+    document.body.appendChild(messageElement);
+    
+    // 显示动画
+    setTimeout(() => {
+        messageElement.classList.add('show');
+    }, 100);
+    
+    // 一段时间后自动隐藏
+    setTimeout(() => {
+        messageElement.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(messageElement);
+        }, 300);
+    }, 3000);
+}

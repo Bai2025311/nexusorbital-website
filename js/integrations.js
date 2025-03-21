@@ -164,12 +164,6 @@ NexusOrbital.Integrations = (function() {
 
   // 整合社区功能与权限
   function integrateCommunity() {
-    // 如果当前页面设置了禁用登录检查标志，则不添加事件监听器
-    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
-      console.log('社区页面：禁用社区功能集成中的登录检查');
-      return; // 不添加任何事件监听
-    }
-    
     // 可以在这里添加对社区功能的权限检查
     // 例如，在发帖前检查是否有发帖权限
     document.addEventListener('click', function(e) {
@@ -179,6 +173,12 @@ NexusOrbital.Integrations = (function() {
         
         // 阻止默认行为
         e.preventDefault();
+        
+        // 如果设置了禁用社区登录检查标志，并且用户未登录，显示友好提示
+        if (window.disableCommunityLoginCheck && !isLoggedIn()) {
+          showMessage('请先登录后再发帖', '点击右上角的"登录发帖"按钮进行登录');
+          return false;
+        }
         
         // 检查是否有发帖权限
         if (!checkPermission('community_post')) {
@@ -194,6 +194,13 @@ NexusOrbital.Integrations = (function() {
       
       // 处理社区内容点赞
       if (e.target.matches('.like-btn') || e.target.closest('.like-btn')) {
+        // 如果设置了禁用社区登录检查标志，并且用户未登录，显示友好提示
+        if (window.disableCommunityLoginCheck && !isLoggedIn()) {
+          e.preventDefault();
+          showMessage('请先登录后再点赞', '点击右上角的"登录发帖"按钮进行登录');
+          return false;
+        }
+        
         // 确保匿名浏览时也可以看到点赞交互，但会引导用户登录或使用探索者模式
         if (!NexusOrbital.Auth?.isLoggedIn() && !NexusOrbital.ExplorerMode?.isExplorerMode()) {
           showLoginOrExplorerPrompt('点赞功能');
@@ -228,12 +235,6 @@ NexusOrbital.Integrations = (function() {
   
   // 整合会员系统
   function integrateMembership() {
-    // 如果当前页面设置了禁用登录检查标志，则不进行会员功能集成
-    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
-      console.log('社区页面：禁用会员功能集成');
-      return; // 不执行会员功能集成
-    }
-    
     if (!NexusOrbital.Membership) return;
     
     // 添加会员选择事件跟踪
@@ -258,12 +259,6 @@ NexusOrbital.Integrations = (function() {
   
   // 整合探索者模式
   function integrateExplorerMode() {
-    // 如果当前页面设置了禁用登录检查标志，则不进行探索者模式集成
-    if (window.disableCommunityLoginCheck && window.location.pathname.includes('community.html')) {
-      console.log('社区页面：禁用探索者模式集成');
-      return; // 不执行探索者模式集成
-    }
-    
     if (!NexusOrbital.ExplorerMode) return;
     
     // 更新UI元素基于探索者状态
@@ -331,6 +326,21 @@ NexusOrbital.Integrations = (function() {
     });
   }
 
+  /**
+   * 检查用户是否已登录
+   * @returns {boolean} 是否已登录
+   */
+  function isLoggedIn() {
+    // 首先检查NexusOrbital.Auth
+    if (NexusOrbital.Auth && typeof NexusOrbital.Auth.isLoggedIn === 'function') {
+      return NexusOrbital.Auth.isLoggedIn();
+    }
+    
+    // 回退方法：检查localStorage中的auth_token
+    const token = localStorage.getItem('auth_token');
+    return !!token;
+  }
+
   // 显示功能限制提示
   function showFeatureRestrictedMessage(featureName, requiredTier) {
     if (NexusOrbital.Membership) {
@@ -390,15 +400,6 @@ NexusOrbital.Integrations = (function() {
   
   // 显示登录或探索者模式提示，仅用于发帖功能
   function showLoginOrExplorerPrompt(featureName) {
-    // 如果是社区页面，则不显示任何登录/探索者提示，以改善用户体验
-    if (window.disableCommunityLoginCheck || 
-        window.location.pathname.includes('community.html') || 
-        featureName.includes('社区') || 
-        featureName.includes('内容')) {
-      console.log('禁用登录或探索者模式提示：' + featureName);
-      return;
-    }
-    
     const messageElement = document.createElement('div');
     messageElement.className = 'login-explorer-prompt';
     messageElement.innerHTML = `

@@ -583,7 +583,7 @@
     
     <!-- 移动版登录按钮 -->
     <div class="mobile-login-btn">
-        <a href="new-login.html">
+        <a href="login.html">
             <i class="fas fa-user-astronaut"></i>
         </a>
     </div>
@@ -629,7 +629,7 @@
                     <li><a href="design-studio.html">智能构建室</a></li>
                     <li><a href="marketplace.html">星海计划</a></li>
                     <li><a href="technology.html">技术矩阵</a></li>
-                    <li><a href="new-login.html" class="btn-primary">登录 / 注册</a></li>
+                    <li><a href="login.html" class="btn-primary">登录 / 注册</a></li>
                 </ul>
                 <div class="hamburger">
                     <span class="bar"></span>
@@ -854,7 +854,7 @@
             // 移动端优化 - 添加底部悬浮登录按钮
             if(window.innerWidth <= 768) {
                 const loginButton = document.createElement('a');
-                loginButton.href = 'new-login.html';
+                loginButton.href = 'login.html';
                 loginButton.className = 'mobile-login-button btn-primary';
                 loginButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登录';
                 document.body.appendChild(loginButton);

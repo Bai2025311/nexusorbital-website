@@ -28,8 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 全局变量 - 用户登录状态
 let isUserLoggedIn = false;
-// 禁用社区登录强制检查
-const disableCommunityLoginCheck = true;
 
 /**
  * 创建星空背景
@@ -147,9 +145,8 @@ function initDynamicStats() {
  * 初始化用户状态
  */
 function initUserStatus() {
-    // 这里可以从localStorage或cookie中获取用户登录状态
-    // 为了演示，我们假设用户未登录
-    isUserLoggedIn = false;
+    // 从localStorage中获取用户登录状态
+    isUserLoggedIn = localStorage.getItem('auth_token') !== null;
     
     // 检查登录状态
     checkLoginStatus();
@@ -159,16 +156,20 @@ function initUserStatus() {
  * 检查登录状态
  */
 function checkLoginStatus() {
-    // 如果禁用了社区登录检查，则不进行强制登录检查
-    if (disableCommunityLoginCheck) {
-        console.log('社区登录检查已禁用，允许非登录用户浏览内容');
+    // 如果设置了禁用社区登录检查标志，则不进行强制登录检查
+    if (window.disableCommunityLoginCheck) {
+        console.log('社区页面：已禁用自动登录检查');
         return;
     }
     
     // 如果用户未登录，则可以在这里处理重定向到登录页面的逻辑
     if (!isUserLoggedIn) {
-        // window.location.href = 'new-login.html';
+        window.location.href = 'login.html';
     }
+}
+
+function isLoggedIn() {
+    return isUserLoggedIn;
 }
 
 /**
@@ -220,15 +221,9 @@ function initNewPostButton() {
     
     // 点击发帖按钮
     newPostButton.addEventListener('click', () => {
-        // 检查登录状态
-        if (!isUserLoggedIn) {
-            if (disableCommunityLoginCheck) {
-                // 显示友好提示消息
-                showToast('登录后才能发布内容，请先登录', 3000);
-            } else {
-                // 使用默认的登录提示
-                showLoginPrompt('发表帖子');
-            }
+        // 检查登录状态，如果禁用了登录检查则不拦截
+        if (!isUserLoggedIn && !window.disableCommunityLoginCheck) {
+            showLoginPrompt('发表帖子');
             return;
         }
         
@@ -289,19 +284,13 @@ function initPostInteractions() {
         button.addEventListener('click', function() {
             const action = this.getAttribute('data-action');
             
-            // 如果未登录且需要登录的操作
-            if (!isUserLoggedIn && (action === 'like' || action === 'comment' || action === 'bookmark')) {
-                if (disableCommunityLoginCheck) {
-                    // 显示友好的toast消息
-                    showToast(`登录后才能${getActionText(action)}，请先登录`, 3000);
-                } else {
-                    // 使用默认的登录提示
-                    showLoginPrompt(getActionText(action));
-                }
+            // 如果未登录且需要登录的操作，且未禁用社区登录检查
+            if (!isUserLoggedIn && !window.disableCommunityLoginCheck && (action === 'like' || action === 'comment' || action === 'bookmark')) {
+                showLoginPrompt(getActionText(action));
                 return;
             }
             
-            // 处理不同的操作
+            // 执行相应的操作
             switch (action) {
                 case 'like':
                     toggleLike(this);

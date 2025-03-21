@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusOrbital登录测试工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-primary {
+            background-color: #4267B2;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #333;
+        }
+        .status-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f2f5;
+            border-radius: 5px;
+        }
+        .status-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .status-label {
+            width: 120px;
+            font-weight: bold;
+        }
+        .status-value {
+            flex-grow: 1;
+        }
+        .actions {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .pages {
+            margin-top: 30px;
+        }
+        .page-link {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px 16px;
+            background-color: #eee;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+        .page-link:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NexusOrbital登录测试工具</h1>
+        <p>使用此工具来模拟不同的登录状态，测试社区页面的功能</p>
+        
+        <div class="status-panel">
+            <h2>当前状态</h2>
+            <div class="status-row">
+                <div class="status-label">登录状态:</div>
+                <div class="status-value" id="login-status">正在检查...</div>
+            </div>
+            <div class="status-row">
+                <div class="status-label">Token:</div>
+                <div class="status-value" id="token-status">无</div>
+            </div>
+            <div class="status-row">
+                <div class="status-label">用户名:</div>
+                <div class="status-value" id="username-status">未登录</div>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <h2>操作</h2>
+            <button class="btn btn-primary" id="login-btn">登录（模拟）</button>
+            <button class="btn btn-danger" id="logout-btn">注销</button>
+            <button class="btn btn-warning" id="check-btn">检查状态</button>
+            <button class="btn btn-success" id="clear-btn">清除所有数据</button>
+        </div>
+        
+        <div class="pages">
+            <h2>测试页面</h2>
+            <p>点击下面的链接访问相应页面进行测试：</p>
+            <a href="community-test.html" target="_blank" class="page-link">社区测试页面</a>
+            <a href="community.html" target="_blank" class="page-link">社区页面</a>
+            <a href="community-mobile.html" target="_blank" class="page-link">移动版社区页面</a>
+        </div>
+    </div>
+    
+    <script>
+        // 当DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 更新状态面板
+            updateStatus();
+            
+            // 登录按钮点击事件
+            document.getElementById('login-btn').addEventListener('click', function() {
+                const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+                const mockUsername = '测试用户';
+                
+                localStorage.setItem('auth_token', mockToken);
+                localStorage.setItem('username', mockUsername);
+                
+                updateStatus();
+                showMessage('登录成功', 'success');
+            });
+            
+            // 注销按钮点击事件
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('username');
+                
+                updateStatus();
+                showMessage('已注销', 'success');
+            });
+            
+            // 检查按钮点击事件
+            document.getElementById('check-btn').addEventListener('click', function() {
+                updateStatus();
+                showMessage('状态已更新', 'success');
+            });
+            
+            // 清除按钮点击事件
+            document.getElementById('clear-btn').addEventListener('click', function() {
+                localStorage.clear();
+                updateStatus();
+                showMessage('所有数据已清除', 'success');
+            });
+        });
+        
+        // 更新状态面板
+        function updateStatus() {
+            const token = localStorage.getItem('auth_token');
+            const username = localStorage.getItem('username') || '未设置';
+            
+            document.getElementById('login-status').textContent = token ? '已登录' : '未登录';
+            document.getElementById('token-status').textContent = token ? token.substring(0, 15) + '...' : '无';
+            document.getElementById('username-status').textContent = token ? username : '未登录';
+            
+            // 根据登录状态更新按钮状态
+            document.getElementById('login-btn').disabled = !!token;
+            document.getElementById('logout-btn').disabled = !token;
+        }
+        
+        // 显示消息
+        function showMessage(message, type) {
+            // 如果已有消息元素，则移除
+            const existingMessage = document.querySelector('.message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // 创建新的消息元素
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.style.padding = '10px';
+            messageEl.style.margin = '10px 0';
+            messageEl.style.borderRadius = '4px';
+            messageEl.style.backgroundColor = type === 'success' ? '#d4edda' : '#f8d7da';
+            messageEl.textContent = message;
+            
+            // 插入到操作区域前面
+            const actions = document.querySelector('.actions');
+            actions.parentNode.insertBefore(messageEl, actions);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                messageEl.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
