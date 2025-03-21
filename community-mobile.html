@@ -36,6 +36,8 @@
                 radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
             background-repeat: repeat;
             background-size: 200px 200px;
+            opacity: 1;
+            pointer-events: none;
         }
         
         /* 穹顶效果 */
@@ -45,15 +47,17 @@
             padding-bottom: 0;
             margin-bottom: 20px;
             height: 240px;
+            z-index: 0;
         }
         
         .dome-svg-container {
-            position: relative;
+            position: absolute;
             width: 120%;
             height: 100%;
-            z-index: -1;
+            z-index: 0;
             overflow: visible;
             left: -10%;
+            top: 0;
         }
         
         #dome-path {
@@ -502,6 +506,8 @@
 <body>
     <div class="container">
         <div class="stars"></div>
+        <div class="shooting-star shooting-star-1"></div>
+        <div class="shooting-star shooting-star-2"></div>
         
         <!-- 顶部导航 -->
         <div class="header">
@@ -787,11 +793,20 @@
                     star.style.left = `${Math.random() * 100}%`;
                     star.style.animation = `twinkle ${3 + Math.random() * 2}s ease-in-out infinite`;
                     star.style.animationDelay = `${Math.random() * 5}s`;
+                    star.style.opacity = '0.8';
                     starContainer.appendChild(star);
                 }
             }
             
             createStars();
+            
+            // 确保穹顶渐变正确渲染
+            setTimeout(function() {
+                const domePath = document.getElementById('dome-path');
+                if (domePath) {
+                    domePath.style.fill = 'url(#dome-gradient)';
+                }
+            }, 100);
         });
     </script>
 </body>
