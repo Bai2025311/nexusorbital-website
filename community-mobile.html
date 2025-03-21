@@ -198,87 +198,56 @@
         .stats-container {
             display: flex;
             justify-content: space-between;
-            padding: 15px 20px 30px;
+            padding: 0 15px;
+            margin-top: 160px;
             position: relative;
-            margin-bottom: 5px;
-            z-index: 10;
-        }
-        
-        .stats-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #370058 0%, #0c1e3b 100%);
-            z-index: -1;
-        }
-        
-        .stats-curve {
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 28px;
-            overflow: hidden;
-            z-index: -1;
-        }
-        
-        .stats-curve:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -50%;
-            width: 200%;
-            height: 28px;
-            background-color: #000012;
-            border-radius: 50% 50% 0 0;
+            z-index: 5;
         }
         
         .stat-box {
-            background-color: rgba(10, 20, 40, 0.6);
-            border-radius: 18px;
-            padding: 12px;
-            color: white;
-            text-align: center;
             width: 30%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(70, 130, 180, 0.3);
+            background-color: rgba(30, 41, 59, 0.3);
+            border-radius: 15px;
+            padding: 20px 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
         }
         
         .stat-name {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         
         .stat-value {
-            font-size: 30px;
-            font-weight: 500;
-            margin: 5px 0;
+            font-size: 24px;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
         .stat-change {
-            font-size: 13px;
+            font-size: 12px;
+            margin-left: 4px;
             color: #4cd964;
-            margin-left: 5px;
+        }
+        
+        .stat-change.negative {
+            color: #ff3b30;
         }
         
         .stat-dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
+            width: 8px;
+            height: 8px;
             background-color: #4cd964;
-            margin-left: 3px;
-            vertical-align: middle;
+            border-radius: 50%;
+            margin-left: 6px;
         }
         
         .progress-container {
-            width: 100%;
             height: 4px;
             background-color: rgba(255, 255, 255, 0.2);
             border-radius: 2px;
@@ -287,7 +256,7 @@
         
         .progress-bar {
             height: 100%;
-            background-color: #1e90ff;
+            background: linear-gradient(to right, #4a9dff, #65e3ff);
             border-radius: 2px;
         }
         
@@ -525,7 +494,7 @@
                             <stop offset="100%" stop-color="#0F4C75"/>
                         </linearGradient>
                     </defs>
-                    <path id="dome-path" d="M0,0 L120,0 L120,20 C105,35 80,45 60,45 C40,45 15,35 0,20 Z"></path>
+                    <path id="dome-path" d="M0,30 Q30,0 60,0 Q90,0 120,30 L120,60 L0,60 Z"></path>
                 </svg>
                 
                 <!-- 添加星星 -->
@@ -564,20 +533,13 @@
                     <div class="dome-star" style="top: 115px; left: 60%; width: 1px; height: 1px; animation-delay: 3.2s;"></div>
                     <div class="dome-star" style="top: 120px; left: 80%; width: 2px; height: 2px; animation-delay: 0.3s;"></div>
                 </div>
-                
-                <!-- 添加流星 -->
-                <div class="shooting-star shooting-star-1"></div>
-                <div class="shooting-star shooting-star-2"></div>
             </div>
             
             <!-- 统计数据 -->
             <div class="stats-container">
-                <div class="stats-background"></div>
-                <div class="stats-curve"></div>
-                
                 <div class="stat-box">
                     <div class="stat-name">氧气浓度</div>
-                    <div class="stat-value">98.4% <span class="stat-change">+0.1%</span> <span class="stat-dot"></span></div>
+                    <div class="stat-value">98.4% <span class="stat-change">+0.1%</span></div>
                 </div>
                 
                 <div class="stat-box">
@@ -593,7 +555,8 @@
                     <div class="stat-value">89 <span class="stat-change">+0</span></div>
                 </div>
             </div>
-
+        </div>
+        
         <!-- 筛选栏 -->
         <div class="filter-container">
             <div class="filter-left">
