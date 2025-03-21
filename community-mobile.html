@@ -38,6 +38,133 @@
             background-size: 200px 200px;
         }
         
+        /* 穹顶效果 */
+        .dome-container {
+            position: relative;
+            overflow: visible;
+            padding-bottom: 0;
+            margin-bottom: 20px;
+            height: 240px;
+        }
+        
+        .dome-svg-container {
+            position: relative;
+            width: 120%;
+            height: 100%;
+            z-index: -1;
+            overflow: visible;
+            left: -10%;
+        }
+        
+        #dome-path {
+            fill: url(#dome-gradient);
+        }
+        
+        .dome-svg-container svg {
+            width: 100%;
+            height: 280px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .dome-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .dome-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0.2;
+            }
+        }
+        
+        /* 添加划过的流星效果 */
+        .shooting-star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.5);
+            transform: rotate(-45deg);
+            opacity: 0;
+            z-index: 2;
+        }
+        
+        .shooting-star-1 {
+            top: 30px;
+            left: 20%;
+            width: 3px;
+            height: 3px;
+            animation: shootingStar 7s linear infinite;
+        }
+        
+        .shooting-star-2 {
+            top: 70px;
+            left: 75%;
+            width: 2px;
+            height: 2px;
+            animation: shootingStar2 12s linear infinite;
+        }
+        
+        @keyframes shootingStar {
+            0% {
+                transform: translateX(0) translateY(0) rotate(-45deg);
+                opacity: 0;
+            }
+            3% {
+                opacity: 1;
+            }
+            10% {
+                transform: translateX(180px) translateY(180px) rotate(-45deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(180px) translateY(180px) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shootingStar2 {
+            0% {
+                transform: translateX(0) translateY(0) rotate(-35deg);
+                opacity: 0;
+            }
+            70% {
+                opacity: 0;
+            }
+            73% {
+                opacity: 1;
+            }
+            80% {
+                transform: translateX(-150px) translateY(120px) rotate(-35deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-150px) translateY(120px) rotate(-35deg);
+                opacity: 0;
+            }
+        }
+        
         /* 主容器 */
         .container {
             position: relative;
@@ -363,6 +490,13 @@
         .toast.success {
             background-color: #4cd964;
         }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
     </style>
 </head>
 <body>
@@ -374,29 +508,85 @@
             <div class="title">NexusOrbital</div>
         </div>
 
-        <!-- 统计数据 -->
-        <div class="stats-container">
-            <div class="stats-background"></div>
-            <div class="stats-curve"></div>
-            
-            <div class="stat-box">
-                <div class="stat-name">氧气浓度</div>
-                <div class="stat-value">98.4% <span class="stat-change">+0.1%</span> <span class="stat-dot"></span></div>
+        <!-- 穹顶区域 - 环境数据 -->
+        <div class="dome-container">
+            <div class="dome-svg-container">
+                <svg viewBox="0 0 120 60" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="dome-gradient" gradientUnits="userSpaceOnUse" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#2D033B"/>
+                            <stop offset="50%" stop-color="#3A0CA3"/>
+                            <stop offset="100%" stop-color="#0F4C75"/>
+                        </linearGradient>
+                    </defs>
+                    <path id="dome-path" d="M0,0 L120,0 L120,20 C105,35 80,45 60,45 C40,45 15,35 0,20 Z"></path>
+                </svg>
+                
+                <!-- 添加星星 -->
+                <div class="dome-stars" id="domeStars">
+                    <!-- 随机分布在整个穹顶区域的星星 -->
+                    <div class="dome-star" style="top: 10px; left: 5%; width: 1px; height: 1px; animation-delay: 0.2s;"></div>
+                    <div class="dome-star" style="top: 25px; left: 12%; width: 2px; height: 2px; animation-delay: 1.1s;"></div>
+                    <div class="dome-star" style="top: 40px; left: 8%; width: 1px; height: 1px; animation-delay: 2.3s;"></div>
+                    <div class="dome-star" style="top: 15px; left: 18%; width: 2px; height: 2px; animation-delay: 3.5s;"></div>
+                    <div class="dome-star" style="top: 35px; left: 22%; width: 1px; height: 1px; animation-delay: 0.7s;"></div>
+                    <div class="dome-star" style="top: 5px; left: 28%; width: 1px; height: 1px; animation-delay: 2.8s;"></div>
+                    <div class="dome-star" style="top: 50px; left: 32%; width: 2px; height: 2px; animation-delay: 1.6s;"></div>
+                    <div class="dome-star" style="top: 20px; left: 35%; width: 1px; height: 1px; animation-delay: 3.9s;"></div>
+                    <div class="dome-star" style="top: 45px; left: 42%; width: 2px; height: 2px; animation-delay: 2.1s;"></div>
+                    <div class="dome-star" style="top: 30px; left: 48%; width: 1px; height: 1px; animation-delay: 1.3s;"></div>
+                    <div class="dome-star" style="top: 15px; left: 52%; width: 2px; height: 2px; animation-delay: 3.3s;"></div>
+                    <div class="dome-star" style="top: 40px; left: 58%; width: 1px; height: 1px; animation-delay: 0.5s;"></div>
+                    <div class="dome-star" style="top: 25px; left: 63%; width: 1px; height: 1px; animation-delay: 2.5s;"></div>
+                    <div class="dome-star" style="top: 10px; left: 68%; width: 2px; height: 2px; animation-delay: 1.9s;"></div>
+                    <div class="dome-star" style="top: 50px; left: 72%; width: 1px; height: 1px; animation-delay: 3.1s;"></div>
+                    <div class="dome-star" style="top: 35px; left: 78%; width: 2px; height: 2px; animation-delay: 0.9s;"></div>
+                    <div class="dome-star" style="top: 20px; left: 82%; width: 1px; height: 1px; animation-delay: 2.7s;"></div>
+                    <div class="dome-star" style="top: 45px; left: 88%; width: 1px; height: 1px; animation-delay: 1.5s;"></div>
+                    <div class="dome-star" style="top: 30px; left: 95%; width: 2px; height: 2px; animation-delay: 3.7s;"></div>
+                    <div class="dome-star" style="top: 55px; left: 15%; width: 1px; height: 1px; animation-delay: 0.4s;"></div>
+                    <div class="dome-star" style="top: 65px; left: 25%; width: 2px; height: 2px; animation-delay: 2.2s;"></div>
+                    <div class="dome-star" style="top: 75px; left: 38%; width: 1px; height: 1px; animation-delay: 1.8s;"></div>
+                    <div class="dome-star" style="top: 70px; left: 45%; width: 1px; height: 1px; animation-delay: 3.4s;"></div>
+                    <div class="dome-star" style="top: 60px; left: 52%; width: 2px; height: 2px; animation-delay: 0.6s;"></div>
+                    <div class="dome-star" style="top: 80px; left: 62%; width: 1px; height: 1px; animation-delay: 2.9s;"></div>
+                    <div class="dome-star" style="top: 90px; left: 75%; width: 1px; height: 1px; animation-delay: 1.2s;"></div>
+                    <div class="dome-star" style="top: 85px; left: 85%; width: 2px; height: 2px; animation-delay: 3.6s;"></div>
+                    <div class="dome-star" style="top: 95px; left: 92%; width: 1px; height: 1px; animation-delay: 0.8s;"></div>
+                    <div class="dome-star" style="top: 100px; left: 20%; width: 2px; height: 2px; animation-delay: 2.4s;"></div>
+                    <div class="dome-star" style="top: 110px; left: 40%; width: 1px; height: 1px; animation-delay: 1.7s;"></div>
+                    <div class="dome-star" style="top: 115px; left: 60%; width: 1px; height: 1px; animation-delay: 3.2s;"></div>
+                    <div class="dome-star" style="top: 120px; left: 80%; width: 2px; height: 2px; animation-delay: 0.3s;"></div>
+                </div>
+                
+                <!-- 添加流星 -->
+                <div class="shooting-star shooting-star-1"></div>
+                <div class="shooting-star shooting-star-2"></div>
             </div>
             
-            <div class="stat-box">
-                <div class="stat-name">月球基地</div>
-                <div class="stat-value">62%</div>
-                <div class="progress-container">
-                    <div class="progress-bar" style="width: 62%;"></div>
+            <!-- 统计数据 -->
+            <div class="stats-container">
+                <div class="stats-background"></div>
+                <div class="stats-curve"></div>
+                
+                <div class="stat-box">
+                    <div class="stat-name">氧气浓度</div>
+                    <div class="stat-value">98.4% <span class="stat-change">+0.1%</span> <span class="stat-dot"></span></div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-name">月球基地</div>
+                    <div class="stat-value">62%</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 62%;"></div>
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-name">社区活跃度</div>
+                    <div class="stat-value">89 <span class="stat-change">+0</span></div>
                 </div>
             </div>
-            
-            <div class="stat-box">
-                <div class="stat-name">社区活跃度</div>
-                <div class="stat-value">89 <span class="stat-change">+0</span></div>
-            </div>
-        </div>
 
         <!-- 筛选栏 -->
         <div class="filter-container">
@@ -567,7 +757,7 @@
                 });
             });
             
-            // 发表方案按钮
+            // 发表帖子按钮
             document.querySelector('.new-post-button').addEventListener('click', function() {
                 showPostModal();
             });
@@ -581,6 +771,27 @@
                     this.classList.add('active');
                 });
             });
+
+            // 随机生成大量星星
+            function createStars() {
+                const starContainer = document.querySelector('.stars');
+                for (let i = 0; i < 150; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.position = 'absolute';
+                    star.style.backgroundColor = 'white';
+                    star.style.borderRadius = '50%';
+                    star.style.width = Math.random() > 0.8 ? '2px' : '1px';
+                    star.style.height = star.style.width;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.animation = `twinkle ${3 + Math.random() * 2}s ease-in-out infinite`;
+                    star.style.animationDelay = `${Math.random() * 5}s`;
+                    starContainer.appendChild(star);
+                }
+            }
+            
+            createStars();
         });
     </script>
 </body>
