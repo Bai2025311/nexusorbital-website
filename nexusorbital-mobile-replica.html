@@ -825,6 +825,59 @@
             pointer-events: none;
             z-index: 2000;
         }
+        
+        /* 确保在所有设备上正确显示 */
+        @media screen and (max-width: 480px) {
+            .engineers-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+            
+            .engineer-avatar {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .engineer-img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .engineer-name {
+                font-size: 10px;
+            }
+            
+            .project-card {
+                flex: 0 0 80%;
+            }
+            
+            .nav-icon {
+                font-size: 20px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+        }
+        
+        /* 更大设备的适配 */
+        @media screen and (min-width: 481px) {
+            .container {
+                max-width: 480px;
+                margin: 0 auto;
+            }
+        }
+        
+        /* 优化引力效果显示 */
+        .gravity-pulse {
+            animation: gravity-pulse 0.3s ease-out;
+        }
+        
+        @keyframes gravity-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -1242,7 +1295,5 @@
             });
         }
     </script>
-    <!-- 添加Font Awesome图标 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </body>
 </html>
