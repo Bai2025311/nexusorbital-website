@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>NexusOrbital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+        }
+        
+        body {
+            color: #fff;
+            background-color: #000;
+            overflow-x: hidden;
+            padding-bottom: 60px;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            background-color: #000;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: left;
+        }
+        
+        /* 穹顶效果 */
+        .dome-container {
+            position: relative;
+            height: 320px;
+            background: linear-gradient(to bottom, #2D033B, #0F4C75);
+            border-bottom-left-radius: 50% 20%;
+            border-bottom-right-radius: 50% 20%;
+            overflow: hidden;
+        }
+        
+        /* 星星效果 */
+        .dome-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .dome-star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        /* 流星效果 */
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
+            box-shadow: 0 0 3px #fff;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 5;
+        }
+        
+        .shooting-star-1 {
+            top: 50px;
+            left: -100px;
+            transform: rotate(15deg);
+            animation: shootingStar 3s linear 1s infinite;
+        }
+        
+        .shooting-star-2 {
+            top: 80px;
+            left: -100px;
+            transform: rotate(20deg);
+            animation: shootingStar 4s linear 3s infinite;
+        }
+        
+        .shooting-star-3 {
+            top: 30px;
+            left: -100px;
+            transform: rotate(25deg);
+            animation: shootingStar 3.5s linear 5s infinite;
+        }
+        
+        @keyframes shootingStar {
+            0% {
+                opacity: 0;
+                left: -100px;
+            }
+            10% {
+                opacity: 1;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                left: 120%;
+            }
+        }
+        
+        /* 数据卡片样式 */
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            margin-top: 160px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-box {
+            background: rgba(27, 38, 59, 0.7);
+            border-radius: 15px;
+            padding: 15px;
+            width: 30%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            text-align: center;
+        }
+        
+        .stat-name {
+            font-size: 12px;
+            color: #a3d6ff;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-change {
+            font-size: 12px;
+            color: #4caf50;
+            margin-left: 5px;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0c1220;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 55px;
+            z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8a9ab8;
+            padding: 5px 0;
+            font-size: 10px;
+            text-decoration: none;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .nav-item.active {
+            color: #3282b8;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+        
+        /* 进度条样式 */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 5px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3282b8, #0ea5e9);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NexusOrbital</h1>
+    </div>
+    
+    <div class="dome-container">
+        <div class="dome-stars">
+            <!-- 添加30个星星 -->
+            <div class="dome-star" style="top: 30px; left: 10%; width: 2px; height: 2px; animation-delay: 0s;"></div>
+            <div class="dome-star" style="top: 40px; left: 15%; width: 1px; height: 1px; animation-delay: 0.5s;"></div>
+            <div class="dome-star" style="top: 20px; left: 20%; width: 2px; height: 2px; animation-delay: 1s;"></div>
+            <div class="dome-star" style="top: 50px; left: 25%; width: 1px; height: 1px; animation-delay: 1.5s;"></div>
+            <div class="dome-star" style="top: 10px; left: 30%; width: 1px; height: 1px; animation-delay: 2s;"></div>
+            <div class="dome-star" style="top: 60px; left: 35%; width: 2px; height: 2px; animation-delay: 2.5s;"></div>
+            <div class="dome-star" style="top: 30px; left: 40%; width: 1px; height: 1px; animation-delay: 3s;"></div>
+            <div class="dome-star" style="top: 70px; left: 45%; width: 2px; height: 2px; animation-delay: 3.5s;"></div>
+            <div class="dome-star" style="top: 20px; left: 50%; width: 1px; height: 1px; animation-delay: 4s;"></div>
+            <div class="dome-star" style="top: 40px; left: 55%; width: 1px; height: 1px; animation-delay: 4.5s;"></div>
+            <div class="dome-star" style="top: 15px; left: 60%; width: 2px; height: 2px; animation-delay: 5s;"></div>
+            <div class="dome-star" style="top: 45px; left: 65%; width: 1px; height: 1px; animation-delay: 5.5s;"></div>
+            <div class="dome-star" style="top: 30px; left: 70%; width: 2px; height: 2px; animation-delay: 6s;"></div>
+            <div class="dome-star" style="top: 55px; left: 75%; width: 1px; height: 1px; animation-delay: 6.5s;"></div>
+            <div class="dome-star" style="top: 25px; left: 80%; width: 1px; height: 1px; animation-delay: 7s;"></div>
+            <div class="dome-star" style="top: 50px; left: 85%; width: 2px; height: 2px; animation-delay: 7.5s;"></div>
+            <div class="dome-star" style="top: 35px; left: 90%; width: 1px; height: 1px; animation-delay: 8s;"></div>
+            <div class="dome-star" style="top: 15px; left: 95%; width: 2px; height: 2px; animation-delay: 8.5s;"></div>
+            <div class="dome-star" style="top: 80px; left: 12%; width: 1px; height: 1px; animation-delay: 9s;"></div>
+            <div class="dome-star" style="top: 90px; left: 22%; width: 2px; height: 2px; animation-delay: 9.5s;"></div>
+            <div class="dome-star" style="top: 100px; left: 32%; width: 1px; height: 1px; animation-delay: 10s;"></div>
+            <div class="dome-star" style="top: 110px; left: 42%; width: 1px; height: 1px; animation-delay: 10.5s;"></div>
+            <div class="dome-star" style="top: 120px; left: 52%; width: 2px; height: 2px; animation-delay: 11s;"></div>
+            <div class="dome-star" style="top: 130px; left: 62%; width: 1px; height: 1px; animation-delay: 11.5s;"></div>
+            <div class="dome-star" style="top: 140px; left: 72%; width: 2px; height: 2px; animation-delay: 12s;"></div>
+            <div class="dome-star" style="top: 150px; left: 82%; width: 1px; height: 1px; animation-delay: 12.5s;"></div>
+            <div class="dome-star" style="top: 160px; left: 92%; width: 1px; height: 1px; animation-delay: 13s;"></div>
+            <div class="dome-star" style="top: 170px; left: 15%; width: 2px; height: 2px; animation-delay: 13.5s;"></div>
+            <div class="dome-star" style="top: 180px; left: 45%; width: 1px; height: 1px; animation-delay: 14s;"></div>
+            <div class="dome-star" style="top: 190px; left: 75%; width: 2px; height: 2px; animation-delay: 14.5s;"></div>
+        </div>
+        
+        <!-- 添加流星 -->
+        <div class="shooting-star shooting-star-1"></div>
+        <div class="shooting-star shooting-star-2"></div>
+        <div class="shooting-star shooting-star-3"></div>
+        
+        <!-- 实时数据显示 -->
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-name">氧气浓度</div>
+                <div class="stat-value">98.4% <span class="stat-change">+0.1%</span></div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-name">月球基地</div>
+                <div class="stat-value">62%</div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 62%;"></div>
+                </div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-name">社区活跃度</div>
+                <div class="stat-value">89 <span class="stat-change">+0</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="nav-icon fas fa-cog"></i>
+            <span>控制舱</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-dollar-sign"></i>
+            <span>星海计划</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-users"></i>
+            <span>星环会议</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-book"></i>
+            <span>技术库</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-user"></i>
+            <span>我的</span>
+        </a>
+    </div>
+</body>
+</html>
