@@ -6,22 +6,41 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <!-- 2025-03-22更新: 添加紫蓝色渐变穹顶和流星效果 -->
+    <!-- 2025-03-22更新: 实现太空极简主义设计和NASA操作舱风格 -->
     <title>NexusOrbital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-dark: #0F172A;
+            --primary-space: #2D033B;
+            --primary-blue: #0F4C75;
+            --accent-color: #5E17EB;
+            --accent-light: #7922EB;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-tertiary: #64748B;
+            --card-bg: rgba(13, 32, 59, 0.8);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+            font-family: 'Space Grotesk', 'Roboto', 'Noto Sans SC', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        @font-face {
+            font-family: 'Space Grotesk';
+            src: url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
         }
         
         body {
-            color: #fff;
+            color: var(--text-primary);
             background-color: #000;
             overflow-x: hidden;
-            padding-bottom: 60px;
+            padding-bottom: 70px;
         }
         
         /* 页面容器 */
@@ -33,24 +52,47 @@
         
         /* 顶部导航栏 */
         .header {
-            background-color: #000;
-            padding: 10px 15px;
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
         .header h1 {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: left;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #FFFFFF, #94A3B8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-icon {
+            color: var(--text-secondary);
+            font-size: 18px;
         }
         
         /* 穹顶效果 */
         .dome-container {
             position: relative;
-            height: 330px;
-            background: linear-gradient(to bottom, #2D033B, #0F4C75);
+            height: 380px;
+            background: linear-gradient(to bottom, var(--primary-space), var(--primary-blue));
             border-bottom-left-radius: 50% 20%;
             border-bottom-right-radius: 50% 20%;
             overflow: hidden;
@@ -64,6 +106,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 1;
         }
         
         .dome-star {
@@ -71,11 +114,12 @@
             background-color: #fff;
             border-radius: 50%;
             animation: twinkle 3s infinite;
+            box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.3);
         }
         
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1); }
+            0%, 100% { opacity: 0.2; transform: scale(0.8); filter: blur(1px); }
+            50% { opacity: 1; transform: scale(1); filter: blur(0); }
         }
         
         /* 流星效果 */
@@ -90,98 +134,500 @@
             z-index: 5;
         }
         
-        .shooting-star-1 {
-            top: 50px;
-            left: -100px;
-            transform: rotate(15deg);
-            animation: shootingStar 3s linear 1s infinite;
-        }
-        
-        .shooting-star-2 {
-            top: 80px;
-            left: -100px;
-            transform: rotate(20deg);
-            animation: shootingStar 4s linear 3s infinite;
-        }
-        
-        .shooting-star-3 {
+        /* 穹顶顶部圆环效果 */
+        .dome-circle {
+            position: absolute;
             top: 30px;
-            left: -100px;
-            transform: rotate(25deg);
-            animation: shootingStar 3.5s linear 5s infinite;
-        }
-        
-        @keyframes shootingStar {
-            0% {
-                opacity: 0;
-                left: -100px;
-            }
-            10% {
-                opacity: 1;
-            }
-            20% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                left: 120%;
-            }
-        }
-        
-        /* 数据卡片样式 */
-        .stats-container {
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(94, 23, 235, 0.2);
             display: flex;
-            justify-content: space-between;
-            padding: 10px 15px;
-            margin-top: 170px;
-            position: relative;
+            justify-content: center;
+            align-items: center;
             z-index: 2;
         }
         
+        .dome-circle::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+        
+        .dome-circle::after {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: pulse 4s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+        }
+        
+        .dome-center {
+            width: 90px;
+            height: 90px;
+            background: radial-gradient(circle, rgba(94, 23, 235, 0.3) 0%, rgba(15, 76, 117, 0.1) 70%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .dome-center-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        /* NASA风格网格背景 */
+        .grid-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+        
+        /* 数据卡片容器 */
+        .stats-container {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 10;
+        }
+        
         .stat-box {
-            background: rgba(13, 32, 59, 0.7);
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 16px;
             width: 30%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             text-align: center;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-box:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
         
         .stat-name {
             font-size: 12px;
-            color: #a3d6ff;
+            color: var(--text-secondary);
             margin-bottom: 8px;
         }
         
         .stat-value {
-            font-size: 26px;
+            font-size: 20px;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 5px;
         }
         
         .stat-change {
             font-size: 12px;
-            color: #4caf50;
+            color: #4ADE80; /* 健康绿色 */
             margin-left: 5px;
         }
         
-        /* 进度条样式 */
-        .progress-container {
-            width: 100%;
+        .stat-change.negative {
+            color: #EF4444; /* 警告红色 */
+        }
+        
+        /* 数据进度条 */
+        .stat-progress {
             height: 4px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
-            margin-top: 8px;
+            margin-top: 10px;
+            overflow: hidden;
         }
         
-        .progress-bar {
+        .stat-progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #00bfff, #0ea5e9);
+            background: linear-gradient(to right, #3B82F6, #60A5FA);
             border-radius: 2px;
+            position: relative;
+        }
+        
+        .stat-progress-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: progress-shine 2s infinite;
+        }
+        
+        @keyframes progress-shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* 引力交互区域 */
+        .gravity-interaction {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        
+        /* 社区内容区 */
+        .forum-section {
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 工程师社区 - 三维身份矩阵 */
+        .engineer-community {
+            margin-top: 20px;
+        }
+        
+        .engineers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .engineer-profile {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .engineer-avatar {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .avatar-shape {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .hexagon-shape {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background-color: rgba(62, 152, 199, 0.1);
+            border: 1px solid rgba(62, 152, 199, 0.3);
+        }
+        
+        .triangle-shape {
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            background-color: rgba(235, 87, 87, 0.1);
+            border: 1px solid rgba(235, 87, 87, 0.3);
+        }
+        
+        .circle-shape {
+            border-radius: 50%;
+            background-color: rgba(72, 187, 120, 0.1);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+        }
+        
+        .square-shape {
+            border-radius: 15%;
+            background-color: rgba(237, 137, 54, 0.1);
+            border: 1px solid rgba(237, 137, 54, 0.3);
+        }
+        
+        .pentagon-shape {
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            background-color: rgba(154, 109, 215, 0.1);
+            border: 1px solid rgba(154, 109, 215, 0.3);
+        }
+        
+        .engineer-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        
+        .online-indicator {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4ADE80;
+            border: 2px solid rgba(13, 32, 59, 0.8);
+            bottom: 0;
+            right: 5px;
+            z-index: 2;
+        }
+        
+        .engineer-name {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 技术众筹中心 */
+        .crowdfunding-projects {
+            margin-top: 30px;
+        }
+        
+        .project-tabs {
+            display: flex;
+            margin-top: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 5px;
+        }
+        
+        .project-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .project-tab {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 15px;
+            position: relative;
+        }
+        
+        .project-tab::after {
+            content: "";
+            width: 80px;
+            height: 3px;
+            background-color: transparent;
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        
+        .project-tab.active::after {
+            background-color: var(--accent-color);
+        }
+        
+        .orbit-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-bottom: 8px;
+        }
+        
+        .concept-orbit {
+            background-color: #3B82F6; /* 蓝色轨道 */
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        
+        .validation-orbit {
+            background-color: #EF4444; /* 红色轨道 */
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+        
+        .production-orbit {
+            background-color: #F59E0B; /* 金色轨道 */
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        
+        .project-tab-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        
+        .project-tab.active .project-tab-text {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        /* 项目卡片 */
+        .projects-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 15px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            gap: 15px;
+        }
+        
+        .projects-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .project-card {
+            flex: 0 0 85%;
+            scroll-snap-align: start;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-orbit-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+        
+        .project-concept {
+            background: linear-gradient(to right, #1E40AF, #3B82F6);
+        }
+        
+        .project-validation {
+            background: linear-gradient(to right, #991B1B, #EF4444);
+        }
+        
+        .project-production {
+            background: linear-gradient(to right, #B45309, #F59E0B);
+        }
+        
+        .project-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .project-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .project-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .project-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-bottom: 3px;
+        }
+        
+        .stat-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .project-funding {
+            margin-top: 10px;
+        }
+        
+        .funding-progress {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .funding-bar {
+            height: 100%;
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .funding-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        
+        .funding-raised {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .funding-goal {
+            color: var(--text-tertiary);
         }
         
         /* 帖子区域 */
@@ -209,12 +655,12 @@
         }
         
         .forum-tab.active {
-            background-color: #0ea5e9;
+            background-color: var(--accent-color);
             color: white;
         }
         
         .post-button {
-            background-color: #0ea5e9;
+            background-color: var(--accent-color);
             color: white;
             border-radius: 30px;
             padding: 8px 20px;
@@ -255,25 +701,25 @@
         
         .post-author {
             font-size: 14px;
-            color: #a3d6ff;
+            color: var(--text-secondary);
             margin-bottom: 2px;
         }
         
         .post-meta {
             font-size: 12px;
-            color: #576c8a;
+            color: var(--text-tertiary);
         }
         
         .post-title {
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #e6f2ff;
+            color: var(--text-primary);
         }
         
         .post-content {
             font-size: 14px;
-            color: #c4d4e8;
+            color: var(--text-secondary);
             line-height: 1.4;
             margin-bottom: 10px;
         }
@@ -284,34 +730,100 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: #0c1220;
+            background-color: var(--primary-dark);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: 55px;
+            padding: 8px 0;
             z-index: 1000;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--card-border);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #8a9ab8;
+            color: var(--text-secondary);
             padding: 5px 0;
             font-size: 10px;
             text-decoration: none;
-            flex: 1;
-            text-align: center;
+            transition: all 0.3s;
         }
         
         .nav-item.active {
-            color: #3282b8;
+            color: var(--accent-color);
+            position: relative;
+        }
+        
+        .nav-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
         }
         
         .nav-icon {
-            font-size: 20px;
-            margin-bottom: 3px;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        
+        /* AI任务舱助手 */
+        .ai-assistant {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(94, 23, 235, 0.5);
+            z-index: 1000;
+            animation: pulse-subtle 3s infinite;
+        }
+        
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(94, 23, 235, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 4px 20px rgba(94, 23, 235, 0.7); }
+        }
+        
+        .ai-assistant i {
+            font-size: 22px;
+        }
+        
+        /* 引力交互粒子效果 */
+        @keyframes particleFade {
+            0% { opacity: 0; transform: scale(0); }
+            20% { opacity: 1; transform: scale(1); }
+            80% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+        
+        .gravity-particle {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: particleFade 1.5s ease-out;
+            pointer-events: none;
+        }
+        
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
         }
     </style>
 </head>
@@ -322,6 +834,7 @@
         </div>
         
         <div class="dome-container">
+            <div class="grid-background"></div>
             <div class="dome-stars">
                 <!-- 添加30个星星 -->
                 <div class="dome-star" style="top: 30px; left: 10%; width: 2px; height: 2px; animation-delay: 0s;"></div>
@@ -361,6 +874,14 @@
             <div class="shooting-star shooting-star-2"></div>
             <div class="shooting-star shooting-star-3"></div>
             
+            <!-- 穹顶顶部圆环效果 -->
+            <div class="dome-circle">
+                <div class="dome-center">
+                    <div class="dome-center-text">NexusOrbital</div>
+                    <div>太空探索中心</div>
+                </div>
+            </div>
+            
             <!-- 实时数据显示 -->
             <div class="stats-container">
                 <div class="stat-box">
@@ -371,14 +892,131 @@
                 <div class="stat-box">
                     <div class="stat-name">月球基地</div>
                     <div class="stat-value">62%</div>
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: 62%;"></div>
+                    <div class="stat-progress">
+                        <div class="stat-progress-bar" style="width: 62%;"></div>
                     </div>
                 </div>
                 
                 <div class="stat-box">
                     <div class="stat-name">社区活跃度</div>
                     <div class="stat-value">89 <span class="stat-change">+0</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 社区内容区域 -->
+        <div class="forum-section">
+            <div class="section-header">
+                <div class="section-title">社区内容</div>
+            </div>
+            <div class="engineer-community">
+                <div class="engineers-grid">
+                    <div class="engineer-profile">
+                        <div class="engineer-avatar">
+                            <div class="avatar-shape hexagon-shape"></div>
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="工程师头像" class="engineer-img">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <div class="engineer-name">星际探险家</div>
+                    </div>
+                    <div class="engineer-profile">
+                        <div class="engineer-avatar">
+                            <div class="avatar-shape triangle-shape"></div>
+                            <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="工程师头像" class="engineer-img">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <div class="engineer-name">宇宙飞行员</div>
+                    </div>
+                    <div class="engineer-profile">
+                        <div class="engineer-avatar">
+                            <div class="avatar-shape circle-shape"></div>
+                            <img src="https://randomuser.me/api/portraits/men/34.jpg" alt="工程师头像" class="engineer-img">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <div class="engineer-name">太空工程师</div>
+                    </div>
+                    <div class="engineer-profile">
+                        <div class="engineer-avatar">
+                            <div class="avatar-shape square-shape"></div>
+                            <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="工程师头像" class="engineer-img">
+                            <div class="online-indicator"></div>
+                        </div>
+                        <div class="engineer-name">天体物理学家</div>
+                    </div>
+                </div>
+            </div>
+            <div class="crowdfunding-projects">
+                <div class="project-tabs">
+                    <div class="project-tab active">
+                        <div class="orbit-indicator concept-orbit"></div>
+                        <div class="project-tab-text">概念设计</div>
+                    </div>
+                    <div class="project-tab">
+                        <div class="orbit-indicator validation-orbit"></div>
+                        <div class="project-tab-text">验证阶段</div>
+                    </div>
+                    <div class="project-tab">
+                        <div class="orbit-indicator production-orbit"></div>
+                        <div class="project-tab-text">生产阶段</div>
+                    </div>
+                </div>
+                <div class="projects-container">
+                    <div class="project-card">
+                        <div class="project-orbit-indicator project-concept"></div>
+                        <div class="project-title">月球基地舱室设计</div>
+                        <div class="project-description">在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法...</div>
+                        <div class="project-stats">
+                            <div class="project-stat">
+                                <div class="stat-label">支持者</div>
+                                <div class="stat-number">120</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="stat-label">目标金额</div>
+                                <div class="stat-number">$10,000</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="stat-label">当前进度</div>
+                                <div class="stat-number">80%</div>
+                            </div>
+                        </div>
+                        <div class="project-funding">
+                            <div class="funding-progress">
+                                <div class="funding-bar" style="width: 80%;"></div>
+                            </div>
+                            <div class="funding-info">
+                                <div class="funding-raised">$8,000</div>
+                                <div class="funding-goal">$10,000</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-orbit-indicator project-validation"></div>
+                        <div class="project-title">太空探索飞行器设计</div>
+                        <div class="project-description">设计一款能够承载多名宇航员的太空探索飞行器...</div>
+                        <div class="project-stats">
+                            <div class="project-stat">
+                                <div class="stat-label">支持者</div>
+                                <div class="stat-number">150</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="stat-label">目标金额</div>
+                                <div class="stat-number">$15,000</div>
+                            </div>
+                            <div class="project-stat">
+                                <div class="stat-label">当前进度</div>
+                                <div class="stat-number">60%</div>
+                            </div>
+                        </div>
+                        <div class="project-funding">
+                            <div class="funding-progress">
+                                <div class="funding-bar" style="width: 60%;"></div>
+                            </div>
+                            <div class="funding-info">
+                                <div class="funding-raised">$9,000</div>
+                                <div class="funding-goal">$15,000</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -436,37 +1074,175 @@
         </a>
     </div>
     
+    <!-- AI任务舱助手 -->
+    <div class="ai-assistant">
+        <i class="fas fa-robot"></i>
+    </div>
+    
     <script>
         // 随机增加星星闪烁效果
         document.addEventListener('DOMContentLoaded', function() {
-            const stars = document.querySelectorAll('.dome-star');
-            stars.forEach(star => {
-                star.style.animationDuration = 2 + Math.random() * 3 + 's';
-            });
+            const dome = document.querySelector('.dome-container');
+            const numStars = 50;
             
-            // 设置底部导航交互
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(function(item) {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navItems.forEach(function(i) {
-                        i.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
+            for(let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                const size = Math.random() * 3; // 3-8px
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                dome.appendChild(star);
+            }
             
-            // 设置论坛标签切换
-            const forumTabs = document.querySelectorAll('.forum-tab');
-            forumTabs.forEach(function(tab) {
-                tab.addEventListener('click', function() {
-                    forumTabs.forEach(function(t) {
-                        t.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
+            // 添加流星效果
+            setInterval(() => {
+                if(Math.random() > 0.7) {
+                    const shootingStar = document.createElement('div');
+                    shootingStar.classList.add('shooting-star');
+                    shootingStar.style.left = `${Math.random() * 100}%`;
+                    shootingStar.style.top = `${Math.random() * 50}%`;
+                    shootingStar.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                    dome.appendChild(shootingStar);
+                    
+                    setTimeout(() => {
+                        dome.removeChild(shootingStar);
+                    }, 3000);
+                }
+            }, 2000);
+            
+            // 引力交互系统
+            initGravityInteraction();
+            
+            // 项目卡片选项卡功能
+            initProjectTabs();
         });
+        
+        // 引力交互效果
+        function initGravityInteraction() {
+            const interactiveElements = document.querySelectorAll('.engineer-avatar, .project-card, .ai-assistant, .nav-item');
+            const particleContainer = document.createElement('div');
+            particleContainer.classList.add('particle-container');
+            document.body.appendChild(particleContainer);
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    createGravityParticles(e.clientX, e.clientY, particleContainer);
+                    
+                    // 添加触感反馈
+                    if (window.navigator && window.navigator.vibrate) {
+                        window.navigator.vibrate(50); // 振动50毫秒
+                    }
+                    
+                    // 添加轻微位移动画
+                    this.classList.add('gravity-pulse');
+                    setTimeout(() => {
+                        this.classList.remove('gravity-pulse');
+                    }, 300);
+                });
+            });
+            
+            // 添加dome引力效果 - 当用户滑动时产生粒子效果
+            const dome = document.querySelector('.dome-container');
+            let isDomeInteracting = false;
+            let lastTouchY = 0;
+            
+            dome.addEventListener('touchstart', function(e) {
+                isDomeInteracting = true;
+                lastTouchY = e.touches[0].clientY;
+            });
+            
+            dome.addEventListener('touchmove', function(e) {
+                if (!isDomeInteracting) return;
+                
+                const currentY = e.touches[0].clientY;
+                const deltaY = Math.abs(currentY - lastTouchY);
+                
+                if (deltaY > 10) {
+                    createGravityParticles(e.touches[0].clientX, e.touches[0].clientY, particleContainer);
+                    lastTouchY = currentY;
+                }
+            });
+            
+            dome.addEventListener('touchend', function() {
+                isDomeInteracting = false;
+            });
+        }
+        
+        // 创建引力粒子
+        function createGravityParticles(x, y, container) {
+            const particleCount = 6 + Math.floor(Math.random() * 6); // 6-12粒子
+            const colors = ['#8A2BE2', '#4169E1', '#7B68EE', '#9370DB', '#6A5ACD'];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('gravity-particle');
+                
+                // 随机样式
+                const size = 3 + Math.random() * 5; // 3-8px
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const angle = Math.random() * Math.PI * 2; // 360度随机方向
+                const distance = 20 + Math.random() * 30; // 20-50px扩散距离
+                const duration = 600 + Math.random() * 1000; // 600-1600ms持续时间
+                
+                // 应用样式
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = color;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.opacity = '0';
+                particle.style.borderRadius = '50%';
+                particle.style.position = 'fixed';
+                particle.style.zIndex = '2000';
+                particle.style.pointerEvents = 'none';
+                particle.style.animation = `particleFade ${duration}ms ease-out`;
+                
+                // 设置移动轨迹
+                const destinationX = x + Math.cos(angle) * distance;
+                const destinationY = y + Math.sin(angle) * distance;
+                
+                // 应用变换
+                particle.style.transform = 'scale(0)';
+                
+                // 添加到容器
+                container.appendChild(particle);
+                
+                // 设置动画
+                setTimeout(() => {
+                    particle.style.transform = 'scale(1)';
+                    particle.style.opacity = '1';
+                    particle.style.left = `${destinationX}px`;
+                    particle.style.top = `${destinationY}px`;
+                    
+                    // 动画结束后移除粒子
+                    setTimeout(() => {
+                        container.removeChild(particle);
+                    }, duration);
+                }, 10);
+            }
+        }
+        
+        // 项目选项卡切换
+        function initProjectTabs() {
+            const tabs = document.querySelectorAll('.project-tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有active类
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前active类
+                    this.classList.add('active');
+                    
+                    // 这里可以实现实际的项目切换逻辑
+                    // 例如根据选项卡显示不同阶段的项目
+                });
+            });
+        }
     </script>
+    <!-- 添加Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </body>
 </html>
