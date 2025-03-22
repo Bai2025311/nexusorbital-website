@@ -57,7 +57,7 @@
             left: 0;
             overflow: hidden;
             z-index: 1;
-            background: linear-gradient(to bottom, #000000, #090020);
+            background: linear-gradient(to bottom, #000000, #0a001d);
         }
         
         .dome-svg-container {
@@ -66,7 +66,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            z-index: 1;
+            z-index: 3;
         }
         
         .dome-svg-container svg {
@@ -82,6 +82,7 @@
             height: 100%;
             top: 0;
             left: 0;
+            z-index: 2;
         }
         
         .dome-star {
@@ -104,56 +105,53 @@
             padding: 12px 15px;
             position: relative;
             z-index: 10;
-            margin-top: 180px;
+            margin-top: 160px;
         }
         
         .stat-box {
-            background-color: rgba(13, 32, 59, 0.8);
-            border-radius: 16px;
-            padding: 15px;
+            background-color: rgba(27, 38, 68, 0.95);
+            border-radius: 12px;
+            padding: 12px;
             width: 30%;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(78, 81, 158, 0.3);
-            backdrop-filter: blur(8px);
-            transition: transform 0.3s ease;
-        }
-        
-        .stat-box:active {
-            transform: scale(0.95);
+            border: 1px solid rgba(41, 66, 119, 0.4);
         }
         
         .stat-box-title {
             color: #a0aec0;
             font-size: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
+            text-align: center;
         }
         
         .stat-box-value {
             color: white;
             font-size: 20px;
             font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .stat-progress {
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin: 5px 0;
-        }
-        
-        .stat-progress-bar {
-            height: 100%;
-            border-radius: 3px;
-            background: linear-gradient(to right, #3B82F6, #60A5FA);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .stat-change {
             font-size: 14px;
             color: #4ade80;
-            margin-left: 2px;
+            margin-left: 5px;
+        }
+        
+        .stat-progress {
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 5px 0 0 0;
+        }
+        
+        .stat-progress-bar {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(to right, #3B82F6, #60A5FA);
         }
         
         /* 筛选栏 */
@@ -846,12 +844,12 @@
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                         <defs>
                             <linearGradient id="dome-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#11002f" />
-                                <stop offset="60%" stop-color="#470076" />
-                                <stop offset="100%" stop-color="#6a0091" />
+                                <stop offset="0%" stop-color="#190a3d" />
+                                <stop offset="80%" stop-color="#3b0f6b" />
+                                <stop offset="100%" stop-color="#4a106b" />
                             </linearGradient>
                         </defs>
-                        <path id="dome-path" d="M0,100 C20,55 80,55 100,100 L100,100 L0,100 Z" fill="url(#dome-gradient)" opacity="0.8"></path>
+                        <path id="dome-path" d="M0,100 C35,90 65,90 100,100" fill="url(#dome-gradient)" opacity="0.95"></path>
                     </svg>
                 </div>
             </div>
@@ -860,26 +858,18 @@
             <div class="stats-container">
                 <div class="stat-box">
                     <div class="stat-box-title">氧气浓度</div>
-                    <div class="stat-box-value">98.4%</div>
-                    <div class="stat-progress">
-                        <div class="stat-progress-bar" style="width: 98.4%;"></div>
-                    </div>
-                    <div class="stat-change">+0.1%</div>
+                    <div class="stat-box-value">98.4% <span class="stat-change">+0.1%</span></div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-box-title">月球基地</div>
                     <div class="stat-box-value">62%</div>
                     <div class="stat-progress">
-                        <div class="stat-progress-bar" style="width: 62%; background: linear-gradient(to right, #4361EE, #7209B7);"></div>
+                        <div class="stat-progress-bar" style="width: 62%; background: linear-gradient(to right, #4361EE, #3f8efc);"></div>
                     </div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-box-title">社区活跃度</div>
-                    <div class="stat-box-value">89</div>
-                    <div class="stat-progress">
-                        <div class="stat-progress-bar" style="width: 89%; background: linear-gradient(to right, #3A86FF, #4CC9F0);"></div>
-                    </div>
-                    <div class="stat-change">+0</div>
+                    <div class="stat-box-value">89 <span class="stat-change">+0</span></div>
                 </div>
             </div>
         </div>
