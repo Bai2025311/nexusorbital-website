@@ -60,24 +60,17 @@
             50% { opacity: 0.8; }
         }
         
-        /* 穹顶区域 - 完全匹配图片 */
+        /* 穹顶区域 - 完全匹配新截图 */
         .dome-area {
             position: relative;
-            height: 350px;
-            background: linear-gradient(to bottom, #000000 0%, #1a0a3d 40%, #3b0f6b 100%);
+            height: 450px;
+            background: linear-gradient(to bottom, #000000 0%, #0c0521 40%, #2a0a50 80%, #3b0f6b 100%);
             overflow: hidden;
         }
         
-        /* 穹顶圆弧效果 */
+        /* 移除明显的弧形，改为平滑渐变 */
         .dome-arc {
-            position: absolute;
-            bottom: 0;
-            left: -50%;
-            width: 200%;
-            height: 180px;
-            background: linear-gradient(to top, #3b0f6b 0%, rgba(59, 15, 107, 0.8) 40%, rgba(25, 9, 65, 0) 100%);
-            border-radius: 50% 50% 0 0;
-            z-index: 3;
+            display: none;
         }
         
         /* 穹顶星星 */
@@ -109,7 +102,7 @@
             justify-content: space-between;
             padding: 0 15px;
             position: absolute;
-            bottom: 30px;
+            bottom: 80px;
             left: 0;
             right: 0;
             z-index: 10;
@@ -318,7 +311,6 @@
         <!-- 穹顶区域 -->
         <div class="dome-area">
             <div class="dome-stars" id="domeStars"></div>
-            <div class="dome-arc"></div>
             
             <!-- 数据卡片 -->
             <div class="stats-container">
