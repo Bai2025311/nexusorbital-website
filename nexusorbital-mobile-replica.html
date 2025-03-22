@@ -3,9 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>NexusOrbital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=20250322">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css?v=20250322" rel="stylesheet">
+    <script>
+        // 强制刷新，防止缓存问题
+        window.onload = function() {
+            if (!window.location.hash) {
+                window.location = window.location + '#loaded';
+                window.location.reload();
+            }
+        }
+    </script>
     <style>
         /* 基础样式 */
         * {
@@ -15,13 +27,13 @@
         }
         
         body {
-            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
-            color: #fff;
-            background-color: #0a0e17;
-            padding: 0;
-            margin: 0;
-            overflow-x: hidden;
-            padding-bottom: 55px; /* 为底部导航留出空间 */
+            font-family: 'Roboto', 'Noto Sans SC', sans-serif !important;
+            color: #fff !important;
+            background-color: #0a0e17 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow-x: hidden !important;
+            padding-bottom: 60px !important; /* 为底部导航留出空间 */
         }
         
         /* 星空背景 */
@@ -422,9 +434,10 @@
             position: relative;
             overflow: visible;
             height: 320px;
-            background: linear-gradient(to bottom, #2D033B, #0F4C75);
+            background: linear-gradient(to bottom, #2D033B, #0F4C75) !important;
             border-bottom-left-radius: 50% 20%;
             border-bottom-right-radius: 50% 20%;
+            margin-bottom: 20px;
         }
         
         /* 穹顶SVG区域 */
@@ -439,7 +452,7 @@
         
         #dome-path {
             fill: url(#dome-gradient);
-            filter: drop-shadow(0 0 5px rgba(45, 3, 59, 0.5));
+            stroke: none;
         }
         
         .dome-svg-container svg {
@@ -486,21 +499,23 @@
         
         /* 统计数据卡片 */
         .stats-container {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 15px;
-            margin-top: 160px;
-            position: relative;
-            z-index: 2;
+            display: flex !important;
+            justify-content: space-between !important;
+            padding: 10px 15px !important;
+            margin-top: 160px !important;
+            position: relative !important;
+            z-index: 2 !important;
         }
         
         .stat-box {
-            background: rgba(27, 38, 59, 0.7);
-            border-radius: 15px;
-            padding: 15px;
-            width: 30%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
+            background: rgba(27, 38, 59, 0.7) !important;
+            border-radius: 15px !important;
+            padding: 15px !important;
+            width: 30% !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+            backdrop-filter: blur(5px) !important;
+            -webkit-backdrop-filter: blur(5px) !important;
+            text-align: center !important;
         }
         
         .stat-name {
@@ -597,44 +612,50 @@
         /* 添加流星效果 */
         .shooting-star {
             position: absolute;
+            width: 100px;
             height: 2px;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
-            animation: shooting 3s linear infinite;
-            z-index: 1;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
+            box-shadow: 0 0 3px #fff;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 5;
         }
         
         .shooting-star-1 {
-            top: 20%;
-            left: 10%;
-            width: 100px;
-            transform: rotate(45deg);
-            animation-delay: 1s;
+            top: 50px;
+            left: -100px;
+            transform: rotate(15deg);
+            animation: shootingStar 3s linear 1s infinite;
         }
         
         .shooting-star-2 {
-            top: 30%;
-            left: 60%;
-            width: 80px;
-            transform: rotate(25deg);
-            animation-delay: 4s;
+            top: 80px;
+            left: -100px;
+            transform: rotate(20deg);
+            animation: shootingStar 4s linear 3s infinite;
         }
         
         .shooting-star-3 {
-            top: 10%;
-            left: 40%;
-            width: 120px;
-            transform: rotate(65deg);
-            animation-delay: 7s;
+            top: 30px;
+            left: -100px;
+            transform: rotate(25deg);
+            animation: shootingStar 3.5s linear 5s infinite;
         }
         
-        @keyframes shooting {
+        @keyframes shootingStar {
             0% {
-                transform: translateX(0) translateY(0) rotate(45deg);
+                opacity: 0;
+                left: -100px;
+            }
+            10% {
+                opacity: 1;
+            }
+            20% {
                 opacity: 1;
             }
             100% {
-                transform: translateX(300px) translateY(300px) rotate(45deg);
                 opacity: 0;
+                left: 120%;
             }
         }
         
@@ -659,8 +680,7 @@
         }
         
         .ai-assistant:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 25px rgba(74, 157, 255, 0.9);
+            transform: scale(0.9);
         }
         
         @keyframes float {
@@ -1298,6 +1318,85 @@
             border-radius: 10px;
             padding: 20px;
         }
+        
+        /* 添加论坛帖子区域 */
+        .forum-section {
+            padding: 15px;
+            margin-top: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .forum-tabs {
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+        }
+        
+        .forum-tab {
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            white-space: nowrap;
+            margin-right: 10px;
+            background-color: rgba(20, 30, 50, 0.6);
+        }
+        
+        .forum-tab.active {
+            background-color: #0ea5e9;
+            color: white;
+        }
+        
+        .forum-post {
+            background-color: #0c1729;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .post-info {
+            flex: 1;
+        }
+        
+        .post-author {
+            font-size: 14px;
+            color: #a3d6ff;
+            margin-bottom: 2px;
+        }
+        
+        .post-meta {
+            font-size: 12px;
+            color: #576c8a;
+        }
+        
+        .post-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #e6f2ff;
+        }
+        
+        .post-content {
+            font-size: 14px;
+            color: #c4d4e8;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -1566,6 +1665,31 @@
                 <p style="font-size: 12px; color: #a3d6ff;">
                     3位工程师正在协作 · 最后更新: 28分钟前
                 </p>
+            </div>
+        </div>
+        
+        <!-- 帖子区域 -->
+        <div class="forum-section">
+            <div class="forum-tabs">
+                <div class="forum-tab active">全部</div>
+                <div class="forum-tab">推荐</div>
+                <div class="forum-tab">热门</div>
+                <div class="forum-tab">最新</div>
+                <div class="forum-tab">发表帖子</div>
+            </div>
+            
+            <div class="forum-post">
+                <div class="post-header">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="用户头像" class="post-avatar">
+                    <div class="post-info">
+                        <div class="post-author">星际探险家</div>
+                        <div class="post-meta">2小时前 · 来自 太空人居</div>
+                    </div>
+                </div>
+                <div class="post-title">月球基地舱室设计：如何在有限空间创造舒适感？</div>
+                <div class="post-content">
+                    在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法。 首先，多功能家具是关键，比如可以变形为工作台的床铺; 其次，色彩心理学在太空环境中尤为重要，蓝色和绿色能缓解压力; 最后，模块化设计...
+                </div>
             </div>
         </div>
         
@@ -1920,9 +2044,21 @@
             // 设置底部导航交互
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(function(item) {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
                     navItems.forEach(function(i) {
                         i.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // 设置论坛标签切换
+            const forumTabs = document.querySelectorAll('.forum-tab');
+            forumTabs.forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    forumTabs.forEach(function(t) {
+                        t.classList.remove('active');
                     });
                     this.classList.add('active');
                 });
