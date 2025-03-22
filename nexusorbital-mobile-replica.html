@@ -92,11 +92,22 @@
         .dome-container {
             position: relative;
             height: 380px;
-            background: linear-gradient(to bottom, var(--primary-space), var(--primary-blue));
-            border-bottom-left-radius: 50% 20%;
-            border-bottom-right-radius: 50% 20%;
+            background: linear-gradient(180deg, #000000 0%, #190941 50%, #3b0f6b 100%);
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 圆弧效果 */
+        .dome-container::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: -25%;
+            width: 150%;
+            height: 140px;
+            background: linear-gradient(to top, #3b0f6b 0%, rgba(59, 15, 107, 0.7) 40%, rgba(25, 9, 65, 0) 100%);
+            border-radius: 50% 50% 0 0;
+            z-index: 3;
         }
         
         /* 星星效果 */
@@ -729,48 +740,35 @@
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            background-color: var(--primary-dark);
+            right: 0;
+            height: 55px;
+            background-color: rgba(15, 23, 42, 0.95);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 8px 0;
+            border-top: 1px solid rgba(42, 48, 66, 0.8);
             z-index: 1000;
-            border-top: 1px solid var(--card-border);
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+            padding: 5px 0;
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--text-secondary);
-            padding: 5px 0;
-            font-size: 10px;
+            justify-content: center;
+            color: #94A3B8;
             text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .nav-item.active {
-            color: var(--accent-color);
-            position: relative;
-        }
-        
-        .nav-item.active::after {
-            content: "";
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
+            width: 20%;
+            font-size: 10px;
         }
         
         .nav-icon {
-            font-size: 22px;
-            margin-bottom: 4px;
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        
+        .nav-item.active {
+            color: #3B82F6;
         }
         
         /* AI任务舱助手 */
@@ -1105,15 +1103,15 @@
     
     <!-- 底部导航栏 -->
     <div class="bottom-nav">
-        <a href="#" class="nav-item active">
-            <i class="nav-icon fas fa-cog"></i>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-compass"></i>
             <span>控制舱</span>
         </a>
         <a href="#" class="nav-item">
             <i class="nav-icon fas fa-dollar-sign"></i>
             <span>星海计划</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item active">
             <i class="nav-icon fas fa-users"></i>
             <span>星环会议</span>
         </a>
