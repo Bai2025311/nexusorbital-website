@@ -276,6 +276,399 @@
             margin: 0;
         }
         
+        /* 工程师社区 - 三维身份矩阵 */
+        .engineer-community {
+            margin-top: 20px;
+            padding: 0 15px;
+        }
+        
+        .engineers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .engineer-profile {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .engineer-avatar {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .avatar-shape {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .hexagon-shape {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background-color: rgba(62, 152, 199, 0.1);
+            border: 1px solid rgba(62, 152, 199, 0.3);
+        }
+        
+        .triangle-shape {
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            background-color: rgba(235, 87, 87, 0.1);
+            border: 1px solid rgba(235, 87, 87, 0.3);
+        }
+        
+        .circle-shape {
+            border-radius: 50%;
+            background-color: rgba(72, 187, 120, 0.1);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+        }
+        
+        .square-shape {
+            border-radius: 15%;
+            background-color: rgba(237, 137, 54, 0.1);
+            border: 1px solid rgba(237, 137, 54, 0.3);
+        }
+        
+        .pentagon-shape {
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            background-color: rgba(154, 109, 215, 0.1);
+            border: 1px solid rgba(154, 109, 215, 0.3);
+        }
+        
+        .engineer-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        
+        .online-indicator {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4ADE80;
+            border: 2px solid rgba(13, 32, 59, 0.8);
+            bottom: 0;
+            right: 5px;
+            z-index: 2;
+        }
+        
+        .engineer-name {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 技术众筹中心 */
+        .crowdfunding-projects {
+            margin-top: 30px;
+            padding: 0 15px;
+        }
+        
+        .project-tabs {
+            display: flex;
+            margin-top: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 5px;
+        }
+        
+        .project-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .project-tab {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 15px;
+            position: relative;
+        }
+        
+        .project-tab::after {
+            content: "";
+            width: 80px;
+            height: 3px;
+            background-color: transparent;
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        
+        .project-tab.active::after {
+            background-color: #3498db;
+        }
+        
+        .orbit-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-bottom: 8px;
+        }
+        
+        .concept-orbit {
+            background-color: #3B82F6; /* 蓝色轨道 */
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        
+        .validation-orbit {
+            background-color: #EF4444; /* 红色轨道 */
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+        
+        .production-orbit {
+            background-color: #F59E0B; /* 金色轨道 */
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        
+        .project-tab-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.5px;
+        }
+        
+        .project-tab.active .project-tab-text {
+            color: white;
+            font-weight: 500;
+        }
+        
+        /* 项目卡片 */
+        .projects-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 15px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            gap: 15px;
+        }
+        
+        .projects-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .project-card {
+            flex: 0 0 85%;
+            scroll-snap-align: start;
+            background: rgba(27, 38, 59, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-orbit-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+        
+        .project-concept {
+            background: linear-gradient(to right, #1E40AF, #3B82F6);
+        }
+        
+        .project-validation {
+            background: linear-gradient(to right, #991B1B, #EF4444);
+        }
+        
+        .project-production {
+            background: linear-gradient(to right, #B45309, #F59E0B);
+        }
+        
+        .project-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .project-description {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .project-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .project-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 3px;
+        }
+        
+        .stat-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .project-funding {
+            margin-top: 10px;
+        }
+        
+        .funding-progress {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .funding-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        .funding-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        
+        .funding-raised {
+            color: white;
+            font-weight: 500;
+        }
+        
+        .funding-goal {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* AI任务舱助手 */
+        .ai-assistant {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #3498db, #1a5276);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(106, 90, 205, 0.4);
+            z-index: 100;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .ai-assistant:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 8px rgba(106, 90, 205, 0.6);
+        }
+        
+        .ai-assistant i {
+            color: white;
+            font-size: 20px;
+        }
+        
+        .pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(106, 90, 205, 0.4);
+            opacity: 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        /* 工程师社区头像样式增强 */
+        .engineer-avatar {
+            transition: transform 0.3s ease;
+        }
+        
+        .engineer-avatar:active {
+            transform: scale(0.9);
+        }
+        
+        /* 项目卡片交互样式 */
+        .project-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* 底部导航项目交互 */
+        .nav-item {
+            transition: transform 0.2s ease;
+        }
+        
+        .nav-item:active {
+            transform: scale(0.9);
+        }
+        
+        /* 响应式优化 */
+        @media screen and (max-width: 360px) {
+            .engineers-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            
+            .engineer-avatar {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .engineer-img {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .project-card {
+                flex: 0 0 90%;
+            }
+        }
+        
         /* 底部导航栏 */
         .bottom-nav {
             position: fixed;
@@ -321,6 +714,110 @@
             font-size: 14px;
             display: none;
             z-index: 1000;
+        }
+        
+        /* 引力交互效果样式 */
+        .gravity-pulse {
+            animation: gravityPulse 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes gravityPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes particleFade {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+        
+        .gravity-particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2000;
+            transition: transform 0.1s ease, opacity 0.6s ease, left 0.6s ease, top 0.6s ease;
+        }
+        
+        /* 星空穹顶增强样式 */
+        .dome-path {
+            fill: url(#dome-gradient);
+            transition: opacity 0.5s ease;
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        
+        /* AI助手样式 */
+        .ai-assistant {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #3a4db3, #6a5acd);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(106, 90, 205, 0.4);
+            z-index: 100;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .ai-assistant:active {
+            transform: scale(0.9);
+            box-shadow: 0 2px 8px rgba(106, 90, 205, 0.6);
+        }
+        
+        .ai-assistant i {
+            color: white;
+            font-size: 20px;
+        }
+        
+        .pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(106, 90, 205, 0.4);
+            opacity: 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -434,7 +931,119 @@
                 </div>
             </div>
         </div>
-
+        
+        <!-- 工程师社区 -->
+        <div class="engineer-community">
+            <div class="engineers-grid">
+                <div class="engineer-profile">
+                    <div class="engineer-avatar">
+                        <div class="avatar-shape hexagon-shape"></div>
+                        <img class="engineer-img" src="https://via.placeholder.com/50" alt="工程师头像">
+                    </div>
+                    <div class="online-indicator"></div>
+                    <p class="engineer-name">星际工程师</p>
+                </div>
+                <div class="engineer-profile">
+                    <div class="engineer-avatar">
+                        <div class="avatar-shape triangle-shape"></div>
+                        <img class="engineer-img" src="https://via.placeholder.com/50" alt="工程师头像">
+                    </div>
+                    <div class="online-indicator"></div>
+                    <p class="engineer-name">宇航工程师</p>
+                </div>
+                <div class="engineer-profile">
+                    <div class="engineer-avatar">
+                        <div class="avatar-shape circle-shape"></div>
+                        <img class="engineer-img" src="https://via.placeholder.com/50" alt="工程师头像">
+                    </div>
+                    <div class="online-indicator"></div>
+                    <p class="engineer-name">机械工程师</p>
+                </div>
+                <div class="engineer-profile">
+                    <div class="engineer-avatar">
+                        <div class="avatar-shape square-shape"></div>
+                        <img class="engineer-img" src="https://via.placeholder.com/50" alt="工程师头像">
+                    </div>
+                    <div class="online-indicator"></div>
+                    <p class="engineer-name">电子工程师</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 技术众筹中心 -->
+        <div class="crowdfunding-projects">
+            <div class="project-tabs">
+                <div class="project-tab active">
+                    <div class="orbit-indicator concept-orbit"></div>
+                    <p class="project-tab-text">概念阶段</p>
+                </div>
+                <div class="project-tab">
+                    <div class="orbit-indicator validation-orbit"></div>
+                    <p class="project-tab-text">验证阶段</p>
+                </div>
+                <div class="project-tab">
+                    <div class="orbit-indicator production-orbit"></div>
+                    <p class="project-tab-text">生产阶段</p>
+                </div>
+            </div>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-orbit-indicator project-concept"></div>
+                    <p class="project-title">月球基地舱室设计</p>
+                    <p class="project-description">在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法...</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <p class="stat-label">支持者</p>
+                            <p class="stat-number">120</p>
+                        </div>
+                        <div class="project-stat">
+                            <p class="stat-label">目标金额</p>
+                            <p class="stat-number">$10,000</p>
+                        </div>
+                    </div>
+                    <div class="project-funding">
+                        <div class="funding-progress">
+                            <div class="funding-bar" style="width: 60%;"></div>
+                        </div>
+                        <div class="funding-info">
+                            <p class="funding-raised">$6,000</p>
+                            <p class="funding-goal">$10,000</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-orbit-indicator project-validation"></div>
+                    <p class="project-title">太空探索无人机</p>
+                    <p class="project-description">设计和制造一架能够在太空环境中飞行的无人机...</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <p class="stat-label">支持者</p>
+                            <p class="stat-number">80</p>
+                        </div>
+                        <div class="project-stat">
+                            <p class="stat-label">目标金额</p>
+                            <p class="stat-number">$5,000</p>
+                        </div>
+                    </div>
+                    <div class="project-funding">
+                        <div class="funding-progress">
+                            <div class="funding-bar" style="width: 40%;"></div>
+                        </div>
+                        <div class="funding-info">
+                            <p class="funding-raised">$2,000</p>
+                            <p class="funding-goal">$5,000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI任务舱助手 -->
+        <div class="ai-assistant">
+            <div class="pulse"></div>
+            <i class="fas fa-robot"></i>
+        </div>
+        
         <!-- 底部导航栏 -->
         <div class="bottom-nav">
             <div class="nav-item">
@@ -461,131 +1070,254 @@
     </div>
 
     <script>
-        // Toast提示
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
+        // 引力交互效果函数
+        function initGravityInteraction() {
+            const interactiveElements = document.querySelectorAll('.engineer-avatar, .project-card, .ai-assistant, .filter-button, .nav-item');
+            const particleContainer = document.createElement('div');
+            particleContainer.classList.add('particle-container');
+            document.body.appendChild(particleContainer);
             
-            setTimeout(() => {
-                toast.classList.add('show');
-                
-                setTimeout(() => {
-                    toast.classList.remove('show');
+            interactiveElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    createGravityParticles(e.clientX, e.clientY, particleContainer);
+                    
+                    // 添加触感反馈
+                    if (window.navigator && window.navigator.vibrate) {
+                        window.navigator.vibrate(50); // 振动50毫秒
+                    }
+                    
+                    // 添加轻微位移动画
+                    this.classList.add('gravity-pulse');
                     setTimeout(() => {
-                        document.body.removeChild(toast);
+                        this.classList.remove('gravity-pulse');
                     }, 300);
-                }, 3000);
-            }, 100);
+                });
+            });
+            
+            // 添加dome引力效果 - 当用户滑动时产生粒子效果
+            const dome = document.querySelector('.dome-container');
+            let isDomeInteracting = false;
+            let lastTouchY = 0;
+            
+            dome.addEventListener('touchstart', function(e) {
+                isDomeInteracting = true;
+                lastTouchY = e.touches[0].clientY;
+            });
+            
+            dome.addEventListener('touchmove', function(e) {
+                if (!isDomeInteracting) return;
+                
+                const currentY = e.touches[0].clientY;
+                const deltaY = Math.abs(currentY - lastTouchY);
+                
+                if (deltaY > 10) {
+                    createGravityParticles(e.touches[0].clientX, e.touches[0].clientY, particleContainer);
+                    lastTouchY = currentY;
+                }
+            });
+            
+            dome.addEventListener('touchend', function() {
+                isDomeInteracting = false;
+            });
         }
         
-        // 检查是否登录
-        function isLoggedIn() {
-            return localStorage.getItem('auth_token') !== null;
-        }
-        
-        // 处理操作按钮点击
-        function handleActionClick(action) {
-            if (!isLoggedIn()) {
-                showToast(`请先登录后再${getActionMessage(action)}，点击右上角菜单进入登录页面`, 'warning');
-                return false;
+        // 创建引力粒子
+        function createGravityParticles(x, y, container) {
+            const particleCount = 6 + Math.floor(Math.random() * 6); // 6-12粒子
+            const colors = ['#8A2BE2', '#4169E1', '#7B68EE', '#9370DB', '#6A5ACD', '#3498db'];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('gravity-particle');
+                
+                // 随机样式
+                const size = 3 + Math.random() * 5; // 3-8px
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const angle = Math.random() * Math.PI * 2; // 360度随机方向
+                const distance = 20 + Math.random() * 30; // 20-50px扩散距离
+                const duration = 600 + Math.random() * 1000; // 600-1600ms持续时间
+                
+                // 应用样式
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = color;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.opacity = '0';
+                particle.style.borderRadius = '50%';
+                particle.style.position = 'fixed';
+                particle.style.zIndex = '2000';
+                particle.style.pointerEvents = 'none';
+                particle.style.animation = `particleFade ${duration}ms ease-out`;
+                
+                // 设置移动轨迹
+                const destinationX = x + Math.cos(angle) * distance;
+                const destinationY = y + Math.sin(angle) * distance;
+                
+                // 应用变换
+                particle.style.transform = 'scale(0)';
+                
+                // 添加到容器
+                container.appendChild(particle);
+                
+                // 设置动画
+                setTimeout(() => {
+                    particle.style.transform = 'scale(1)';
+                    particle.style.opacity = '1';
+                    particle.style.left = `${destinationX}px`;
+                    particle.style.top = `${destinationY}px`;
+                    
+                    // 动画结束后移除粒子
+                    setTimeout(() => {
+                        container.removeChild(particle);
+                    }, duration);
+                }, 10);
             }
-            return true;
         }
         
-        // 获取操作对应的消息
-        function getActionMessage(action) {
-            switch(action) {
-                case 'like': return '点赞';
-                case 'comment': return '评论';
-                case 'book': return '收藏';
-                case 'share': return '分享';
-                default: return '操作';
-            }
+        // 项目选项卡切换
+        function initProjectTabs() {
+            const tabs = document.querySelectorAll('.project-tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有active类
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前active类
+                    this.classList.add('active');
+                    
+                    // 这里可以实现实际的项目切换逻辑
+                    // 例如根据选项卡显示不同阶段的项目
+                });
+            });
         }
         
-        // 创建方案
-        function showPostModal() {
-            if (!isLoggedIn()) {
-                showToast('请先登录后再发表方案，点击右上角菜单进入登录页面', 'warning');
-                return false;
-            }
-            // 这里应该展示发帖弹窗 
-            showToast('方案发布功能已准备就绪', 'success');
-            return true;
-        }
-        
-        // 添加事件监听器
+        // 页面加载完成后初始化交互效果
         document.addEventListener('DOMContentLoaded', function() {
+            // 现有功能初始化
+            showToast('欢迎回到NexusOrbital社区', 'info');
+            
             // 为所有交互按钮添加事件监听
             document.querySelectorAll('.action-button').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
                     const action = this.getAttribute('data-action');
                     handleActionClick(action);
                 });
             });
             
-            // 发表帖子按钮
+            // 为发帖按钮添加事件监听
             document.querySelector('.new-post-button').addEventListener('click', function() {
                 showPostModal();
             });
             
-            // 过滤按钮切换效果
-            document.querySelectorAll('.filter-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-button').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
-
-            // 随机生成大量星星
-            function createStars() {
-                const starContainer = document.querySelector('.stars');
-                for (let i = 0; i < 150; i++) {
-                    const star = document.createElement('div');
-                    star.classList.add('star');
-                    star.style.position = 'absolute';
-                    star.style.backgroundColor = 'white';
-                    star.style.borderRadius = '50%';
-                    star.style.width = Math.random() > 0.8 ? '2px' : '1px';
-                    star.style.height = star.style.width;
-                    star.style.top = `${Math.random() * 100}%`;
-                    star.style.left = `${Math.random() * 100}%`;
-                    star.style.animation = `twinkle ${3 + Math.random() * 2}s ease-in-out infinite`;
-                    star.style.animationDelay = `${Math.random() * 5}s`;
-                    star.style.opacity = '0.8';
-                    starContainer.appendChild(star);
-                }
-            }
-            
+            // 初始化星空背景
             createStars();
+            
+            // 初始化引力交互效果
+            initGravityInteraction();
+            
+            // 初始化项目选项卡
+            initProjectTabs();
             
             // 确保穹顶渐变正确渲染
             setTimeout(function() {
-                const domePath = document.getElementById('dome-path');
-                if (domePath) {
-                    domePath.style.fill = 'url(#dome-gradient)';
-                }
-                
-                // 添加额外的随机星星到穹顶区域
-                const domeStarsContainer = document.getElementById('domeStars');
-                if (domeStarsContainer) {
-                    for (let i = 0; i < 20; i++) {
-                        const star = document.createElement('div');
-                        star.classList.add('dome-star');
-                        star.style.top = `${Math.random() * 150}px`;
-                        star.style.left = `${Math.random() * 100}%`;
-                        star.style.width = Math.random() > 0.8 ? '2px' : '1px';
-                        star.style.height = star.style.width;
-                        star.style.animationDelay = `${Math.random() * 5}s`;
-                        domeStarsContainer.appendChild(star);
-                    }
-                }
+                const domeElements = document.querySelectorAll('.dome-path, .data-card');
+                domeElements.forEach(el => {
+                    el.style.opacity = '1';
+                });
             }, 100);
         });
+        
+        // 创建星空背景
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机位置
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                
+                // 随机大小
+                const size = Math.random() * 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // 随机闪烁动画
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Toast提示
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // 显示动画
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // 3秒后消失
+            setTimeout(() => {
+                toast.classList.remove('show');
+                
+                // 动画结束后移除元素
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+        
+        // 检查是否登录
+        function isLoggedIn() {
+            // 模拟检查登录状态
+            return true;
+        }
+        
+        // 处理操作按钮点击
+        function handleActionClick(action) {
+            if (!isLoggedIn()) {
+                showToast('请先登录', 'error');
+                return;
+            }
+            
+            // 显示操作消息
+            showToast(getActionMessage(action), 'success');
+        }
+        
+        // 获取操作对应的消息
+        function getActionMessage(action) {
+            const messages = {
+                'like': '已点赞',
+                'favorite': '已收藏',
+                'comment': '添加评论',
+                'share': '已分享'
+            };
+            
+            return messages[action] || '操作成功';
+        }
+        
+        // 显示发帖模态框
+        function showPostModal() {
+            if (!isLoggedIn()) {
+                showToast('请先登录', 'error');
+                return;
+            }
+            
+            // 这里可以添加显示发帖模态框的代码
+            showToast('发帖功能即将上线', 'info');
+        }
     </script>
 </body>
 </html>
