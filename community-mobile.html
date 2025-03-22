@@ -29,27 +29,84 @@
             height: 100%;
             z-index: -2;
             background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
+                radial-gradient(2px 2px at 20px 30px, #eaeaea, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 40px 70px, #f7f7f7, rgba(0, 0, 0, 0)),
+                radial-gradient(1px 1px at 90px 40px, #f7f7f7, rgba(0, 0, 0, 0)),
+                radial-gradient(1.5px 1.5px at 160px 120px, #ffffff, rgba(0, 0, 0, 0));
             background-repeat: repeat;
             background-size: 200px 200px;
-            opacity: 1;
-            pointer-events: none;
+        }
+        
+        /* 流星效果 */
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
+            box-shadow: 0 0 5px #fff;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 5;
+        }
+        
+        .shooting-star-1 {
+            top: 80px;
+            left: -100px;
+            transform: rotate(15deg);
+            animation: shootingStar 5s linear 1s infinite;
+        }
+        
+        .shooting-star-2 {
+            top: 150px;
+            left: -100px;
+            transform: rotate(20deg);
+            animation: shootingStar 7s linear 3s infinite;
+        }
+        
+        @keyframes shootingStar {
+            0% {
+                opacity: 0;
+                left: -100px;
+            }
+            10% {
+                opacity: 1;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                left: 120%;
+            }
+        }
+        
+        /* 穹顶容器 */
+        .dome-container {
+            position: relative;
+            height: 340px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .dome-svg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .dome-svg-container svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .dome-path {
+            fill: url(#dome-gradient);
         }
         
         /* 穹顶效果 */
-        .dome-container {
-            position: relative;
-            overflow: visible;
-            padding-bottom: 10px;
-            margin-bottom: 5px;
-            height: 290px;
-            z-index: 0;
-        }
-        
         .dome-svg-container {
             position: absolute;
             width: 100%;
@@ -78,29 +135,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-            pointer-events: none;
+            z-index: 0;
         }
         
         .dome-star {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background-color: white;
+            background-color: #fff;
             border-radius: 50%;
-            animation: twinkle 3s ease-in-out infinite;
+            animation: twinkle 3s infinite;
         }
         
         @keyframes twinkle {
-            0% {
-                opacity: 0.2;
-            }
-            50% {
-                opacity: 0.7;
-            }
-            100% {
-                opacity: 0.2;
-            }
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
         }
         
         /* 添加划过的流星效果 */
@@ -198,66 +245,55 @@
         .stats-container {
             display: flex;
             justify-content: space-between;
-            padding: 0 15px;
-            margin-top: 200px;
+            padding: 12px;
             position: relative;
-            z-index: 5;
+            z-index: 10;
+            margin-top: 180px;
         }
         
         .stat-box {
-            width: 30%;
-            background-color: rgba(30, 41, 59, 0.6);
+            background: rgba(13, 32, 59, 0.7);
             border-radius: 15px;
-            padding: 15px 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            width: 30%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             text-align: center;
         }
         
         .stat-name {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            color: #a3d6ff;
             margin-bottom: 8px;
         }
         
         .stat-value {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
         }
         
         .stat-change {
             font-size: 12px;
-            margin-left: 4px;
-            color: #4cd964;
+            color: #4caf50;
+            margin-left: 5px;
         }
         
-        .stat-change.negative {
-            color: #ff3b30;
-        }
-        
-        .stat-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #4cd964;
-            border-radius: 50%;
-            margin-left: 6px;
-        }
-        
+        /* 进度条样式 */
         .progress-container {
+            width: 100%;
             height: 4px;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         
         .progress-bar {
             height: 100%;
-            background: linear-gradient(to right, #4a9dff, #65e3ff);
+            background: linear-gradient(90deg, #00bfff, #0ea5e9);
             border-radius: 2px;
         }
         
@@ -491,7 +527,6 @@
                     <defs>
                         <linearGradient id="dome-gradient" gradientUnits="userSpaceOnUse" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stop-color="#2D033B"/>
-                            <stop offset="40%" stop-color="#3A0CA3"/>
                             <stop offset="100%" stop-color="#0F4C75"/>
                         </linearGradient>
                     </defs>

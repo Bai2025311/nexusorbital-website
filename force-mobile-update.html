@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>强制更新NexusOrbital移动端</title>
+    <script>
+        // 清除所有缓存
+        function clearAllCaches() {
+            // 清除localStorage
+            localStorage.clear();
+            
+            // 清除sessionStorage
+            sessionStorage.clear();
+            
+            // 尝试清除应用缓存
+            if (window.applicationCache) {
+                try {
+                    window.applicationCache.swapCache();
+                } catch (e) {
+                    console.log('应用缓存无法清除', e);
+                }
+            }
+            
+            // 使用Cache API清除缓存
+            if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                    return Promise.all(
+                        cacheNames.map(function(cacheName) {
+                            return caches.delete(cacheName);
+                        })
+                    );
+                });
+            }
+            
+            document.getElementById('status').textContent = '缓存已清除！正在准备重定向...';
+            
+            // 延迟1秒后重定向
+            setTimeout(function() {
+                // 添加时间戳参数强制刷新
+                window.location.href = 'community-mobile.html?nocache=' + new Date().getTime();
+            }, 1000);
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+            background-color: #000012;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+        }
+        
+        button {
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        #status {
+            margin-top: 20px;
+            color: #4cd964;
+        }
+    </style>
+</head>
+<body>
+    <h1>NexusOrbital移动端更新</h1>
+    <p>看起来您的移动端页面没有显示最新的星空穹顶效果。</p>
+    <p>点击下方按钮清除缓存并立即查看最新版本。</p>
+    
+    <button onclick="clearAllCaches()">强制更新并查看新版本</button>
+    
+    <div id="status"></div>
+</body>
+</html>
