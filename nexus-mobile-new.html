@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>NexusOrbital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            color: #fff;
+            background-color: #000;
+            overflow-x: hidden;
+            padding-bottom: 70px;
+        }
+        
+        /* 页面容器 */
+        .container {
+            width: 100%;
+            position: relative;
+            background-color: #000;
+        }
+        
+        /* 顶部导航栏 */
+        .header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        /* 星星背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 3s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+        
+        /* 穹顶区域 */
+        .dome-container {
+            position: relative;
+            height: 380px;
+            background: linear-gradient(180deg, #000000 0%, #190941 50%, #3b0f6b 100%);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 圆弧效果 */
+        .dome-container::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: -25%;
+            width: 150%;
+            height: 140px;
+            background: linear-gradient(to top, #3b0f6b 0%, rgba(59, 15, 107, 0.7) 40%, rgba(25, 9, 65, 0) 100%);
+            border-radius: 50% 50% 0 0;
+            z-index: 3;
+        }
+        
+        /* 星星效果 */
+        .dome-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        
+        .dome-star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 2px #fff;
+            animation: star-twinkle 3s infinite alternate;
+        }
+        
+        @keyframes star-twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        /* 统计数据卡片 */
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+        
+        .stat-box {
+            background-color: rgba(15, 36, 64, 0.7);
+            border-radius: 12px;
+            padding: 12px;
+            width: 30%;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(55, 85, 155, 0.4);
+        }
+        
+        .stat-name {
+            color: #a0aec0;
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-change {
+            font-size: 14px;
+            color: #4ade80;
+            margin-left: 5px;
+        }
+        
+        .stat-progress {
+            height: 4px;
+            background-color: rgba(59, 82, 113, 0.6);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 5px 0 0 0;
+        }
+        
+        .stat-progress-bar {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(to right, #3AB0FF, #48D1FF);
+        }
+        
+        /* 筛选栏 */
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .filter-button {
+            background-color: rgba(30, 41, 59, 0.8);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-button.active {
+            background-color: #3B82F6;
+        }
+        
+        .new-post-button {
+            background-color: #3B82F6;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .new-post-button i {
+            margin-right: 5px;
+        }
+        
+        /* 帖子区域 */
+        .post-container {
+            margin: 15px;
+            background-color: rgba(15, 23, 42, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .post-header {
+            display: flex;
+            padding: 15px;
+            align-items: center;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #334155;
+            position: relative;
+        }
+        
+        .avatar-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #94A3B8;
+        }
+        
+        .post-info {
+            margin-left: 10px;
+            flex: 1;
+        }
+        
+        .post-author {
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+        }
+        
+        .post-meta {
+            font-size: 12px;
+            color: #94A3B8;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .post-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 15px 10px;
+            line-height: 1.4;
+            color: white;
+        }
+        
+        .post-content {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #E2E8F0;
+            margin: 0 15px 15px;
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 55px;
+            background-color: rgba(15, 23, 42, 0.95);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(42, 48, 66, 0.8);
+            z-index: 1000;
+            padding: 5px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94A3B8;
+            text-decoration: none;
+            width: 20%;
+            font-size: 10px;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        
+        .nav-item.active {
+            color: #3B82F6;
+        }
+        
+        /* AI助手按钮 */
+        .ai-assistant {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            background-color: #3B82F6;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.5);
+            z-index: 100;
+        }
+        
+        .ai-assistant i {
+            font-size: 24px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="stars"></div>
+        
+        <!-- 顶部导航 -->
+        <div class="header">
+            <div class="header-title">NexusOrbital</div>
+        </div>
+        
+        <div class="dome-container">
+            <div id="domeStars" class="dome-stars"></div>
+            
+            <!-- 统计数据卡片 -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-name">氧气浓度</div>
+                    <div class="stat-value">98.4% <span class="stat-change">+0.1%</span></div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-name">月球基地</div>
+                    <div class="stat-value">62%</div>
+                    <div class="stat-progress">
+                        <div class="stat-progress-bar" style="width: 62%;"></div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-name">社区活跃度</div>
+                    <div class="stat-value">89 <span class="stat-change">+0</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 筛选栏 -->
+        <div class="filter-container">
+            <button class="filter-button active">全部</button>
+            <button class="filter-button">推荐</button>
+            <button class="filter-button">热门</button>
+            <button class="filter-button">最新</button>
+            <button class="new-post-button"><i class="fas fa-pen"></i> 发表帖子</button>
+        </div>
+        
+        <!-- 帖子区域 -->
+        <div class="post-container">
+            <div class="post-header">
+                <div class="post-avatar">
+                    <i class="fas fa-user avatar-icon"></i>
+                </div>
+                <div class="post-info">
+                    <div class="post-author">星际探险家</div>
+                    <div class="post-meta">
+                        <span>2小时前</span>
+                        <span>来自 太空人居</span>
+                    </div>
+                </div>
+            </div>
+            <div class="post-title">月球基地舱室设计：如何在有限空间创造舒适感？</div>
+            <div class="post-content">
+                在设计月球基地舱室时，我发现了一些能够在有限空间内创造舒适感的方法。首先，多功能家具是关键，比如可以变形为工作台的床铺；其次，色彩心理学在太空环境中尤为重要，蓝色和绿色能缓解压力；最后，模块化设计...
+            </div>
+        </div>
+        
+        <!-- AI助手按钮 -->
+        <div class="ai-assistant">
+            <i class="fas fa-robot"></i>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-compass"></i>
+                <span>控制舱</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-dollar-sign"></i>
+                <span>星海计划</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="nav-icon fas fa-users"></i>
+                <span>星环会议</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-book"></i>
+                <span>技术库</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 创建星星背景
+        function createStars() {
+            const container = document.querySelector('.container');
+            if (container) {
+                // 添加200个星星
+                const starCount = 200;
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    
+                    // 随机位置
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.left = `${Math.random() * 100}%`;
+                    
+                    // 随机大小
+                    const size = Math.random() * 2;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    
+                    // 随机闪烁动画
+                    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    star.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    container.appendChild(star);
+                }
+            }
+        }
+        
+        // 创建穹顶区域的星星
+        function createDomeStars() {
+            const domeStarsContainer = document.getElementById('domeStars');
+            if (domeStarsContainer) {
+                // 清空现有星星
+                domeStarsContainer.innerHTML = '';
+                
+                // 添加不同大小和闪烁频率的星星
+                for (let i = 0; i < 35; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('dome-star');
+                    
+                    // 随机位置，主要集中在穹顶上部
+                    const top = Math.random() * 100;
+                    const left = Math.random() * 100;
+                    
+                    // 随机大小，主要是小星星
+                    const size = Math.random() > 0.85 ? 2 : 1;
+                    
+                    // 随机闪烁延迟
+                    const delay = Math.random() * 5;
+                    
+                    // 应用样式
+                    star.style.top = `${top}%`;
+                    star.style.left = `${left}%`;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    star.style.animationDelay = `${delay}s`;
+                    
+                    // 添加到容器
+                    domeStarsContainer.appendChild(star);
+                }
+            }
+        }
+        
+        // 页面加载后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 创建星星背景
+            createStars();
+            
+            // 创建穹顶星星
+            createDomeStars();
+            
+            // 为筛选按钮添加事件监听
+            const filterButtons = document.querySelectorAll('.filter-button');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // 为底部导航添加事件监听
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
