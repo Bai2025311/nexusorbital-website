@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stellar Habitat - 星际控制舱</title>
+    <title>NexusOrbital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?v=20250322">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css?v=20250322" rel="stylesheet">
     <style>
@@ -21,6 +21,7 @@
             padding: 0;
             margin: 0;
             overflow-x: hidden;
+            padding-bottom: 55px; /* 为底部导航留出空间 */
         }
         
         /* 星空背景 */
@@ -420,21 +421,20 @@
         .dome-container {
             position: relative;
             overflow: visible;
-            padding-bottom: 0;
-            margin-bottom: 30px;
             height: 320px;
-            z-index: 0;
+            background: linear-gradient(to bottom, #2D033B, #0F4C75);
+            border-bottom-left-radius: 50% 20%;
+            border-bottom-right-radius: 50% 20%;
         }
         
         /* 穹顶SVG区域 */
         .dome-svg-container {
             position: absolute;
-            width: 120%;
-            height: 100%;
-            z-index: -1;
-            overflow: visible;
-            left: -10%;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
         
         #dome-path {
@@ -488,30 +488,19 @@
         .stats-container {
             display: flex;
             justify-content: space-between;
-            padding: 0 15px;
-            margin-top: 180px;
+            padding: 10px 15px;
+            margin-top: 160px;
             position: relative;
-            z-index: 5;
+            z-index: 2;
         }
         
         .stat-box {
-            width: 30%;
-            background-color: rgba(15, 76, 117, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(27, 38, 59, 0.7);
             border-radius: 15px;
-            padding: 12px 10px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            text-align: center;
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .stat-box:active {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            width: 30%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
         }
         
         .stat-name {
@@ -608,64 +597,45 @@
         /* 添加流星效果 */
         .shooting-star {
             position: absolute;
-            width: 100px;
-            height: 1px;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: rotate(-45deg);
-            animation: shooting 3s infinite ease-out;
-            opacity: 0;
-            border-radius: 100%;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
+            animation: shooting 3s linear infinite;
             z-index: 1;
         }
         
-        .shooting-star::before {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background-color: white;
-            box-shadow: 0 0 20px 0 white;
-            top: -1.5px;
-            right: 0;
+        .shooting-star-1 {
+            top: 20%;
+            left: 10%;
+            width: 100px;
+            transform: rotate(45deg);
+            animation-delay: 1s;
+        }
+        
+        .shooting-star-2 {
+            top: 30%;
+            left: 60%;
+            width: 80px;
+            transform: rotate(25deg);
+            animation-delay: 4s;
+        }
+        
+        .shooting-star-3 {
+            top: 10%;
+            left: 40%;
+            width: 120px;
+            transform: rotate(65deg);
+            animation-delay: 7s;
         }
         
         @keyframes shooting {
             0% {
-                opacity: 0;
-                transform: translateX(0) translateY(0) rotate(-45deg);
-            }
-            15% {
+                transform: translateX(0) translateY(0) rotate(45deg);
                 opacity: 1;
             }
-            30% {
-                opacity: 0;
-                transform: translateX(-200px) translateY(200px) rotate(-45deg);
-            }
             100% {
+                transform: translateX(300px) translateY(300px) rotate(45deg);
                 opacity: 0;
-                transform: translateX(-200px) translateY(200px) rotate(-45deg);
             }
-        }
-        
-        .shooting-star-1 {
-            top: 20px;
-            left: 20%;
-            animation-delay: 0s;
-        }
-        
-        .shooting-star-2 {
-            top: 70px;
-            left: 75%;
-            width: 150px;
-            animation-delay: 3s;
-        }
-        
-        .shooting-star-3 {
-            top: 40px;
-            left: 50%;
-            width: 80px;
-            animation-delay: 6s;
         }
         
         /* AI任务舱 - 悬浮球形助手 */
@@ -995,32 +965,34 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(10, 18, 30, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background-color: #0c1220;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            align-items: center;
+            height: 55px;
             z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
+            color: #8a9ab8;
+            padding: 5px 0;
+            font-size: 10px;
             text-decoration: none;
-        }
-        
-        .nav-item i {
-            font-size: 20px;
-            margin-bottom: 3px;
+            flex: 1;
+            text-align: center;
         }
         
         .nav-item.active {
-            color: #0ea5e9;
+            color: #3282b8;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 3px;
         }
         
         /* Toast提示 */
@@ -1356,7 +1328,7 @@
         
         <!-- 顶部导航 -->
         <div class="header">
-            <h1 class="title">Stellar Habitat</h1>
+            <h1 class="title">NexusOrbital</h1>
         </div>
         
         <!-- 穹顶区域 - 环境数据控制舱 -->
@@ -1603,6 +1575,30 @@
                 <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,10.5A1.5,1.5 0 0,1 13.5,12A1.5,1.5 0 0,1 12,13.5A1.5,1.5 0 0,1 10.5,12A1.5,1.5 0 0,1 12,10.5M7.5,10.5A1.5,1.5 0 0,1 9,12A1.5,1.5 0 0,1 7.5,13.5A1.5,1.5 0 0,1 6,12A1.5,1.5 0 0,1 7.5,10.5M16.5,10.5A1.5,1.5 0 0,1 18,12A1.5,1.5 0 0,1 16.5,13.5A1.5,1.5 0 0,1 15,12A1.5,1.5 0 0,1 16.5,10.5Z"></path>
             </svg>
         </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="nav-icon fas fa-cog"></i>
+            <span>控制舱</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-dollar-sign"></i>
+            <span>星海计划</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-users"></i>
+            <span>星环会议</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-book"></i>
+            <span>技术库</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="nav-icon fas fa-user"></i>
+            <span>我的</span>
+        </a>
     </div>
 
     <script>
@@ -1865,6 +1861,7 @@
             // 初始化隐藏附加模块
             const crowdInnovation = document.getElementById('crowdInnovation');
             const engineerCommunity = document.getElementById('engineerCommunity');
+            const gravityInteraction = document.getElementById('gravityInteraction');
             
             if (crowdInnovation) crowdInnovation.style.display = 'none';
             if (engineerCommunity) engineerCommunity.style.display = 'none';
@@ -1878,6 +1875,7 @@
                     if (crowdInnovation) {
                         crowdInnovation.style.display = 'block';
                         if (engineerCommunity) engineerCommunity.style.display = 'none';
+                        document.body.style.overflow = 'hidden';
                     }
                 });
             }
@@ -1887,16 +1885,49 @@
                     if (engineerCommunity) {
                         engineerCommunity.style.display = 'block';
                         if (crowdInnovation) crowdInnovation.style.display = 'none';
+                        document.body.style.overflow = 'hidden';
                     }
                 });
             }
             
-            // 添加回主页按钮事件
-            document.querySelector('.header').addEventListener('click', function() {
-                if (crowdInnovation) crowdInnovation.style.display = 'none';
-                if (engineerCommunity) engineerCommunity.style.display = 'none';
+            // 添加返回按钮事件
+            const backButtons = document.querySelectorAll('.back-button');
+            backButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    if (crowdInnovation) crowdInnovation.style.display = 'none';
+                    if (engineerCommunity) engineerCommunity.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
             });
         }
+        
+        // 修复社区加载问题
+        document.addEventListener('DOMContentLoaded', function() {
+            // 使用setTimeout模拟完成加载
+            setTimeout(function() {
+                const loadingElements = document.querySelectorAll('.loading-indicator');
+                loadingElements.forEach(function(el) {
+                    el.style.display = 'none';
+                });
+                
+                // 显示内容元素
+                const contentElements = document.querySelectorAll('.content-wrapper');
+                contentElements.forEach(function(el) {
+                    el.style.display = 'block';
+                });
+            }, 1000);
+            
+            // 设置底部导航交互
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    navItems.forEach(function(i) {
+                        i.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
